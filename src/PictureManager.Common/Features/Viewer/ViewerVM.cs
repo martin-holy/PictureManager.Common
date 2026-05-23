@@ -17,7 +17,7 @@ public sealed class ViewerVM : ObservableObject {
 
   public ExtObservableCollection<ITreeItem> All => _r.Tree.Items;
   public ViewerM Selected { get => _selected; set { _selected = value; OnPropertyChanged(); } }
-  public ObservableCollection<ListItem<CategoryGroupM>> CategoryGroups { get; } = [];
+  public ObservableCollection<IListItem> CategoryGroups { get; } = [];
 
   public CanDragFunc CanDragFolder { get; set; }
   public CanDropFunc CanDropFolderIncluded { get; }
@@ -47,7 +47,7 @@ public sealed class ViewerVM : ObservableObject {
   private void _updateExcludedCategoryGroups() {
     Selected.ExcludedCategoryGroups.Clear();
     foreach (var cg in CategoryGroups.Where(x => !x.IsSelected))
-      Selected.ExcludedCategoryGroups.Add(cg.Content);
+      Selected.ExcludedCategoryGroups.Add((CategoryGroupM)cg.Data!);
 
     _r.IsModified = true;
   }
@@ -60,7 +60,7 @@ public sealed class ViewerVM : ObservableObject {
     var groups = Core.R.CategoryGroup.All
       .OrderBy(x => x.Category)
       .ThenBy(x => x.Name)
-      .Select(x => new ListItem<CategoryGroupM>(x))
+      .Select(x => new ListItem(x))
       .ToArray();
 
     CategoryGroups.Clear();
@@ -68,7 +68,7 @@ public sealed class ViewerVM : ObservableObject {
       CategoryGroups.Add(cg);
 
     foreach (var licg in CategoryGroups)
-      licg.IsSelected = !Selected.ExcludedCategoryGroups.Contains(licg.Content);
+      licg.IsSelected = !Selected.ExcludedCategoryGroups.Contains((CategoryGroupM)licg.Data!);
   }
 
   private DragDropEffects _canDropFolder(object? target, object? data, bool haveSameOrigin, bool included) {
