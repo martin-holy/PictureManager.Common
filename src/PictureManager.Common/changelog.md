@@ -3,6 +3,11 @@
 [U] - Update
 [B] - Bug fix
 
+2.35.0:
+	- [U] ViewerVM: CategoryGroups is ObservableCollection<IListItem>
+
+	// TODO version chanches
+
 2.33.0:
 	- [N] MenuFactory: Keyword menu: move item to group
 
