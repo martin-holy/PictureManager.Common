@@ -65,7 +65,8 @@ public static class MenuFactory {
     new MenuItem(Res.IconSegment, "Segments", [
       new MenuItem(CoreVM.ExportSegmentsToCommand, item)]),
     new MenuItem(Res.IconEye, "Viewer", [
-      new MenuItem(ViewerVM.AddIncludedFolderCommand, item)])];
+      new MenuItem(ViewerVM.AddIncludedFolderCommand, item),
+      new MenuItem(ViewerVM.AddExcludedFolderCommand, item)])];
 
   // Favorite Folder
   private static IEnumerable<ITreeItem> _createFavoriteFolderMenu(object item) => [
