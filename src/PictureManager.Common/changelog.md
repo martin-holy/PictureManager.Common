@@ -5,6 +5,8 @@
 
 2.35.0:
 	- [U] ViewerVM: CategoryGroups is ObservableCollection<IListItem>
+	- [N] ViewerVM: AddIncludedFolderCommand
+	- [N] MenuFactory: Folder-Viewer-AddIncludedFolderCommand
 
 	// TODO version chanches
 
