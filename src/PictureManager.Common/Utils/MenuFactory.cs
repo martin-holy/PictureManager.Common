@@ -63,7 +63,9 @@ public static class MenuFactory {
       new MenuItem(CoreVM.ResizeImagesToFolderCommand, item),
       new MenuItem(CoreVM.SaveImageMetadataToFilesCommand, item)]),
     new MenuItem(Res.IconSegment, "Segments", [
-      new MenuItem(CoreVM.ExportSegmentsToCommand, item)])];
+      new MenuItem(CoreVM.ExportSegmentsToCommand, item)]),
+    new MenuItem(Res.IconEye, "Viewer", [
+      new MenuItem(ViewerVM.AddIncludedFolderCommand, item)])];
 
   // Favorite Folder
   private static IEnumerable<ITreeItem> _createFavoriteFolderMenu(object item) => [
