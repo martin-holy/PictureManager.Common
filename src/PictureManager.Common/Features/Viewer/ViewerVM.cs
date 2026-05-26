@@ -31,6 +31,7 @@ public sealed class ViewerVM : ObservableObject {
   public static RelayCommand<ViewerM> ChangeCurrentCommand { get; set; } = null!;
   public static RelayCommand<FolderM> AddIncludedFolderCommand { get; set; } = null!;
   public static RelayCommand<FolderM> AddExcludedFolderCommand { get; set; } = null!;
+  public static RelayCommand<KeywordM> AddExcludedKeywordCommand { get; set; } = null!;
 
   public ViewerVM(ViewerR r, ViewerS s) {
     _r = r;
@@ -46,6 +47,7 @@ public sealed class ViewerVM : ObservableObject {
     ChangeCurrentCommand = new(s.ChangeCurrent, Res.IconEye);
     AddIncludedFolderCommand = new(x => _r.AddFolder(Selected, x!, true), x => x != null && Selected != null, Res.IconFolder, "Add to included");
     AddExcludedFolderCommand = new(x => _r.AddFolder(Selected, x!, false), x => x != null && Selected != null, Res.IconFolder, "Add to excluded");
+    AddExcludedKeywordCommand = new(x => _r.AddKeyword(Selected, x!), x => x != null && Selected != null, Res.IconTagLabel, "Add to excluded");
   }
 
   private void _updateExcludedCategoryGroups() {
