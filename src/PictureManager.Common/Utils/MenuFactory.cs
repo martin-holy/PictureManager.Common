@@ -110,7 +110,9 @@ public static class MenuFactory {
     new MenuItem(SegmentVM.LoadByKeywordCommand, item),
     new MenuItem(MediaItemsViewsVM.FilterSetAndCommand, item),
     new MenuItem(MediaItemsViewsVM.FilterSetOrCommand, item),
-    new MenuItem(MediaItemsViewsVM.FilterSetNotCommand, item)];
+    new MenuItem(MediaItemsViewsVM.FilterSetNotCommand, item),
+    new MenuItem(Res.IconEye, "Viewer", [
+      new MenuItem(ViewerVM.AddExcludedKeywordCommand, item)])];
 
   // GeoNames TreeCategory
   private static IEnumerable<ITreeItem> _createGeoNamesTreeCategoryMenu(object item) => [
