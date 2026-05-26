@@ -7,6 +7,10 @@
 	- [U] ViewerVM: CategoryGroups is ObservableCollection<IListItem>
 	- [N] ViewerVM: AddIncludedFolderCommand
 	- [N] MenuFactory: Folder-Viewer-AddIncludedFolderCommand
+	- [N] ViewerVM: AddExcludedFolderCommand
+	- [N] MenuFactory: Folder-Viewer-AddExcludedFolderCommand
+	- [N] ViewerVM: AddExcludedKeywordCommand
+	- [N] MenuFactory: Keyword-Viewer-AddExcludedKeywordCommand
 
 	// TODO version chanches
 
