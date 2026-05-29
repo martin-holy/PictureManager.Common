@@ -11,6 +11,8 @@
 	- [N] MenuFactory: Folder-Viewer-AddExcludedFolderCommand
 	- [N] ViewerVM: AddExcludedKeywordCommand
 	- [N] MenuFactory: Keyword-Viewer-AddExcludedKeywordCommand
+	- [N] ViewerVM: remove commands: inc/exc folder and exc keyword
+	- [U] ViewerVM: OpenDetail execution order
 
 	// TODO version chanches
 
