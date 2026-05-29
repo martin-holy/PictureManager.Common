@@ -66,8 +66,6 @@ public sealed class ViewerVM : ObservableObject {
 
   public void OpenDetail(ViewerM? viewer) {
     if (viewer == null) return;
-    Core.VM.MainTabs.Activate(Res.IconEye, "Viewer", this);
-    Selected = viewer;
 
     var groups = Core.R.CategoryGroup.All
       .OrderBy(x => x.Category)
@@ -80,7 +78,10 @@ public sealed class ViewerVM : ObservableObject {
       CategoryGroups.Add(cg);
 
     foreach (var licg in CategoryGroups)
-      licg.IsSelected = !Selected.ExcludedCategoryGroups.Contains((CategoryGroupM)licg.Data!);
+      licg.IsSelected = !viewer.ExcludedCategoryGroups.Contains((CategoryGroupM)licg.Data!);
+
+    Selected = viewer;
+    Core.VM.MainTabs.Activate(Res.IconEye, "Viewer", this);
   }
 
   private DragDropEffects _canDropFolder(object? target, object? data, bool haveSameOrigin, bool included) {
