@@ -6,6 +6,7 @@ using MH.Utils.Interfaces;
 using PictureManager.Common.Features.GeoName;
 using PictureManager.Common.Features.MediaItem;
 using PictureManager.Common.Features.Segment;
+using PictureManager.Common.Features.Viewer;
 using PictureManager.Common.Features.WhatIsNew;
 using System;
 using System.Collections.Generic;
@@ -43,7 +44,7 @@ public class MainMenuVM : TreeView {
       new MenuItem(MediaItemVM.ViewSelectedCommand)]);
 
     var segments = new MenuItem(Res.IconSegment, "Segments", [
-      new MenuItem(Features.Segment.SegmentVM.DeleteSelectedCommand),
+      new MenuItem(SegmentVM.DeleteSelectedCommand),
       new MenuItem(CoreVM.ExportSegmentsCommand),
       new MenuItem(CoreVM.OpenSegmentsViewsCommand),
       new MenuItem(SegmentVM.SetSelectedAsSamePersonCommand),
@@ -54,9 +55,14 @@ public class MainMenuVM : TreeView {
       new MenuItem(SegmentsDrawerVM.RemoveSelectedCommand)
     ]);
 
+    var viewers = new MenuItem(Res.IconEye, "Viewers")
+      .AddSource(new MenuItem(ViewerVM.ChangeCurrentCommand) { Name = "All" })
+      .AddSource(coreVM.Viewer.All, ViewerVM.ChangeCurrentCommand);
+
     RootHolder.Add(geoLocation);
     RootHolder.Add(mediaItem);
     RootHolder.Add(segments);
+    RootHolder.Add(viewers);
     RootHolder.Add(new MenuItemSeparator());
     RootHolder.Add(new MenuItem(CoreVM.SaveDbCommand));
     RootHolder.Add(new MenuItem(CoreVM.OpenSettingsCommand));
