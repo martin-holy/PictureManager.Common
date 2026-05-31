@@ -13,8 +13,14 @@
 	- [N] MenuFactory: Keyword-Viewer-AddExcludedKeywordCommand
 	- [N] ViewerVM: remove commands: inc/exc folder and exc keyword
 	- [U] ViewerVM: OpenDetail execution order
+	- [N] MainMenu: Viewers
 
-	// TODO version chanches
+2.34.1:
+	- [C] MainWindowVM: SlidePanelsGrid IsPinned replaced by Mode
+	- [C] MH.UI v 5.1.1
+
+2.34.0:
+	- [U] MainWindowVM: FullScreenInLayout
 
 2.33.0:
 	- [N] MenuFactory: Keyword menu: move item to group
