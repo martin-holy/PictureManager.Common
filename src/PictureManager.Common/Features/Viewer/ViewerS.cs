@@ -16,7 +16,6 @@ public sealed class ViewerS(CoreR coreR) : ObservableObject {
   public void ChangeCurrent(ViewerM? viewer) {
     if (ReferenceEquals(Current, viewer)) return;
     if (Current != null) Current.IsDefault = false;
-    foreach (var ff in coreR.FavoriteFolder.All.Where(x => x.IsHidden)) ff.IsHidden = false;
     foreach (var f in coreR.Folder.All.Where(x => x.IsHidden)) f.IsHidden = false;
     foreach (var cg in coreR.CategoryGroup.All.Where(x => x.IsHidden)) cg.IsHidden = false;
     coreR.Viewer.IsModified = true;
@@ -28,10 +27,6 @@ public sealed class ViewerS(CoreR coreR) : ObservableObject {
     Current = viewer;
     Current?.UpdateHashSets();
     coreR.FolderKeyword.Reload();
-    if (Current == null) return;
-
-    foreach (var ff in coreR.FavoriteFolder.Tree.Items.Cast<FavoriteFolderM>())
-      ff.IsHidden = !CanViewerSee(ff.Folder);
 
     foreach (var f in coreR.Folder.Tree.Category.Items.Cast<FolderM>()) {
       f.IsExpanded = false;
