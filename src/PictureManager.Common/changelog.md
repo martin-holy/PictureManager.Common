@@ -3,7 +3,7 @@
 [U] - Update
 [B] - Bug fix
 
-2.35.0:
+2.35.0 (not released):
 	- [U] ViewerVM: CategoryGroups is ObservableCollection<IListItem>
 	- [N] ViewerVM: AddIncludedFolderCommand
 	- [N] MenuFactory: Folder-Viewer-AddIncludedFolderCommand
@@ -14,6 +14,7 @@
 	- [N] ViewerVM: remove commands: inc/exc folder and exc keyword
 	- [U] ViewerVM: OpenDetail execution order
 	- [N] MainMenu: Viewers
+	- [U] ViewerS: SetCurrent, FavoriteFolder removed, IsHidden
 
 2.34.1:
 	- [C] MainWindowVM: SlidePanelsGrid IsPinned replaced by Mode
