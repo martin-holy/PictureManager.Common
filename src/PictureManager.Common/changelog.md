@@ -15,6 +15,7 @@
 	- [U] ViewerVM: OpenDetail execution order
 	- [N] MainMenu: Viewers
 	- [U] ViewerS: SetCurrent, FavoriteFolder removed, IsHidden
+	- [N] MediaViewerVM: MediaItemsSetedEvent
 
 2.34.1:
 	- [C] MainWindowVM: SlidePanelsGrid IsPinned replaced by Mode
