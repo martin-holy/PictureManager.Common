@@ -1,7 +1,7 @@
-﻿using MH.UI.Controls;
-using MH.Utils;
+﻿using MH.Utils;
 using MH.Utils.BaseClasses;
 using MH.Utils.EventsArgs;
+using System;
 using System.Collections.Generic;
 
 namespace PictureManager.Common.Features.MediaItem;
@@ -29,6 +29,8 @@ public sealed class MediaViewerVM : ObservableObject {
   public RelayCommand NextCommand { get; }
   public RelayCommand PreviousCommand { get; }
   public RelayCommand<MouseWheelEventArgs> NavigateCommand { get; }
+
+  public event Action? MediaItemsSetedEvent;
 
   public MediaViewerVM(MediaItemVM mediaItemVM) {
     _mediaItemVM = mediaItemVM;
@@ -58,6 +60,7 @@ public sealed class MediaViewerVM : ObservableObject {
       _indexOfCurrent = mediaItems.IndexOf(current);
       MediaItems = mediaItems;
       _mediaItemVM.Current = current;
+      MediaItemsSetedEvent?.Invoke();
     }
     OnPropertyChanged(nameof(MediaItems));
     OnPropertyChanged(nameof(PositionSlashCount));
