@@ -1,33 +1,20 @@
-﻿using MH.Utils.BaseClasses;
-using MH.Utils.Extensions;
+﻿using MH.Utils.DB.Repositories;
 using PictureManager.Common.Features.GeoName;
 using System;
-using System.Globalization;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace PictureManager.Common.Features.GeoLocation;
 
-/// <summary>
-/// DB fields: ID|Lat|Lng|GeoName
-/// </summary>
-public sealed class GeoLocationR(CoreR coreR) : TableDataAdapter<GeoLocationM>(coreR, "GeoLocations", 4) {
-  protected override GeoLocationM _fromCsv(string[] csv) =>
-    new(int.Parse(csv[0])) {
-      Lat = csv[1].ToDouble(CultureInfo.InvariantCulture),
-      Lng = csv[2].ToDouble(CultureInfo.InvariantCulture)
-    };
+public sealed class GeoLocationR : Repository<GeoLocationM> {
+  private readonly CoreR _coreR;
 
-  protected override string _toCsv(GeoLocationM gl) =>
-    string.Join("|",
-      gl.GetHashCode().ToString(),
-      gl.Lat.ToString(CultureInfo.InvariantCulture),
-      gl.Lng.ToString(CultureInfo.InvariantCulture),
-      gl.GeoName?.GetHashCode().ToString());
+  public GeoLocationDS DataSource { get; }
 
-  public override void LinkReferences() {
-    foreach (var (gl, csv) in _allCsv)
-      gl.GeoName = coreR.GeoName.GetById(csv[3], true);
+  public GeoLocationR(CoreR coreR) {
+    _coreR = coreR;
+    DataSource = new(coreR, this);
   }
 
   public GeoLocationM ItemCreate(double? lat, double? lng, GeoNameM? g) =>
@@ -43,9 +30,9 @@ public sealed class GeoLocationR(CoreR coreR) : TableDataAdapter<GeoLocationM>(c
     lng = lng == null ? null : Math.Round((double)lng, 5);
 
     if (gnId != null) {
-      gn = coreR.GeoName.All.SingleOrDefault(x => x.GetHashCode() == gnId);
+      gn = _coreR.GeoName.All.SingleOrDefault(x => x.GetHashCode() == gnId);
       if (gn == null && online)
-        gn = await coreR.GeoName.CreateGeoNameHierarchy((int)gnId);
+        gn = await _coreR.GeoName.CreateGeoNameHierarchy((int)gnId);
     }
 
     GeoLocationM? gl;
@@ -59,7 +46,7 @@ public sealed class GeoLocationR(CoreR coreR) : TableDataAdapter<GeoLocationM>(c
       if (gl?.GeoName != null) gn = gl.GeoName;
 
       if (gn == null && online)
-        gn = await coreR.GeoName.CreateGeoNameHierarchy((double)lat, (double)lng);
+        gn = await _coreR.GeoName.CreateGeoNameHierarchy((double)lat, (double)lng);
 
       if (gl != null && gl.GeoName == null && gn != null) {
         gl.GeoName = gn;

@@ -1,5 +1,6 @@
 ﻿using MH.Utils;
 using MH.Utils.BaseClasses;
+using MH.Utils.DB.Repositories;
 using MH.Utils.Extensions;
 using MH.Utils.Interfaces;
 using PictureManager.Common.Features.CategoryGroup;
@@ -12,21 +13,19 @@ using System.Linq;
 
 namespace PictureManager.Common.Features.Person;
 
-/// <summary>
-/// DB fields: ID|Name|Segments|Keywords
-/// </summary>
-public class PersonR : TreeDataAdapter<PersonM> {
+public sealed class PersonR : TreeRepository<PersonM> {
   private readonly CoreR _coreR;
-  private const string _unknownPersonNamePrefix = "P -";
-  private const string _notFoundRecordNamePrefix = "Not found ";
-  private readonly Dictionary<PersonM, List<int>> _notAvailableTopSegments = [];
+
+  public const string UnknownPersonNamePrefix = "P -";
 
   public PersonTreeCategory Tree { get; }
+  public PersonDS DataSource { get; }
   public event EventHandler<PersonM[]> PersonsKeywordsChangedEvent = delegate { };
 
-  public PersonR(CoreR coreR, CategoryGroupR cgR) : base(coreR, "People", 4) {
+  public PersonR(CoreR coreR, CategoryGroupR cgR) {
     _coreR = coreR;
     Tree = new(this, cgR);
+    DataSource = new(coreR, this);
   }
 
   public IEnumerable<PersonM> GetAll() {
@@ -41,82 +40,13 @@ public class PersonR : TreeDataAdapter<PersonM> {
   public IEnumerable<PersonM> GetBy(KeywordM keyword, bool recursive) =>
     All.GetBy(keyword, recursive);
 
-  public override void Save() =>
-    _saveToSingleFile(GetAll());
-
-  protected override PersonM _fromCsv(string[] csv) {
-    var person = new PersonM(int.Parse(csv[0]), csv[1]);
-
-    if (person.Name.StartsWith(_unknownPersonNamePrefix))
-      person.IsUnknown = true;
-
-    return person;
-  }
-
-  protected override string _toCsv(PersonM person) =>
-    string.Join("|",
-      person.GetHashCode().ToString(),
-      person.Name,
-      _topSegmentsToCsv(person),
-      person.Keywords.ToHashCodes().ToCsv());
-
-  public override void LinkReferences() {
-    _coreR.CategoryGroup.LinkGroups(Tree, AllDict);
-
-    foreach (var (person, csv) in _allCsv) {
-      // top segments
-      if (IdsToRecords(csv[2], _coreR.Segment.AllDict) is { } ts) {
-        if (ts.Item1.Count > 0) {
-          person.TopSegments = new(ts.Item1);
-          person.Segment = person.TopSegments[0];
-        }
-
-        if (ts.Item2.Count > 0)
-          _notAvailableTopSegments.Add(person, ts.Item2);
-      }
-
-      // reference to Keywords
-      person.Keywords = _coreR.Keyword.Link(csv[3], this);
-
-      // add loose people
-      foreach (var personM in AllDict.Values.Where(x => x.Parent == null)) {
-        personM.Parent = Tree;
-        personM.Parent.Items.Add(personM);
-      }
-    }
-  }
-
-  public List<PersonM>? Link(string csv, IDataAdapter seeker) =>
-    LinkList(csv, _getNotFoundRecord, seeker);
-
-  public PersonM GetPerson(int id, IDataAdapter seeker) =>
-    AllDict.TryGetValue(id, out var person)
-      ? person
-      : _resolveNotFoundRecord(id, _getNotFoundRecord, seeker)!;
-
-  // the sort order for not available will be lost so take available first
-  private string _topSegmentsToCsv(PersonM person) =>
-    _notAvailableTopSegments.TryGetValue(person, out var ts)
-      ? (person.TopSegments.ToHashCodes() ?? Array.Empty<int>()).Concat(ts).ToCsv()
-      : person.TopSegments.ToHashCodes().ToCsv();
-
-  private PersonM _getNotFoundRecord(int notFoundId) {
-    var id = GetNextId();
-    var item = new PersonM(id, $"{_notFoundRecordNamePrefix}{id} ({notFoundId})") {
-      Parent = Tree
-    };
-    item.Parent.Items.Add(item);
-    IsModified = true;
-    return item;
-  }
-
   public override PersonM ItemCreate(ITreeItem parent, string name) =>
     TreeItemCreate(new(GetNextId(), name) { Parent = parent });
 
   public PersonM ItemCreateUnknown() {
     var id = SimpleDB.GetNextRecycledId(All.Select(x => x.Id).ToHashSet()) ?? GetNextId();
 
-    return TreeItemCreate(new(id, $"{_unknownPersonNamePrefix}{id}") {
+    return TreeItemCreate(new(id, $"{UnknownPersonNamePrefix}{id}") {
       Parent = Tree.UnknownGroup,
       IsUnknown = true
     });

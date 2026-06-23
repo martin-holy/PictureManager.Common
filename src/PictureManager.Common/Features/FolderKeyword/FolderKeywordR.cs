@@ -1,4 +1,4 @@
-﻿using MH.Utils.BaseClasses;
+﻿using MH.Utils.DB.Repositories;
 using MH.Utils.Extensions;
 using MH.Utils.Interfaces;
 using PictureManager.Common.Features.Folder;
@@ -8,36 +8,16 @@ using System.Linq;
 
 namespace PictureManager.Common.Features.FolderKeyword;
 
-// TODO why is TreeDataAdapter param of type FolderM?
-/// <summary>
-/// DB fields: ID
-/// </summary>
-public class FolderKeywordR : TreeDataAdapter<FolderM> {
-  private readonly CoreR _coreR;
-
+public class FolderKeywordR : TreeRepository<FolderM> {
   public FolderKeywordTreeView Tree { get; }
+  public FolderKeywordDS DataSource { get; }
 
   public static readonly FolderKeywordM FolderKeywordPlaceHolder = new(string.Empty, null);
   public List<FolderKeywordM> All2 { get; } = [];
 
-  public FolderKeywordR(CoreR coreR) : base(coreR, "FolderKeywords", 1) {
-    _coreR = coreR;
-    IsDriveRelated = true;
+  public FolderKeywordR(CoreR coreR) {
     Tree = new(this);
-  }
-
-  protected override Dictionary<string, IEnumerable<FolderM>> _getAsDriveRelated() =>
-    CoreR.GetAsDriveRelated(All, x => x);
-
-  protected override FolderM _fromCsv(string[] csv) =>
-    new(int.Parse(csv[0]), string.Empty, null);
-
-  protected override string _toCsv(FolderM folder) =>
-    folder.GetHashCode().ToString();
-
-  public override void LinkReferences() {
-    foreach (var id in AllDict.Keys)
-      AllDict[id] = _coreR.Folder.AllDict[id];
+    DataSource = new(coreR, this);
   }
 
   public void LoadIfContains(FolderM? folder) {
@@ -55,21 +35,21 @@ public class FolderKeywordR : TreeDataAdapter<FolderM> {
     All2.Clear();
 
     foreach (var folder in All)
-      LoadRecursive(folder, Tree.Category);
+      _loadRecursive(folder, Tree.Category);
 
     foreach (var fk in All2.Where(fk => fk.Folders.All(x => !Core.S.Viewer.CanViewerSee(x))))
       fk.IsHidden = true;
   }
 
-  private void LoadRecursive(ITreeItem folder, ITreeItem fkRoot) {
+  private void _loadRecursive(ITreeItem folder, ITreeItem fkRoot) {
     foreach (var f in folder.Items.OfType<FolderM>()) {
-      var fk = GetForFolder(f, fkRoot);
-      LinkWithFolder(f, fk);
-      LoadRecursive(f, fk);
+      var fk = _getForFolder(f, fkRoot);
+      _linkWithFolder(f, fk);
+      _loadRecursive(f, fk);
     }
   }
 
-  private FolderKeywordM GetForFolder(FolderM folder, ITreeItem fkRoot) {
+  private FolderKeywordM _getForFolder(FolderM folder, ITreeItem fkRoot) {
     var fk = fkRoot.Items.Cast<FolderKeywordM>()
       .SingleOrDefault(x => x.Name.Equals(folder.Name, StringComparison.OrdinalIgnoreCase));
 
@@ -86,13 +66,13 @@ public class FolderKeywordR : TreeDataAdapter<FolderM> {
     return fk;
   }
 
-  private static void LinkWithFolder(FolderM f, FolderKeywordM fk) {
+  private static void _linkWithFolder(FolderM f, FolderKeywordM fk) {
     f.FolderKeyword = fk;
     fk.Folders.Add(f);
   }
 
   public void LinkFolderWithFolderKeyword(FolderM folder, FolderKeywordM folderKeyword) =>
-    LinkWithFolder(folder, GetForFolder(folder, folderKeyword));
+    _linkWithFolder(folder, _getForFolder(folder, folderKeyword));
 
   public void SetAsFolderKeyword(FolderM folder) {
     All.Add(folder);

@@ -1,9 +1,5 @@
 ﻿using MH.Utils;
 using MH.Utils.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using PictureManager.Common.Features.CategoryGroup;
 using PictureManager.Common.Features.FavoriteFolder;
 using PictureManager.Common.Features.Folder;
@@ -17,13 +13,18 @@ using PictureManager.Common.Features.MediaItem.Video;
 using PictureManager.Common.Features.Person;
 using PictureManager.Common.Features.Segment;
 using PictureManager.Common.Features.Viewer;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
 namespace PictureManager.Common;
 
-public sealed class CoreR : SimpleDB {
+public sealed class CoreR {
   public delegate Dictionary<string, string>? FileOperationDeleteFunc(List<string> items, bool recycle, bool silent);
   public static FileOperationDeleteFunc FileOperationDelete { get; set; } = null!;
   public bool IsCopyMoveInProgress { get; set; }
+  public MH.Utils.DB.SimpleDB DB { get; }
 
   public CategoryGroupR CategoryGroup { get; }
   public FavoriteFolderR FavoriteFolder { get; }
@@ -41,10 +42,12 @@ public sealed class CoreR : SimpleDB {
   public VideoR Video { get; }
   public ViewerR Viewer { get; }
 
-  public MediaItemGeoLocationR MediaItemGeoLocation { get; }
-  public VideoItemsOrderR VideoItemsOrder { get; }
+  public MediaItemGeoLocationRel MediaItemGeoLocation { get; }
+  //public VideoItemsOrderRel VideoItemsOrder { get; }
 
-  public CoreR(string appDir) : base(Path.Combine(appDir, "db")) {
+  public CoreR(string appDir) {
+    DB = new(Path.Combine(appDir, "db"));
+
     CategoryGroup = new(this);
     FavoriteFolder = new(this);
     FolderKeyword = new(this);
@@ -61,28 +64,28 @@ public sealed class CoreR : SimpleDB {
     Video = new(this);
     Viewer = new(this);
 
-    MediaItemGeoLocation = new(this);
-    VideoItemsOrder = new(this);
+    MediaItemGeoLocation = new(this, MediaItem, GeoLocation);
+    //VideoItemsOrder = new(this);
   }
 
-  public void AddDataAdapters() {
-    AddTableDataAdapter(CategoryGroup);
-    AddTableDataAdapter(Keyword);
-    AddTableDataAdapter(Folder); // needs to be before Viewers, FavoriteFolders and FolderKeywords
-    AddTableDataAdapter(FolderKeyword); // needs to be before Viewers
-    AddTableDataAdapter(Viewer);
-    AddTableDataAdapter(Person); // needs to be before Segments
-    AddTableDataAdapter(GeoName);
-    AddTableDataAdapter(GeoLocation);
-    AddTableDataAdapter(Image);
-    AddTableDataAdapter(Video);
-    AddTableDataAdapter(VideoClip);
-    AddTableDataAdapter(VideoImage);
-    AddTableDataAdapter(FavoriteFolder);
-    AddTableDataAdapter(Segment);
+  public void AddDataSources() {
+    DB.AddRepositoryDataSource(CategoryGroup.DataSource);
+    DB.AddRepositoryDataSource(Keyword.DataSource);
+    DB.AddRepositoryDataSource(Folder.DataSource); // needs to be before Viewers, FavoriteFolders and FolderKeywords
+    DB.AddRepositoryDataSource(FolderKeyword.DataSource); // needs to be before Viewers
+    DB.AddRepositoryDataSource(Viewer.DataSource);
+    DB.AddRepositoryDataSource(Person.DataSource); // needs to be before Segments
+    DB.AddRepositoryDataSource(GeoName.DataSource);
+    DB.AddRepositoryDataSource(GeoLocation.DataSource);
+    DB.AddRepositoryDataSource(Image.DataSource);
+    DB.AddRepositoryDataSource(Video.DataSource);
+    DB.AddRepositoryDataSource(VideoClip.DataSource);
+    DB.AddRepositoryDataSource(VideoImage.DataSource);
+    DB.AddRepositoryDataSource(FavoriteFolder.DataSource);
+    DB.AddRepositoryDataSource(Segment.DataSource);
 
-    AddRelationDataAdapter(MediaItemGeoLocation);
-    AddRelationDataAdapter(VideoItemsOrder);
+    DB.AddRelationDataSource(MediaItemGeoLocation.DataSource);
+    //DB.AddRelationDataSource(VideoItemsOrder.DataSource);
   }
 
   public static Dictionary<string, IEnumerable<T>> GetAsDriveRelated<T>(IEnumerable<T> source, Func<T, ITreeItem> folder) =>

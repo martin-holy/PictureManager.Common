@@ -376,7 +376,7 @@ public sealed class CopyMoveU(FileOperationMode mode, CoreR coreR) {
     item.Folder.MediaItems.Remove(item);
     item.Folder = folder;
     item.Folder.MediaItems.Add(item);
-    coreR.MediaItem.ModifyOnlyDA(item);
+    coreR.MediaItem.ModifyOnlyRepository(item);
   }
 
   private static bool MoveToAnotherDrive(RealMediaItemM item, FolderM folder) =>

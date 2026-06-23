@@ -1,5 +1,6 @@
 ﻿using MH.Utils;
 using MH.Utils.BaseClasses;
+using MH.Utils.DB.Repositories;
 using MH.Utils.Extensions;
 using PictureManager.Common.Features.Folder;
 using PictureManager.Common.Features.GeoLocation;
@@ -17,20 +18,23 @@ using System.Linq;
 
 namespace PictureManager.Common.Features.MediaItem;
 
-public sealed class MediaItemR : TableDataAdapter<MediaItemM> {
+public sealed class MediaItemR : Repository<MediaItemM> {
   public static MediaItemM Dummy { get; } = new ImageM(0, FolderR.Dummy, string.Empty);
   private readonly CoreR _coreR;
   private static readonly string[] _supportedImageExts = [".jpg", ".jpeg"];
   private static readonly string[] _supportedVideoExts = [".mp4"];
+
   public bool VideoSupport { get; set; } = true;
+  public MediaItemDS DataSource { get; }
 
   public event EventHandler<MediaItemM> ItemRenamedEvent = delegate { };
   public event EventHandler<MediaItemM[]> MetadataChangedEvent = delegate { };
   public event EventHandler<RealMediaItemM[]> OrientationChangedEvent = delegate { };
 
-  public MediaItemR(CoreR coreR) : base(coreR, string.Empty, 0) {
+  public MediaItemR(CoreR coreR) {
     _coreR = coreR;
-    _coreR.ReadyEvent += _onDbReady;
+    _coreR.DB.ReadyEvent += _onDbReady;
+    DataSource = new(coreR, this);
   }
 
   private void _raiseItemRenamed(MediaItemM item) => ItemRenamedEvent(this, item);
@@ -88,28 +92,6 @@ public sealed class MediaItemR : TableDataAdapter<MediaItemM> {
     return id;
   }
 
-  public override MediaItemM? GetById(string id, bool nullable = false) {
-    if (!int.TryParse(id, out var intId)) return null;
-    if (_coreR.Image.AllDict.TryGetValue(intId, out var img)) return img;
-    if (_coreR.Video.AllDict.TryGetValue(intId, out var vid)) return vid;
-    if (_coreR.VideoClip.AllDict.TryGetValue(intId, out var vc)) return vc;
-    if (_coreR.VideoImage.AllDict.TryGetValue(intId, out var vi)) return vi;
-    return null;
-  }
-
-  public List<MediaItemM>? Link(string csv) {
-    if (string.IsNullOrEmpty(csv)) return null;
-
-    var items = csv
-      .Split(',')
-      .Select(x => GetById(x))
-      .Where(x => x != null)
-      .Select(x => x!)
-      .ToList();
-
-    return items.Count == 0 ? null : items;
-  }
-
   public RealMediaItemM? ItemCreate(FolderM folder, string fileName) {
     if (_supportedImageExts.Any(x => fileName.EndsWith(x, StringComparison.OrdinalIgnoreCase)))
       return _coreR.Image.ItemCreate(folder, fileName);
@@ -134,12 +116,12 @@ public sealed class MediaItemR : TableDataAdapter<MediaItemM> {
     catch (Exception ex) {
       Log.Error(ex);
     }
-    
-    ModifyOnlyDA(item);
+
+    ModifyOnlyRepository(item);
     _raiseItemRenamed(item);
   }
 
-  public void ModifyOnlyDA(RealMediaItemM mi) {
+  public void ModifyOnlyRepository(RealMediaItemM mi) {
     switch (mi) {
       case ImageM img: _coreR.Image.Modify(img); break;
       case VideoM vid: _coreR.Video.Modify(vid); break;
@@ -152,12 +134,12 @@ public sealed class MediaItemR : TableDataAdapter<MediaItemM> {
         _coreR.Image.Modify(img);
         img.IsOnlyInDb = true;
         break;
-      case VideoM vid:
-        _coreR.Video.Modify(vid);
-        vid.IsOnlyInDb = true;
-        break;
-      case VideoClipM vc: _coreR.VideoClip.Modify(vc); break;
-      case VideoImageM vi: _coreR.VideoImage.Modify(vi); break;
+        case VideoM vid:
+          _coreR.Video.Modify(vid);
+          vid.IsOnlyInDb = true;
+          break;
+        case VideoClipM vc: _coreR.VideoClip.Modify(vc); break;
+        case VideoImageM vi: _coreR.VideoImage.Modify(vi); break;
     }
   }
 
@@ -255,7 +237,7 @@ public sealed class MediaItemR : TableDataAdapter<MediaItemM> {
       miSeg.Key.Segments = miSeg.Key.Segments!.Except(miSeg).ToList().NullIfEmpty();
       Modify(miSeg.Key);
     }
-    
+
     RaiseMetadataChanged(segments.GetMediaItems().ToArray());
   }
 

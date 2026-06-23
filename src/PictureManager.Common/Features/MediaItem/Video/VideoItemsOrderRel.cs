@@ -4,10 +4,10 @@ using System.Collections.Generic;
 
 namespace PictureManager.Common.Features.MediaItem.Video;
 
-public sealed class VideoItemsOrderR : OneToManyMultiDataAdapter<VideoM, VideoItemM> {
+/*public sealed class VideoItemsOrderRel : OneToManyMultiDataAdapter<VideoM, VideoItemM> {
   private readonly CoreR _coreR;
 
-  public VideoItemsOrderR(CoreR coreR) : base(coreR, "VideoItemsOrder", coreR.Video) {
+  public VideoItemsOrderRel(CoreR coreR) : base(coreR, "VideoItemsOrder", coreR.Video) {
     _coreR = coreR;
     IsDriveRelated = true;
     coreR.ReadyEvent += delegate { _onDbReady(); };
@@ -41,4 +41,4 @@ public sealed class VideoItemsOrderR : OneToManyMultiDataAdapter<VideoM, VideoIt
     if (_coreR.VideoImage.AllDict.TryGetValue(intId, out var vi)) return vi;
     return null;
   }
-}
+}*/

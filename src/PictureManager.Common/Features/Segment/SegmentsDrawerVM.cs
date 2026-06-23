@@ -72,7 +72,7 @@ public sealed class SegmentsDrawerVM : SegmentCollectionView {
         Items.Remove(segment);
 
     if (count == Items.Count) return;
-    _segmentS.DataAdapter.AreTablePropsModified = true;
+    _segmentS.Repo.ArePropsModified = true;
     if (add) Insert(segments); else Remove(segments);
   }
 
@@ -83,7 +83,7 @@ public sealed class SegmentsDrawerVM : SegmentCollectionView {
         flag = true;
 
     if (!flag) return;
-    _segmentS.DataAdapter.AreTablePropsModified = true;
+    _segmentS.Repo.ArePropsModified = true;
     Remove(segments);
   }
 

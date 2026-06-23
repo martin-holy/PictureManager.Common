@@ -1,5 +1,5 @@
 ﻿using MH.Utils;
-using MH.Utils.BaseClasses;
+using MH.Utils.DB.Repositories;
 using MH.Utils.Interfaces;
 using PictureManager.Common.Features.CategoryGroup;
 using System;
@@ -8,20 +8,16 @@ using System.Linq;
 
 namespace PictureManager.Common.Features.Keyword;
 
-/// <summary>
-/// DB fields: ID|Name|Parent
-/// </summary>
-public class KeywordR : TreeDataAdapter<KeywordM> {
-  private readonly CoreR _coreR;
-  private const string _notFoundRecordNamePrefix = "Not found ";
-
+public sealed class KeywordR : TreeRepository<KeywordM> {
   public KeywordTreeCategory Tree { get; }
+  public KeywordDS DataSource { get; }
 
-  public KeywordR(CoreR coreR, CategoryGroupR cgR) : base(coreR, "Keywords", 3) {
-    _coreR = coreR;
+  public KeywordR(CoreR coreR, CategoryGroupR cgR) {
     Tree = new(this, cgR);
+    DataSource = new(coreR, this);
   }
 
+  // TODO check if I have this method in MH.Utils.Tree
   public static IEnumerable<T> GetAll<T>(ITreeItem root) {
     if (root is T rootItem)
       yield return rootItem;
@@ -29,40 +25,6 @@ public class KeywordR : TreeDataAdapter<KeywordM> {
     foreach (var item in root.Items)
       foreach (var subItem in GetAll<T>(item))
         yield return subItem;
-  }
-
-  public override void Save() =>
-    _saveToSingleFile(GetAll<KeywordM>(Tree));
-
-  protected override KeywordM _fromCsv(string[] csv) =>
-    new(int.Parse(csv[0]), csv[1], null);
-
-  protected override string _toCsv(KeywordM keyword) =>
-    string.Join("|",
-      keyword.GetHashCode().ToString(),
-      keyword.Name,
-      (keyword.Parent as KeywordM)?.GetHashCode().ToString());
-
-  public override void LinkReferences() {
-    _coreR.CategoryGroup.LinkGroups(Tree, AllDict);
-    _linkTree(Tree, 2);
-
-    // group for keywords automatically added from MediaItems metadata
-    Tree.AutoAddedGroup = Tree.Items
-                            .OfType<CategoryGroupM>()
-                            .SingleOrDefault(x => x.Name.Equals("Auto Added"))
-                          ?? _coreR.CategoryGroup.ItemCreate(Tree, "Auto Added");
-  }
-
-  public List<KeywordM>? Link(string csv, IDataAdapter seeker) =>
-    LinkList(csv, _getNotFoundRecord, seeker);
-
-  private KeywordM _getNotFoundRecord(int notFoundId) {
-    var id = GetNextId();
-    var item = new KeywordM(id, $"{_notFoundRecordNamePrefix}{id} ({notFoundId})", Tree);
-    item.Parent!.Items.Add(item);
-    IsModified = true;
-    return item;
   }
 
   public override KeywordM ItemCreate(ITreeItem parent, string name) =>

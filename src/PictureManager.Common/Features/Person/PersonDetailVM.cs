@@ -56,7 +56,7 @@ public sealed class PersonDetailVM : ObservableObject {
       return;
     }
 
-    _reloadAllSegments(_segmentS.DataAdapter.GetBy(PersonM).ToList());
+    _reloadAllSegments(_segmentS.Repo.GetBy(PersonM).ToList());
     _reloadTopSegments();
 
     _topSegmentsBind = PersonM.Bind<PersonM, ExtObservableCollection<SegmentM>>(

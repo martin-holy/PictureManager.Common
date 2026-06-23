@@ -1,5 +1,5 @@
 ﻿using MH.Utils;
-using MH.Utils.BaseClasses;
+using MH.Utils.DB.Repositories;
 using MH.Utils.Interfaces;
 using System;
 using System.Globalization;
@@ -9,33 +9,16 @@ using System.Xml;
 
 namespace PictureManager.Common.Features.GeoName;
 
-/// <summary>
-/// DB fields: ID|Name|ToponymName|FCode|Parent
-/// </summary>
-public class GeoNameR : TreeDataAdapter<GeoNameM> {
+public sealed class GeoNameR : TreeRepository<GeoNameM> {
   private bool _webLoadDisabled;
 
   public GeoNameTreeCategory Tree { get; }
+  public GeoNameDS DataSource { get; }
   public bool ApiLimitExceeded { get; set; }
 
-  public GeoNameR(CoreR coreR) : base(coreR, "GeoNames", 5) {
+  public GeoNameR(CoreR coreR) {
     Tree = new(this);
-  }
-
-  protected override GeoNameM _fromCsv(string[] csv) =>
-    new(int.Parse(csv[0]), csv[1], csv[2], csv[3], null);
-
-  protected override string _toCsv(GeoNameM geoName) =>
-    string.Join("|",
-      geoName.GetHashCode().ToString(),
-      geoName.Name,
-      geoName.ToponymName,
-      geoName.Fcode,
-      (geoName.Parent as GeoNameM)?.GetHashCode().ToString());
-
-  public override void LinkReferences() {
-    Tree.Items.Clear();
-    _linkTree(Tree, 4);
+    DataSource = new(coreR, this);
   }
 
   public GeoNameM ItemCreate(int id, string name, string toponymName, string fCode, ITreeItem parent) =>

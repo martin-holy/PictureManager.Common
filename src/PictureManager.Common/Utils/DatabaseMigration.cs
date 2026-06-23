@@ -35,19 +35,19 @@ public static class DatabaseMigration {
   /// </summary>
   private static void From0To1() {
     SimpleDB.MigrateFile(
-      Core.R.FavoriteFolder.FilePath,
+      Core.R.FavoriteFolder.DataSource.FilePath,
       record => $"{record}|Favorite folder name");
 
     SimpleDB.MigrateFile(
-      Core.R.Keyword.FilePath,
+      Core.R.Keyword.DataSource.FilePath,
       record => record[..record.LastIndexOf('|')]);
 
     SimpleDB.MigrateFile(
-      Core.R.Person.FilePath,
+      Core.R.Person.DataSource.FilePath,
       record => $"{record}||");
 
     SimpleDB.MigrateFile(
-      Core.R.Viewer.FilePath,
+      Core.R.Viewer.DataSource.FilePath,
       record => {
         var lio = record.LastIndexOf('|');
         return $"{record[..lio]}||{record[lio..]}";
@@ -132,7 +132,7 @@ public static class DatabaseMigration {
   /// Add unknown people to UnknownGroup
   /// </summary>
   private static void From4To5() {
-    Core.R.ReadyEvent += (_, _) => {
+    Core.R.DB.ReadyEvent += (_, _) => {
       var p = Core.R.Person.All
         .Where(x => x.IsUnknown && x.Parent == null)
         .OrderBy(x => x.Name)
@@ -151,7 +151,7 @@ public static class DatabaseMigration {
 
     if (!SimpleDB.LoadFromFile(x => {
           pIds.Add(int.Parse(x.Split("|")[0]));
-        }, Core.R.Person.FilePath)) return;
+        }, Core.R.Person.DataSource.FilePath)) return;
 
     var pIdsNeg = pIds.Where(x => x < 0).ToHashSet();
     var pIdsPos = pIds.Where(x => x > 0).ToHashSet();
@@ -188,19 +188,19 @@ public static class DatabaseMigration {
     }
 
     SimpleDB.MigrateFile(
-      Core.R.CategoryGroup.FilePath,
+      Core.R.CategoryGroup.DataSource.FilePath,
       x => UpdateIds(x, 3, vars => int.Parse(vars[2]) != (int)Category.People));
 
     foreach (var filePath in GetDriveRelatedTableFilePaths("MediaItems"))
       SimpleDB.MigrateFile(filePath, x => UpdateIds(x, 9, null));
 
-    SimpleDB.MigrateFile(Core.R.Person.FilePath, x => UpdateIds(x, 0, null));
+    SimpleDB.MigrateFile(Core.R.Person.DataSource.FilePath, x => UpdateIds(x, 0, null));
 
-    foreach (var filePath in GetDriveRelatedTableFilePaths(Core.R.Segment.Name))
+    foreach (var filePath in GetDriveRelatedTableFilePaths(Core.R.Segment.DataSource.Name))
       SimpleDB.MigrateFile(filePath, x => UpdateIds(x, 2, null));
 
     Core.R.Person.IsModified = true;
-    Core.R.SaveIdSequences();
+    Core.R.DB.SaveIdSequences();
   }
 
   private static IEnumerable<string> GetDriveRelatedTableFilePaths(string tableName) =>
@@ -324,7 +324,7 @@ public static class DatabaseMigration {
 
     // Update VideoClips ids to use one id sequence for all MediaItems and add Keywords
     // get max id from MediaItems
-    int maxId = Core.R.IdSequences.GetValueOrDefault("MediaItems", 0);
+    int maxId = Core.R.DB.IdSequences.GetValueOrDefault("MediaItems", 0);
     var vcOldNewId = new Dictionary<int, int>();
     var vidVcDic = new Dictionary<int, List<int>>();
 
@@ -390,7 +390,7 @@ public static class DatabaseMigration {
     Core.R.Video.MaxId = maxId;
     Core.R.VideoClip.MaxId = maxId;
     Core.R.VideoImage.MaxId = maxId;
-    Core.R.SaveIdSequences();
+    Core.R.DB.SaveIdSequences();
   }
 
   private static void From7To8() {

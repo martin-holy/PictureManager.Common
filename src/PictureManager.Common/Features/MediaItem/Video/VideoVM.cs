@@ -83,11 +83,11 @@ public sealed class VideoVM : ObservableObject {
     var sortSource = true;
 
     if (Current != null) {
-      if (Core.R.VideoItemsOrder.All.TryGetValue(Current, out var list)) {
+      /*if (Core.R.VideoItemsOrder.All.TryGetValue(Current, out var list)) {
         items = list.ToList();
         sortSource = false;
       }
-      else
+      else*/
         items = Current.GetVideoItems().ToList();
     }
 

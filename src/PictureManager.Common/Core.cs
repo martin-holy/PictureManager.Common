@@ -33,15 +33,17 @@ public sealed class Core {
     Settings = Settings.Load(Path.Combine(appDir, "settings.json"));
     R = new(appDir);
     return Task.Run(async () => {
-      R.AddDataAdapters();
+      R.AddDataSources();
       Drives.UpdateSerialNumbers();
       progress.Report("Migrating Database");
-      R.Migrate(8, DatabaseMigration.Resolver);
-      R.LoadAllTables(progress);
-      R.LinkReferences(progress);
-      await LoadPlugins(progress);
-      R.ClearDataAdapters();
-      R.SetIsReady();
+      R.DB.Migrate(8, DatabaseMigration.Resolver);
+      R.DB.LoadAll(progress);
+      R.DB.LinkReferences(progress);
+      R.DB.LinkProps(progress);
+      //await LoadPlugins(progress); // TODO turn it on when Movie Manager moves to new DB
+      R.DB.FillRepositories();
+      R.DB.ClearDataSources();
+      R.DB.SetIsReady();
       progress.Report("Loading UI");
     });
   }

@@ -69,7 +69,7 @@ public sealed class MergePeopleDialog : Dialog {
 
   private SegmentM[] _getSegmentsToUpdate(PersonM person, IEnumerable<PersonM> people) {
     var oldPeople = people.Where(x => !ReferenceEquals(x, person)).ToHashSet();
-    return _segmentS.DataAdapter.All
+    return _segmentS.Repo.All
       .Where(x => x.Person != null && oldPeople.Contains(x.Person))
       .Concat(_unknownSelected)
       .ToArray();

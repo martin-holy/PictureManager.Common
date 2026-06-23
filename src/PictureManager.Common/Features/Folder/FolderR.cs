@@ -1,4 +1,5 @@
 ﻿using MH.Utils.BaseClasses;
+using MH.Utils.DB.Repositories;
 using MH.Utils.Extensions;
 using MH.Utils.Interfaces;
 using System;
@@ -8,44 +9,23 @@ using System.Linq;
 
 namespace PictureManager.Common.Features.Folder;
 
-/// <summary>
-/// DB fields: ID|Name|Parent
-/// </summary>
-public class FolderR : TreeDataAdapter<FolderM> {
+public sealed class FolderR : TreeRepository<FolderM> {
   public static FolderM Dummy { get; } = new(0, string.Empty, null);
   public FolderTreeView Tree { get; }
+  public FolderDS DataSource { get; }
 
-  public FolderR(CoreR coreR) : base(coreR, "Folders", 3) {
-    IsDriveRelated = true;
+  public FolderR(CoreR coreR) {
     Tree = new(this);
+    DataSource = new(coreR, this);
   }
 
   public static IEnumerable<T> GetAll<T>(ITreeItem root) {
     yield return (T)root;
 
     foreach (var item in root.Items)
-    foreach (var subItem in GetAll<T>(item))
-      if (!ReferenceEquals(FolderS.FolderPlaceHolder, subItem))
-        yield return subItem;
-  }
-
-  protected override Dictionary<string, IEnumerable<FolderM>> _getAsDriveRelated() =>
-    Tree.Category.Items.ToDictionary(x => x.Name, GetAll<FolderM>);
-
-  protected override FolderM _fromCsv(string[] csv) =>
-    string.IsNullOrEmpty(csv[2])
-      ? new DriveM(int.Parse(csv[0]), csv[1], null, _currentVolumeSerialNumber!)
-      : new FolderM(int.Parse(csv[0]), csv[1], null);
-
-  protected override string _toCsv(FolderM folder) =>
-    string.Join("|",
-      folder.GetHashCode().ToString(),
-      folder.Name,
-      (folder.Parent as FolderM)?.GetHashCode().ToString() ?? string.Empty);
-
-  public override void LinkReferences() {
-    Tree.Category.Items.Clear();
-    _linkTree(Tree.Category, 2);
+      foreach (var subItem in GetAll<T>(item))
+        if (!ReferenceEquals(FolderS.FolderPlaceHolder, subItem))
+          yield return subItem;
   }
 
   public override FolderM ItemCreate(ITreeItem parent, string name) {

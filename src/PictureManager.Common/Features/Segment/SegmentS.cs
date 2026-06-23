@@ -13,7 +13,7 @@ using System.IO;
 namespace PictureManager.Common.Features.Segment;
 
 public sealed class SegmentS : ObservableObject {
-  public SegmentR DataAdapter { get; }
+  public SegmentR Repo { get; }
   public Selecting<SegmentM> Selected { get; } = new();
   public static Action<SegmentM, string> ExportSegment { get; set; } = null!;
 
@@ -25,7 +25,7 @@ public sealed class SegmentS : ObservableObject {
   }
 
   public SegmentS(SegmentR r) {
-    DataAdapter = r;
+    Repo = r;
   }
 
   public void Select(List<SegmentM>? segments, SegmentM segment, bool isCtrlOn, bool isShiftOn) {
@@ -52,7 +52,7 @@ public sealed class SegmentS : ObservableObject {
     var unknownPeople = selected.GetPeople().Where(x => x.IsUnknown).ToHashSet();
     var segments = selected
       .Where(x => x.Person == null || !x.Person.IsUnknown)
-      .Concat(DataAdapter.All.Where(x => x.Person != null && unknownPeople.Contains(x.Person)))
+      .Concat(Repo.All.Where(x => x.Person != null && unknownPeople.Contains(x.Person)))
       .ToArray();
     var people = segments
       .GetPeople()
@@ -61,7 +61,7 @@ public sealed class SegmentS : ObservableObject {
       .ToArray();
 
     Core.S.Person.MergePeople(person, unknownPeople.ToArray());
-    DataAdapter.ChangePerson(person, segments, people);
+    Repo.ChangePerson(person, segments, people);
   }
 
   public async Task SetSelectedAsSamePerson(SegmentM[] items) {
@@ -87,7 +87,7 @@ public sealed class SegmentS : ObservableObject {
 
     Core.S.Person.Selected.DeselectAll();
     var affectedPeople = people.Concat(new[] { newPerson }).Distinct().ToArray();
-    DataAdapter.ChangePerson(newPerson, toUpdate, affectedPeople);
+    Repo.ChangePerson(newPerson, toUpdate, affectedPeople);
   }
 
   public void ViewMediaItemsWithSegment(object source, SegmentM? segment) {
@@ -111,7 +111,7 @@ public sealed class SegmentS : ObservableObject {
         .ThenBy(x => x.FileName);
 
     if (segment.Person != null)
-      return DataAdapter.All.Where(x => x.Person == segment.Person)
+      return Repo.All.Where(x => x.Person == segment.Person)
         .GetMediaItems()
         .OrderBy(x => x.FileName);
 

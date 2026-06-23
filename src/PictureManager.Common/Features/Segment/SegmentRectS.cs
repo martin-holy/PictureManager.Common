@@ -44,7 +44,7 @@ public sealed class SegmentRectS(SegmentS segmentS) : ObservableObject {
     _startY = y;
     _editMode = SegmentEditMode.ResizeEdge;
     _isCurrentModified = true;
-    Current = new(segmentS.DataAdapter.ItemCreate(x, y, 0, MediaItem), _scale);
+    Current = new(segmentS.Repo.ItemCreate(x, y, 0, MediaItem), _scale);
     segmentS.Select(null, Current.Segment, false, false);
     MediaItemSegmentsRects.Add(Current);
   }
@@ -187,7 +187,7 @@ public sealed class SegmentRectS(SegmentS segmentS) : ObservableObject {
 
     if (_isCurrentModified) {
       segmentS.DeleteCache(Current.Segment);
-      segmentS.DataAdapter.IsModified = true;
+      segmentS.Repo.IsModified = true;
       _isCurrentModified = false;
       _isNew = false;
       IsEditOn = false;
@@ -203,7 +203,7 @@ public sealed class SegmentRectS(SegmentS segmentS) : ObservableObject {
           MH.UI.Res.IconQuestion,
           true)) != 1) return;
 
-    segmentS.DataAdapter.ItemDelete(item.Segment);
+    segmentS.Repo.ItemDelete(item.Segment);
   }
 
   public static void MousePosToRawImage(ref double x, ref double y, double scale, MediaItemM mediaItem) {

@@ -104,7 +104,7 @@ public sealed class CoreVM : ObservableObject {
     OpenLogCommand = new(_openLog, MH.UI.Res.IconSort, "Open log");
     OpenSettingsCommand = new(_openSettings, Res.IconSettings, "Settings");
     OpenSegmentsViewsCommand = new(_ => OpenSegmentsViews(null, string.Empty), Res.IconSegment, "Segments View");
-    SaveDbCommand = new(() => _coreR.SaveAllTables(), () => _coreR.Changes > 0, Res.IconDatabase, "Save changes");
+    SaveDbCommand = new(() => _coreR.DB.SaveAll(), () => _coreR.DB.Changes > 0, Res.IconDatabase, "Save changes");
     CompressImagesCommand = new(x => _compressImages(GetActive<ImageM>(x)), AnyActive<ImageM>, null, "Compress Images");
     GetGeoNamesFromWebCommand = new((x, _) => _getGeoNamesFromWeb(GetActive<ImageM>(x)), AnyActive<ImageM>, Res.IconLocationCheckin, "Get GeoNames from web");
     ImagesToVideoCommand = new(x => _imagesToVideo(GetActive<ImageM>(x)), AnyActive<ImageM>, null, "Images to Video");
@@ -163,7 +163,7 @@ public sealed class CoreVM : ObservableObject {
     _coreR.Segment.SegmentsKeywordsChangedEvent += _onSegmentsKeywordsChanged;
     _coreR.Segment.SegmentsPersonChangedEvent += _onSegmentsPersonChanged;
 
-    _coreR.Bind(nameof(CoreR.Changes), x => x.Changes, _ => SaveDbCommand.RaiseCanExecuteChanged());
+    _coreR.DB.Bind(nameof(SimpleDB.Changes), x => x.Changes, _ => SaveDbCommand.RaiseCanExecuteChanged());
   }
 
   private void _updateMediaItemCommands() {
@@ -343,15 +343,15 @@ public sealed class CoreVM : ObservableObject {
   private async Task _onAppClosing(CancellationToken token) {
     AppClosingEvent.Invoke(this, EventArgs.Empty);
 
-    if (_coreR.Changes > 0 &&
+    if (_coreR.DB.Changes > 0 &&
         await Dialog.ShowAsync(new MessageDialog(
           "Database changes",
           "There are some changes in Picture Manager database.\nDo you want to save them?",
           Res.IconDatabase,
           true)) == 1)
-      _coreR.SaveAllTables();
+      _coreR.DB.SaveAll();
 
-    _coreR.BackUp();
+    _coreR.DB.BackUp();
   }
 
   private void _exportSegments() =>

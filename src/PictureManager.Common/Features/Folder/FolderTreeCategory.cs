@@ -1,10 +1,8 @@
-﻿using MH.UI.BaseClasses;
-using MH.UI.Controls;
+﻿using MH.UI.Controls;
 using MH.UI.Dialogs;
+using MH.UI.TreeLogic;
 using MH.Utils;
-using MH.Utils.Extensions;
 using MH.Utils.Interfaces;
-using PictureManager.Common.Features.MediaItem;
 using PictureManager.Common.Utils;
 using System;
 using System.IO;
