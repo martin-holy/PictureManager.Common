@@ -16,6 +16,7 @@
 	- [N] MainMenu: Viewers
 	- [U] ViewerS: SetCurrent, FavoriteFolder removed, IsHidden
 	- [N] MediaViewerVM: MediaItemsSetedEvent
+	- [U] Refactor to new SimpleDB
 
 2.34.1:
 	- [C] MainWindowVM: SlidePanelsGrid IsPinned replaced by Mode
