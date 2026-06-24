@@ -40,7 +40,7 @@ public sealed class Core {
       R.DB.LoadAll(progress);
       R.DB.LinkReferences(progress);
       R.DB.LinkProps(progress);
-      //await LoadPlugins(progress); // TODO turn it on when Movie Manager moves to new DB
+      await LoadPlugins(progress);
       R.DB.FillRepositories();
       R.DB.ClearDataSources();
       R.DB.SetIsReady();
