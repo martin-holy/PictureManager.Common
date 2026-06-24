@@ -11,6 +11,7 @@ public sealed class MediaItemDS(CoreR coreR, MediaItemR repository)
   private readonly CoreR _coreR = coreR;
 
   public override MediaItemM? GetById(int id, bool nullable = false) {
+    if (id == 0) return null;
     if (_coreR.Image.DataSource.AllDict.TryGetValue(id, out var img)) return img;
     if (_coreR.Video.DataSource.AllDict.TryGetValue(id, out var vid)) return vid;
     if (_coreR.VideoClip.DataSource.AllDict.TryGetValue(id, out var vc)) return vc;
