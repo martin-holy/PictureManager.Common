@@ -163,7 +163,7 @@ public sealed class CoreVM : ObservableObject {
     _coreR.Segment.SegmentsKeywordsChangedEvent += _onSegmentsKeywordsChanged;
     _coreR.Segment.SegmentsPersonChangedEvent += _onSegmentsPersonChanged;
 
-    _coreR.DB.Bind(nameof(SimpleDB.Changes), x => x.Changes, _ => SaveDbCommand.RaiseCanExecuteChanged());
+    _coreR.DB.Bind(nameof(MH.Utils.DB.SimpleDB.Changes), x => x.Changes, _ => SaveDbCommand.RaiseCanExecuteChanged());
   }
 
   private void _updateMediaItemCommands() {
