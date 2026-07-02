@@ -1,4 +1,4 @@
-﻿using MH.Utils;
+﻿using MH.Utils.Extensions;
 using MH.Utils.Interfaces;
 using PictureManager.Common.Features.CategoryGroup;
 using PictureManager.Common.Features.FavoriteFolder;
@@ -90,7 +90,7 @@ public sealed class CoreR {
 
   public static Dictionary<string, IEnumerable<T>> GetAsDriveRelated<T>(IEnumerable<T> source, Func<T, ITreeItem> folder) =>
     source
-      .GroupBy(x => Tree.GetParentOf<DriveM>(folder(x)))
+      .GroupBy(x => folder(x).GetParentOf<DriveM>())
       .Where(x => x.Key != null)
       .ToDictionary(x => x.Key!.Name, x => x.AsEnumerable());
 

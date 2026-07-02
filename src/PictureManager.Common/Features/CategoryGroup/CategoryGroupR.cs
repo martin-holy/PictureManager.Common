@@ -1,6 +1,6 @@
 ﻿using MH.UI.Interfaces;
-using MH.Utils;
 using MH.Utils.DB.Repositories;
+using MH.Utils.Extensions;
 using MH.Utils.Interfaces;
 using PictureManager.Common.Features.Keyword;
 using PictureManager.Common.Features.Person;
@@ -23,7 +23,7 @@ public class CategoryGroupR : TreeRepository<CategoryGroupM> {
   }
 
   public override CategoryGroupM ItemCreate(ITreeItem parent, string name) {
-    var cat = (Category)Tree.GetParentOf<ITreeCategory>(parent)!.Id;
+    var cat = (Category)parent.GetParentOf<ITreeCategory>()!.Id;
     var group = GetNew(GetNextId(), name, cat);
     group.Parent = parent;
     group.Items.CollectionChanged += OnGroupItemsCollectionChanged;

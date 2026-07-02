@@ -380,5 +380,5 @@ public sealed class CopyMoveU(FileOperationMode mode, CoreR coreR) {
   }
 
   private static bool MoveToAnotherDrive(RealMediaItemM item, FolderM folder) =>
-    !ReferenceEquals(Tree.GetParentOf<DriveM>(item.Folder), Tree.GetParentOf<DriveM>(folder));
+    !ReferenceEquals(item.Folder.GetParentOf<DriveM>(), folder.GetParentOf<DriveM>());
 }
