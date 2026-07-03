@@ -1,8 +1,8 @@
 ﻿using MH.UI.Controls;
 using MH.UI.Dialogs;
-using MH.UI.TreeLogic;
+using MH.UI.Tree;
 using MH.Utils;
-using MH.Utils.Interfaces;
+using MH.Utils.Tree;
 using PictureManager.Common.Utils;
 using System;
 using System.IO;

@@ -1,6 +1,6 @@
-﻿using MH.UI.TreeLogic;
+﻿using MH.UI.Tree;
 using MH.Utils.BaseClasses;
-using MH.Utils.Interfaces;
+using MH.Utils.Tree;
 using PictureManager.Common.Features.FavoriteFolder;
 using PictureManager.Common.Features.Folder;
 using PictureManager.Common.Features.FolderKeyword;

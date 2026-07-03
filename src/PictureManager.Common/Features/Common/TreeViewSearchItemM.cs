@@ -1,6 +1,6 @@
-﻿using MH.UI.TreeLogic;
+﻿using MH.UI.Tree;
 using MH.Utils.BaseClasses;
-using MH.Utils.Interfaces;
+using MH.Utils.Tree;
 
 namespace PictureManager.Common.Features.Common;
 

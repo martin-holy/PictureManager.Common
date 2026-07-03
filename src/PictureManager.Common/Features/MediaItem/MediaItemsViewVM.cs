@@ -3,7 +3,7 @@ using MH.Utils;
 using MH.Utils.BaseClasses;
 using MH.Utils.EventsArgs;
 using MH.Utils.Extensions;
-using MH.Utils.Interfaces;
+using MH.Utils.Tree;
 using PictureManager.Common.Features.MediaItem.Image;
 using System;
 using System.Collections.Generic;
@@ -46,11 +46,12 @@ public class MediaItemsViewVM : MediaItemCollectionView {
       ShowThumbInfo = ThumbScale > 0.4;
   }
 
-  protected override void _onIsVisibleChanged() {
+  /*protected override void _onIsVisibleChanged() {
     if (!IsVisible) return;
-    ReGroupPendingItems();
+    _applyWidth();
+    _reGroupPendingItems();
     ScrollTo(TopGroup, TopItem, Core.Settings.MediaItem.ScrollExactlyToMediaItem);
-  }
+  }*/
 
   protected override void _onItemOpened(MediaItemM item) {
     Selected.DeselectAll();

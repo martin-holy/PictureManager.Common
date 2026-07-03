@@ -1,4 +1,4 @@
-﻿using MH.UI.TreeLogic;
+﻿using MH.UI.Tree;
 
 namespace PictureManager.Common.Features.Viewer;
 

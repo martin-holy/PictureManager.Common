@@ -1,12 +1,13 @@
 ﻿using MH.Utils.BaseClasses;
 using MH.Utils.Extensions;
+using MH.Utils.Tree;
+using PictureManager.Common.Features.Folder;
+using PictureManager.Common.Features.Keyword;
+using PictureManager.Common.Features.Segment;
 using PictureManager.Common.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using PictureManager.Common.Features.Folder;
-using PictureManager.Common.Features.Keyword;
-using PictureManager.Common.Features.Segment;
 using BitsMasks = PictureManager.Common.Utils.BitsMasks;
 
 namespace PictureManager.Common.Features.Person;

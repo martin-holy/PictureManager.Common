@@ -1,7 +1,7 @@
 ﻿using MH.UI.Controls;
-using MH.UI.TreeLogic;
+using MH.UI.Tree;
 using MH.Utils.BaseClasses;
-using MH.Utils.Interfaces;
+using MH.Utils.Tree;
 using PictureManager.Common.Features.CategoryGroup;
 using PictureManager.Common.Features.Rating;
 using System.Collections.Generic;
