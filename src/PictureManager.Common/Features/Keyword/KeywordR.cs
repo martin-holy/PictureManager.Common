@@ -16,16 +16,6 @@ public sealed class KeywordR : TreeRepository<KeywordM> {
     DataSource = new(coreR, this);
   }
 
-  // TODO check if I have this method in MH.Utils.Tree
-  public static IEnumerable<T> GetAll<T>(ITreeItem root) {
-    if (root is T rootItem)
-      yield return rootItem;
-
-    foreach (var item in root.Items)
-      foreach (var subItem in GetAll<T>(item))
-        yield return subItem;
-  }
-
   public override KeywordM ItemCreate(ITreeItem parent, string name) =>
     TreeItemCreate(new(GetNextId(), name, parent));
 

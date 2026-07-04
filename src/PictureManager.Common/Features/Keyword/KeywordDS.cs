@@ -1,5 +1,6 @@
 ﻿using MH.Utils.DB;
 using MH.Utils.DB.DataSources;
+using MH.Utils.Tree;
 using PictureManager.Common.Features.CategoryGroup;
 using System;
 using System.Collections.Generic;
@@ -17,7 +18,7 @@ public sealed class KeywordDS(CoreR coreR, KeywordR repository)
   private const string _notFoundRecordNamePrefix = "Not found ";
 
   public override bool Save() =>
-    _saveToSingleFile(KeywordR.GetAll<KeywordM>(Repository.Tree));
+    _saveToSingleFile(Repository.Tree.GetThisAndItems<KeywordM>());
 
   protected override (KeywordM item, int linkInfo) _fromCsv(ReadOnlySpan<char> csv) {
     int start = 0;
