@@ -3,7 +3,7 @@
 [U] - Update
 [B] - Bug fix
 
-2.35.0 (not released):
+2.35.0:
 	- [U] ViewerVM: CategoryGroups is ObservableCollection<IListItem>
 	- [N] ViewerVM: AddIncludedFolderCommand
 	- [N] MenuFactory: Folder-Viewer-AddIncludedFolderCommand
@@ -17,6 +17,8 @@
 	- [U] ViewerS: SetCurrent, FavoriteFolder removed, IsHidden
 	- [N] MediaViewerVM: MediaItemsSetedEvent
 	- [U] Refactor to new SimpleDB
+	- [C] MH.Utils v5.0.0
+	- [C] MH.UI v6.0.0
 
 2.34.1:
 	- [C] MainWindowVM: SlidePanelsGrid IsPinned replaced by Mode
