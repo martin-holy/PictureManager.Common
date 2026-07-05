@@ -1,6 +1,6 @@
 ﻿using MH.UI.Controls;
-using MH.Utils;
 using MH.Utils.BaseClasses;
+using MH.Utils.Imaging;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,12 +15,12 @@ public sealed class ImageComparerVM(MediaItemM[] items) : ObservableObject {
   public int Diff { get => _diff; set { _diff = value; OnPropertyChanged(); } }
 
   public async Task<List<MediaItemM>> CompareAverageHash() =>
-    (await _getSimilar(items, Diff, _avgHashes, Imaging.GetBitmapAvgHash)).Cast<MediaItemM>().ToList();
+    (await _getSimilar(items, Diff, _avgHashes, ImagingU.GetBitmapAvgHash)).Cast<MediaItemM>().ToList();
 
   public async Task<List<MediaItemM>> ComparePHash() =>
-    (await _getSimilar(items, Diff, _pHashes, Imaging.GetBitmapPerceptualHash)).Cast<MediaItemM>().ToList();
+    (await _getSimilar(items, Diff, _pHashes, ImagingU.GetBitmapPerceptualHash)).Cast<MediaItemM>().ToList();
 
-  private static async Task<List<object>> _getSimilar(MediaItemM[] items, int limit, Dictionary<object, long> hashes, Imaging.ImageHashFunc hashMethod) {
+  private static async Task<List<object>> _getSimilar(MediaItemM[] items, int limit, Dictionary<object, long> hashes, ImagingU.ImageHashFunc hashMethod) {
     // get hashes
     var newItems = items.Where(x => !hashes.ContainsKey(x)).ToArray();
     if (newItems.Length > 0)
@@ -28,6 +28,6 @@ public sealed class ImageComparerVM(MediaItemM[] items) : ObservableObject {
 
     // get similar
     var toCompare = hashes.Where(x => items.Contains(x.Key)).ToDictionary(x => x.Key, x => x.Value);
-    return Imaging.GetSimilarImages(toCompare, limit);
+    return ImagingU.GetSimilarImages(toCompare, limit);
   }
 }

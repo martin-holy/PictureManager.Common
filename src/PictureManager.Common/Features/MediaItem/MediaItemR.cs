@@ -2,6 +2,7 @@
 using MH.Utils.BaseClasses;
 using MH.Utils.DB.Repositories;
 using MH.Utils.Extensions;
+using MH.Utils.Imaging;
 using MH.Utils.Tree;
 using PictureManager.Common.Features.Folder;
 using PictureManager.Common.Features.GeoLocation;
@@ -285,7 +286,7 @@ public sealed class MediaItemR : Repository<MediaItemM> {
   public IEnumerable<MediaItemM> GetItems(SegmentM[] segments) =>
     segments.GetMediaItems();
 
-  public void Rotate(RealMediaItemM[] items, Imaging.Orientation rotation) {
+  public void Rotate(RealMediaItemM[] items, Orientation rotation) {
     foreach (var mi in items) {
       mi.Orientation = rotation.SwapRotateIf(mi is not ImageM).Rotate(mi.Orientation);
       Modify(mi);

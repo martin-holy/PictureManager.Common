@@ -1,7 +1,7 @@
-﻿using MH.Utils;
-using MH.Utils.DB;
+﻿using MH.Utils.DB;
 using MH.Utils.DB.DataSources;
 using MH.Utils.Extensions;
+using MH.Utils.Imaging;
 using PictureManager.Common.Features.Folder;
 using System;
 using System.Collections.Generic;
@@ -66,7 +66,7 @@ public sealed class VideoDS : CsvRepositoryDataSource<VideoM, VideoR, VideoLinkI
     var item = new VideoM(id, FolderR.Dummy, fileName) {
       Width = width,
       Height = height,
-      Orientation = (Imaging.Orientation)orientation,
+      Orientation = (Orientation)orientation,
       Rating = rating,
       Comment = comment,
       IsOnlyInDb = isOnlyInDb

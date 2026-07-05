@@ -3,6 +3,7 @@ using MH.UI.Dialogs;
 using MH.Utils;
 using MH.Utils.BaseClasses;
 using MH.Utils.Extensions;
+using MH.Utils.Imaging;
 using PictureManager.Common.Features.Folder;
 using PictureManager.Common.Features.MediaItem.Image;
 using System;
@@ -13,7 +14,6 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Orientation = MH.Utils.Imaging.Orientation;
 
 namespace PictureManager.Common.Features.MediaItem;
 

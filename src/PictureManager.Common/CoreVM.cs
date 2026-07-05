@@ -5,6 +5,7 @@ using MH.UI.ViewModels;
 using MH.Utils;
 using MH.Utils.BaseClasses;
 using MH.Utils.Extensions;
+using MH.Utils.Imaging;
 using MH.Utils.Interfaces;
 using PictureManager.Common.Features.Common;
 using PictureManager.Common.Features.Folder;
@@ -437,7 +438,7 @@ public sealed class CoreVM : ObservableObject {
 
   private async Task _rotateMediaItems(RealMediaItemM[] items) {
     var rotation = await RotationDialog.Open();
-    if (rotation == Imaging.Orientation.Normal) return;
+    if (rotation == Orientation.Normal) return;
     _coreR.MediaItem.Rotate(items, rotation);
   }
 

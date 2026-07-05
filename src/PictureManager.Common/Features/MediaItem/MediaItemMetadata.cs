@@ -1,5 +1,5 @@
-﻿using MH.Utils;
-using MH.Utils.Extensions;
+﻿using MH.Utils.Extensions;
+using MH.Utils.Imaging;
 using PictureManager.Common.Features.Person;
 using PictureManager.Common.Features.Segment;
 using System;
@@ -16,7 +16,7 @@ public class MediaItemMetadata(RealMediaItemM mediaItem) {
   public string? Comment { get; set; }
   public int Width { get; set; }
   public int Height { get; set; }
-  public Imaging.Orientation Orientation { get; set; }
+  public Orientation Orientation { get; set; }
   public bool Success { get; set; }
   public string[]? Keywords { get; set; }
   public double? Lat { get; set; }

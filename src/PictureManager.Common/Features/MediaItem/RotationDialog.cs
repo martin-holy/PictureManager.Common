@@ -1,7 +1,7 @@
 ﻿using MH.UI.Controls;
 using MH.Utils.BaseClasses;
+using MH.Utils.Imaging;
 using System.Threading.Tasks;
-using Orientation = MH.Utils.Imaging.Orientation;
 
 namespace PictureManager.Common.Features.MediaItem;
 

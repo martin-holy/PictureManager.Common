@@ -1,6 +1,6 @@
-﻿using MH.Utils;
-using MH.Utils.BaseClasses;
+﻿using MH.Utils.BaseClasses;
 using MH.Utils.Extensions;
+using MH.Utils.Imaging;
 using MH.Utils.Interfaces;
 using MH.Utils.Tree;
 using PictureManager.Common.Features.Folder;
@@ -14,7 +14,6 @@ using PictureManager.Common.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Orientation = MH.Utils.Imaging.Orientation;
 
 namespace PictureManager.Common.Features.MediaItem;
 
@@ -111,7 +110,7 @@ public abstract class MediaItemM(int id) : ObservableObject, ISelectable, IEquat
     if (Width == 0 || Height == 0) return;
 
     var size = GetRotatedSize();
-    Imaging.GetThumbSize(size.width, size.height, Core.Settings.MediaItem.ThumbSize, out var w, out var h);
+    ImagingU.GetThumbSize(size.width, size.height, Core.Settings.MediaItem.ThumbSize, out var w, out var h);
 
     ThumbWidth = w;
     ThumbHeight = h;
