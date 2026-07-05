@@ -17,8 +17,8 @@
 	- [U] ViewerS: SetCurrent, FavoriteFolder removed, IsHidden
 	- [N] MediaViewerVM: MediaItemsSetedEvent
 	- [U] Refactor to new SimpleDB
-	- [C] MH.Utils v5.0.0
-	- [C] MH.UI v6.0.0
+	- [C] MH.Utils v5.0.1
+	- [C] MH.UI v6.0.1
 
 2.34.1:
 	- [C] MainWindowVM: SlidePanelsGrid IsPinned replaced by Mode
