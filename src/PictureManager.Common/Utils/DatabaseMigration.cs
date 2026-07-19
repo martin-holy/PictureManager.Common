@@ -1,4 +1,4 @@
-﻿using MH.Utils;
+﻿using MH.Utils.DB;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,14 +9,14 @@ namespace PictureManager.Common.Utils;
 
 public static class DatabaseMigration {
   public static void Resolver(int oldVersion, int newVersion) {
-    if (oldVersion < 1) From0To1();
-    if (oldVersion < 2) From1To2();
-    if (oldVersion < 3) From2To3();
-    if (oldVersion < 4) From3To4();
-    if (oldVersion < 5) From4To5();
-    if (oldVersion < 6) From5To6();
+    if (oldVersion < 1) _from0To1();
+    if (oldVersion < 2) _from1To2();
+    if (oldVersion < 3) _from2To3();
+    if (oldVersion < 4) _from3To4();
+    if (oldVersion < 5) _from4To5();
+    if (oldVersion < 6) _from5To6();
     if (oldVersion < 7) From6To7();
-    if (oldVersion < 8) From7To8();
+    if (oldVersion < 8) _from7To8();
   }
 
   /// <summary>
@@ -33,7 +33,7 @@ public static class DatabaseMigration {
   ///   old => ID|Name|IncludedFolders|ExcludedFolders|IsDefault
   ///   new => ID|Name|IncludedFolders|ExcludedFolders|ExcludedCategoryGroups|ExcludedKeywords|IsDefault
   /// </summary>
-  private static void From0To1() {
+  private static void _from0To1() {
     SimpleDB.MigrateFile(
       Core.R.FavoriteFolder.DataSource.FilePath,
       record => $"{record}|Favorite folder name");
@@ -58,7 +58,7 @@ public static class DatabaseMigration {
   /// FavoriteFolders, Folders, MediaItems, Segments, VideoClips and VideoClipsGroups
   /// are stored in separate files for each drive
   /// </summary>
-  private static void From1To2() {
+  private static void _from1To2() {
     Core.R.FavoriteFolder.IsModified = true;
     Core.R.Folder.IsModified = true;
     //Core.Db.MediaItems.IsModified = true;
@@ -71,7 +71,7 @@ public static class DatabaseMigration {
   ///   old => ID|MediaItemId|PersonId|SegmentBox(centerX,centerY,radius)|Keywords
   ///   new => ID|MediaItemId|PersonId|SegmentBox(left,top,size)|Keywords
   /// </summary>
-  private static void From2To3() {
+  private static void _from2To3() {
     var files = Directory.GetFiles("db")
       .Where(x => x.StartsWith("db" + Path.DirectorySeparatorChar + "Segments."));
 
@@ -98,7 +98,7 @@ public static class DatabaseMigration {
   /// FolderKeywords
   ///   new => ID
   /// </summary>
-  private static void From3To4() {
+  private static void _from3To4() {
     var fks = new List<string>();
     var files = Directory.GetFiles("db")
       .Where(x => x.StartsWith("db" + Path.DirectorySeparatorChar + "Folders."));
@@ -131,7 +131,7 @@ public static class DatabaseMigration {
   /// <summary>
   /// Add unknown people to UnknownGroup
   /// </summary>
-  private static void From4To5() {
+  private static void _from4To5() {
     Core.R.DB.ReadyEvent += (_, _) => {
       var p = Core.R.Person.All
         .Where(x => x.IsUnknown && x.Parent == null)
@@ -146,7 +146,7 @@ public static class DatabaseMigration {
   /// Change unknown person id from negative to positive.
   /// Identification of unknown person will be Name starting with "P -"
   /// </summary>
-  private static void From5To6() {
+  private static void _from5To6() {
     var pIds = new List<int>();
 
     if (!SimpleDB.LoadFromFile(x => {
@@ -191,19 +191,19 @@ public static class DatabaseMigration {
       Core.R.CategoryGroup.DataSource.FilePath,
       x => UpdateIds(x, 3, vars => int.Parse(vars[2]) != (int)Category.People));
 
-    foreach (var filePath in GetDriveRelatedTableFilePaths("MediaItems"))
+    foreach (var filePath in _getDriveRelatedTableFilePaths("MediaItems"))
       SimpleDB.MigrateFile(filePath, x => UpdateIds(x, 9, null));
 
     SimpleDB.MigrateFile(Core.R.Person.DataSource.FilePath, x => UpdateIds(x, 0, null));
 
-    foreach (var filePath in GetDriveRelatedTableFilePaths(Core.R.Segment.DataSource.Name))
+    foreach (var filePath in _getDriveRelatedTableFilePaths(Core.R.Segment.DataSource.Name))
       SimpleDB.MigrateFile(filePath, x => UpdateIds(x, 2, null));
 
     Core.R.Person.IsModified = true;
     Core.R.DB.SaveIdSequences();
   }
 
-  private static IEnumerable<string> GetDriveRelatedTableFilePaths(string tableName) =>
+  private static IEnumerable<string> _getDriveRelatedTableFilePaths(string tableName) =>
     Directory.GetFiles("db")
       .Where(x => x.StartsWith("db" + Path.DirectorySeparatorChar + $"{tableName}."));
 
@@ -239,7 +239,7 @@ public static class DatabaseMigration {
     // Remove GeoName from MediaItems and create MediaItemGeoLocation relation
     string[] imgExts = { ".jpg", ".jpeg" };
     string vidExt = ".mp4";
-    foreach (var miFilePath in GetDriveRelatedTableFilePaths("MediaItems")) {
+    foreach (var miFilePath in _getDriveRelatedTableFilePaths("MediaItems")) {
       var imgFilePath = miFilePath.Replace("MediaItems", "Images");
       var vidFilePath = miFilePath.Replace("MediaItems", "Videos");
       var miGeoLocFilePath = miFilePath.Replace("MediaItems", "MediaItemGeoLocation");
@@ -291,7 +291,7 @@ public static class DatabaseMigration {
 
     // Get VideoClipsGroup names and Clips
     var nameIdClips = new Dictionary<string, Tuple<int, List<int>>>();
-    foreach (var vcgFilePath in GetDriveRelatedTableFilePaths("VideoClipsGroups")) {
+    foreach (var vcgFilePath in _getDriveRelatedTableFilePaths("VideoClipsGroups")) {
       using var vcgSr = new StreamReader(vcgFilePath, Encoding.UTF8);
       while (vcgSr.ReadLine() is { } line) {
         var vars = line.Split('|');
@@ -330,7 +330,7 @@ public static class DatabaseMigration {
 
     // VideoClips (update Id) and add Keywords
     // Store Name in Comment
-    foreach (var vcFilePath in GetDriveRelatedTableFilePaths("VideoClips"))
+    foreach (var vcFilePath in _getDriveRelatedTableFilePaths("VideoClips"))
       SimpleDB.MigrateFile(vcFilePath, line => {
         var vars = line.Split("|").ToList();
         var oldId = int.Parse(vars[0]);
@@ -355,7 +355,7 @@ public static class DatabaseMigration {
       });
 
     // Migrate VideoClipsGroups to VideoItemsOrder with new VideoClips ids
-    foreach (var vcgFilePath in GetDriveRelatedTableFilePaths("VideoClipsGroups")) {
+    foreach (var vcgFilePath in _getDriveRelatedTableFilePaths("VideoClipsGroups")) {
       var vmioFilePath = vcgFilePath.Replace("VideoClipsGroups", "VideoItemsOrder");
       using var vcgSr = new StreamReader(vcgFilePath, Encoding.UTF8);
       using var vmioSw = new StreamWriter(vmioFilePath, false, Encoding.UTF8, 65536);
@@ -393,7 +393,7 @@ public static class DatabaseMigration {
     Core.R.DB.SaveIdSequences();
   }
 
-  private static void From7To8() {
+  private static void _from7To8() {
     var filePath = Path.Combine("db", "settings.csv");
     if (File.Exists(filePath))
       File.Delete(filePath);
