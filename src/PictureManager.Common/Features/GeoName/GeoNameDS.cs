@@ -1,5 +1,6 @@
 ﻿using MH.Utils.DB;
 using MH.Utils.DB.DataSources;
+using MH.Utils.Tree;
 using System;
 
 namespace PictureManager.Common.Features.GeoName;
@@ -9,7 +10,10 @@ namespace PictureManager.Common.Features.GeoName;
 /// </summary>
 public sealed class GeoNameDS(CoreR coreR, GeoNameR repository)
   : CsvTreeDataSource<GeoNameM, GeoNameR, int>(coreR.DB, "GeoNames", 5, repository) {
-  
+
+  public override bool Save() =>
+    _saveToSingleFile(Repository.Tree.GetThisAndItems<GeoNameM>());
+
   protected override (GeoNameM item, int linkInfo) _fromCsv(ReadOnlySpan<char> csv) {
     int start = 0;
     int field = 0;
