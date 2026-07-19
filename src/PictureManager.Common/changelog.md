@@ -3,6 +3,11 @@
 [U] - Update
 [B] - Bug fix
 
+2.35.1:
+	- [B] GeoLocationDS: Saving to DB
+	- [B] GeoNameDS: Saving to DB
+	- [B] ViewerDS: Saving to DB
+
 2.35.0:
 	- [U] ViewerVM: CategoryGroups is ObservableCollection<IListItem>
 	- [N] ViewerVM: AddIncludedFolderCommand
