@@ -2,6 +2,7 @@
 using MH.Utils.DB.DataSources;
 using MH.Utils.Extensions;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace PictureManager.Common.Features.Viewer;
@@ -15,6 +16,8 @@ public sealed class ViewerDS : CsvTreeDataSource<ViewerM, ViewerR, ViewerLinkInf
   public ViewerDS(CoreR coreR, ViewerR repo) : base(coreR.DB, "Viewers", 7, repo) {
     _coreR = coreR;
   }
+
+  protected override IEnumerable<ViewerM> _getAll() => Repository.All;
 
   protected override (ViewerM item, ViewerLinkInfo linkInfo) _fromCsv(ReadOnlySpan<char> csv) {
     int start = 0;
