@@ -2,6 +2,7 @@
 using MH.Utils.DB.DataSources;
 using MH.Utils.Extensions;
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 
 namespace PictureManager.Common.Features.GeoLocation;
@@ -11,6 +12,8 @@ namespace PictureManager.Common.Features.GeoLocation;
 /// </summary>
 public sealed class GeoLocationDS(CoreR coreR, GeoLocationR repository)
   : CsvRepositoryDataSource<GeoLocationM, GeoLocationR, int>(coreR.DB, "GeoLocations", 4, repository) {
+
+  protected override IEnumerable<GeoLocationM> _getAll() => Repository.All;
 
   protected override (GeoLocationM item, int linkInfo) _fromCsv(ReadOnlySpan<char> csv) {
     int start = 0;
