@@ -19,8 +19,6 @@ public sealed class VideoVM : ObservableObject {
   public IUiMediaPlayer UiFullVideo { get; }
   public IUiMediaPlayer UiDetailVideo { get; }
 
-  public static Func<string, string, object[]?> GetVideoMetadataFunc { get; set; } = null!;
-
   public VideoVM(IUiMediaPlayer fullPlayer, IUiMediaPlayer detailPlayer) {
     UiFullVideo = fullPlayer;
     UiDetailVideo = detailPlayer;
@@ -132,7 +130,7 @@ public sealed class VideoVM : ObservableObject {
       return;
     }
 
-    var fps = GetVideoMetadataFunc(vid.Folder.FullPath, vid.FileName) is { } data && (double)data[3] > 0
+    var fps = MediaItemS.GetVideoMetadata(vid.Folder.FullPath, vid.FileName) is { } data && (double)data[3] > 0
       ? (double)data[3]
       : 30.0;
     var smallChange = Math.Round(1000 / fps, 0);
