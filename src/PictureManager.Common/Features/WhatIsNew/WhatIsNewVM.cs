@@ -15,7 +15,7 @@ public class WhatIsNewVM {
   private static void _open() {
     try {
       _inst ??= new();
-      using var sr = new StreamReader("WhatIsNew.txt", Encoding.UTF8);
+      using var sr = new StreamReader("changelog.txt", Encoding.UTF8);
       Content = sr.ReadToEnd();
       Core.VM.MainTabs.Activate(Res.IconInformation, "What's new", _inst);
     }
