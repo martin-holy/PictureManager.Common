@@ -3,6 +3,10 @@
 [U] - Update
 [B] - Bug fix
 
+2.36.0(not released):
+	- [N] MediaItemS: GetVideoMetadata func
+	- [U] VideoVM: GetVideoMetadataFunc replaced with MediaItemS.GetVideoMetadata
+
 2.35.1:
 	- [B] GeoLocationDS: Saving to DB
 	- [B] GeoNameDS: Saving to DB
