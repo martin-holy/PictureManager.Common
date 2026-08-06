@@ -12,6 +12,7 @@ namespace PictureManager.Common.Features.MediaItem;
 
 public sealed class MediaItemS(MediaItemR r) : ObservableObject {
   public static Action<MediaItemMetadata, bool> ReadMetadata { get; set; } = null!;
+  public static Func<string, string, object[]?> GetVideoMetadata { get; set; } = null!;
 
   public void DeleteFromDrive(MediaItemM[] items) =>
     r.ItemsDeleteFromDrive(items);
