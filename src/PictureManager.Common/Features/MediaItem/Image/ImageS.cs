@@ -1,5 +1,6 @@
 ﻿using MH.Utils;
 using MH.Utils.Extensions;
+using MH.Utils.Imaging;
 using PictureManager.Common.Features.Person;
 using System;
 using System.Collections.Generic;
@@ -17,6 +18,7 @@ public sealed class ImageS(ImageR r) {
   private static readonly XNamespace _nsMp = "http://ns.microsoft.com/photo/1.2/";
   private static readonly XNamespace _nsMpReg = "http://ns.microsoft.com/photo/1.2/t/Region#";
   private static readonly XNamespace _nsMpRi = "http://ns.microsoft.com/photo/1.2/t/RegionInfo#";
+  private static readonly XNamespace _nsMhu = "https://github.com/martin-holy/MH.Utils/xmp";
 
   public static Func<ImageM, int, bool> WriteMetadata { get; set; } = null!;
 
@@ -214,4 +216,7 @@ public sealed class ImageS(ImageR r) {
         .Select(x => new Tuple<PersonM?, string?, string[]?>(x, null, null)))
       .ToList();
   }
+
+  public static int? GetGeoNameId(ImageMetadata metadata) =>
+    metadata.Xmp.Doc.GetInt(_nsMhu, "GeoNameId");
 }
