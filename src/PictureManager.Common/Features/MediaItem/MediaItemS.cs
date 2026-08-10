@@ -137,7 +137,7 @@ public sealed class MediaItemS(MediaItemR r) : ObservableObject {
         continue;
 
       var keywords = region.Element
-        .GetXmpArray(XmpNs.MpReg + "RectangleKeywords")
+        .GetXmpArray(XmpNs.MpReg + "RectangleKeywords")?
         .Select(e => e.Value.Trim())
         .Where(v => v.Length > 0)
         .Distinct(StringComparer.OrdinalIgnoreCase)
@@ -151,7 +151,7 @@ public sealed class MediaItemS(MediaItemR r) : ObservableObject {
         output.Add(person);
       }
 
-      person.Item2.Add(new(rect, keywords.Length > 0 ? keywords : null));
+      person.Item2.Add(new(rect, keywords?.Length > 0 ? keywords : null));
     }
 
     return output.Count > 0 ? output : null;
