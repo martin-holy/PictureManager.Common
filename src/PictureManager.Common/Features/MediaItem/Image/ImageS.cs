@@ -14,7 +14,7 @@ public sealed class ImageS(ImageR r) {
   private static readonly XNamespace _nsRdf = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
   private static readonly XNamespace _nsXmp = "http://ns.adobe.com/xap/1.0/";
   private static readonly XNamespace _nsDc = "http://purl.org/dc/elements/1.1/";
-  private static readonly XNamespace _nsGn = "http://www.geonames.org/ontology#"; // TODO check the url for correct schema
+  private static readonly XNamespace _nsGn = "http://www.geonames.org/ontology#";
   private static readonly XNamespace _nsMp = "http://ns.microsoft.com/photo/1.2/";
   private static readonly XNamespace _nsMpReg = "http://ns.microsoft.com/photo/1.2/t/Region#";
   private static readonly XNamespace _nsMpRi = "http://ns.microsoft.com/photo/1.2/t/RegionInfo#";
@@ -218,5 +218,8 @@ public sealed class ImageS(ImageR r) {
   }
 
   public static int? GetGeoNameId(ImageMetadata metadata) =>
-    metadata.Xmp.Doc.GetInt(_nsMhu, "GeoNameId");
+    metadata.Jpeg.Xmp.Doc is not { } doc
+      ? null
+      : doc.GetInt(_nsMhu, "GeoNameId") ??
+        doc.GetInt(_nsGn, "GeoNameId"); // this is old namespace I used before
 }
