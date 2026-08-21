@@ -124,8 +124,8 @@ public sealed class MediaItemS(MediaItemR r) : ObservableObject {
     mim.Success = true;
   }
 
-  private static List<Tuple<string, List<Tuple<string, string[]?>>>>? _readPeopleSegmentsKeywords(MpRegionCollection people) {
-    if (people.Count == 0) return null;
+  private static List<Tuple<string, List<Tuple<string, string[]?>>>>? _readPeopleSegmentsKeywords(MpRegionCollection? people) {
+    if (people == null || people.Count == 0) return null;
 
     var output = new List<Tuple<string, List<Tuple<string, string[]?>>>>();
 
