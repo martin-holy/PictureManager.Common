@@ -14,11 +14,12 @@ public sealed class ImageS(ImageR r) {
   private static readonly XNamespace _nsRdf = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
   private static readonly XNamespace _nsXmp = "http://ns.adobe.com/xap/1.0/";
   private static readonly XNamespace _nsDc = "http://purl.org/dc/elements/1.1/";
-  private static readonly XNamespace _nsGn = "http://www.geonames.org/ontology#";
+  private static readonly XNamespace _nsGn = "http://www.geonames.org/ontology#"; // TODO this is used only in android version now so use the _nsMhu instead and delete it
   private static readonly XNamespace _nsMp = "http://ns.microsoft.com/photo/1.2/";
   private static readonly XNamespace _nsMpReg = "http://ns.microsoft.com/photo/1.2/t/Region#";
   private static readonly XNamespace _nsMpRi = "http://ns.microsoft.com/photo/1.2/t/RegionInfo#";
   private static readonly XNamespace _nsMhu = "https://github.com/martin-holy/MH.Utils/xmp";
+  private static readonly XNamespace _nsGeoNames = "GeoNames";
 
   public static Func<ImageM, int, bool> WriteMetadata { get; set; } = null!;
 
@@ -221,5 +222,5 @@ public sealed class ImageS(ImageR r) {
     metadata.Jpeg.Xmp.Doc is not { } doc
       ? null
       : doc.GetInt(_nsMhu, "GeoNameId") ??
-        doc.GetInt(_nsGn, "GeoNameId"); // this is old namespace I used before
+        doc.GetInt(_nsGeoNames, "GeoNameId"); // this is old namespace I used before
 }
