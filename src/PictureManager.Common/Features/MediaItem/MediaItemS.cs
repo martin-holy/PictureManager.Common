@@ -2,6 +2,7 @@
 using MH.Utils.BaseClasses;
 using MH.Utils.Imaging;
 using MH.Utils.Imaging.Exif;
+using MH.Utils.Imaging.Jpeg;
 using MH.Utils.Imaging.Xmp;
 using PictureManager.Common.Features.Folder;
 using PictureManager.Common.Features.MediaItem.Image;
@@ -101,7 +102,7 @@ public sealed class MediaItemS(MediaItemR r) : ObservableObject {
   }
 
   private static void _readImageMetadata(MediaItemMetadata mim) {
-    var metadata = new ImageMetadata(mim.MediaItem.FilePath);
+    var metadata = new ImageMetadata(mim.MediaItem.FilePath, JpegMetadataLoad.All);
 
     var width = metadata.Width;
     var height = metadata.Height;
