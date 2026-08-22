@@ -1,6 +1,9 @@
 ﻿using MH.Utils;
 using MH.Utils.Extensions;
 using MH.Utils.Imaging;
+using MH.Utils.Imaging.Exif;
+using MH.Utils.Imaging.Jpeg;
+using MH.Utils.Imaging.Xmp;
 using PictureManager.Common.Features.Person;
 using System;
 using System.Collections.Generic;
@@ -22,6 +25,75 @@ public sealed class ImageS(ImageR r) {
   private static readonly XNamespace _nsGeoNames = "GeoNames";
 
   public static Func<ImageM, int, bool> WriteMetadata { get; set; } = null!;
+
+  public bool TryWriteMetadata(ImageM img) {
+    try {
+      if (!_writeMetadata(img)) throw new("Error writing metadata");
+      img.IsOnlyInDb = false;
+    }
+    catch (Exception ex) {
+      Log.Error(ex, $"Metadata will be saved just in database. {img.FilePath}");
+      img.IsOnlyInDb = true;
+    }
+
+    r.IsModified = true;
+    return !img.IsOnlyInDb;
+  }
+
+  // TODO change file CreationTime
+  private static bool _writeMetadata(ImageM img) {
+    var metadata = new ImageMetadata(img.FilePath, JpegMetadataLoad.All);
+
+    _writePeople(metadata, img);
+    metadata.Rating = img.Rating;
+    metadata.Comment = img.Comment;
+    metadata.Keywords = img.Keywords?.Select(k => k.FullName).ToArray();
+    metadata.Orientation = img.Orientation.ToExifOrientation();
+    metadata.Jpeg.Xmp.Doc?.SetValue(_nsGeoNames, "GeoNameId", null); // remove old location
+    metadata.Jpeg.Xmp.Doc?.SetValue(_nsMhu, "GeoNameId", img.GeoLocation?.GeoName?.Id.ToString(), XmpValueStyle.Attribute);
+
+    return false;
+  }
+
+  private static void _writePeople(ImageMetadata metadata, ImageM img) {
+    var people = GetPeopleSegmentsKeywords(img);
+    var existing = metadata.People;
+
+    if (people == null) {
+      existing?.Clear();
+      return;
+    }
+
+    var used = new List<MpRegion>();
+    existing ??= metadata.Jpeg.Xmp.EnsurePeople();
+
+    foreach (var (person, rect, keywords) in people) {
+      MpRegion? region = null;
+      var name = person?.Name;
+
+      // Named region → match by PersonDisplayName
+      if (!string.IsNullOrWhiteSpace(name))
+        region = existing
+          .Where(x => x.PersonDisplayName == name && !used.Contains(x))
+          .Select(x => x)
+          .FirstOrDefault();
+
+      // Anonymous region → match by Rectangle
+      if (region == null && name == null && rect != null)
+        region = existing
+          .Where(x => x.PersonDisplayName == null && x.Rectangle == rect && !used.Contains(x))
+          .Select(x => x)
+          .FirstOrDefault();
+
+      region ??= existing.Add(name);
+      region.Rectangle = rect;
+      region.Element.SetXmpArray(XmpNs.MpReg + "RectangleKeywords", keywords, XmpArrayType.Bag);
+      used.Add(region);
+    }
+
+    foreach (var eRegion in existing.Where(x => !used.Contains(x)).ToArray())
+      existing.Remove(eRegion);
+  }
 
   public bool TryWriteMetadata(ImageM img, int quality) {
     try {
