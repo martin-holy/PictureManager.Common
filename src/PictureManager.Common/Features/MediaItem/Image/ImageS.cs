@@ -49,8 +49,8 @@ public sealed class ImageS(ImageR r) {
     metadata.Comment = img.Comment;
     metadata.Keywords = img.Keywords?.Select(k => k.FullName).ToArray();
     metadata.Orientation = img.Orientation.ToExifOrientation();
-    metadata.Jpeg.Xmp.Doc?.SetValue(_nsGeoNames, "GeoNameId", null); // remove old location
-    metadata.Jpeg.Xmp.Doc?.SetValue(_nsMhu, "GeoNameId", img.GeoLocation?.GeoName?.Id.ToString(), XmpValueStyle.Attribute);
+    metadata.Jpeg.Xmp.Doc?.SetValue(_nsGeoNames + "GeoNameId", null); // remove old location
+    metadata.Jpeg.Xmp.Doc?.SetValue(_nsMhu + "GeoNameId", img.GeoLocation?.GeoName?.Id.ToString(), XmpValueStyle.Attribute);
 
     return false;
   }
@@ -293,6 +293,6 @@ public sealed class ImageS(ImageR r) {
   public static int? GetGeoNameId(ImageMetadata metadata) =>
     metadata.Jpeg.Xmp.Doc is not { } doc
       ? null
-      : doc.GetInt(_nsMhu, "GeoNameId") ??
-        doc.GetInt(_nsGeoNames, "GeoNameId"); // this is old namespace I used before
+      : doc.GetInt(_nsMhu + "GeoNameId") ??
+        doc.GetInt(_nsGeoNames + "GeoNameId"); // this is old namespace I used before
 }
