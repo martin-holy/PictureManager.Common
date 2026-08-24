@@ -40,7 +40,6 @@ public sealed class ImageS(ImageR r) {
     return !img.IsOnlyInDb;
   }
 
-  // TODO change file CreationTime
   private static bool _writeMetadata(ImageM img) {
     var metadata = new ImageMetadata(img.FilePath, JpegMetadataLoad.All);
 
@@ -52,7 +51,12 @@ public sealed class ImageS(ImageR r) {
     metadata.Jpeg.Xmp.Doc?.SetValue(_nsGeoNames + "GeoNameId", null); // remove old location
     metadata.Jpeg.Xmp.Doc?.SetValue(_nsMhu + "GeoNameId", img.GeoLocation?.GeoName?.Id.ToString(), XmpValueStyle.Attribute);
 
-    return false;
+    if (!metadata.IsModified) return true;
+
+    // TODO get file CreationTime before Write and set it to new file if Write is successful
+    var success = metadata.Write(img.FilePath);
+
+    return success;
   }
 
   private static void _writePeople(ImageMetadata metadata, ImageM img) {
@@ -64,7 +68,7 @@ public sealed class ImageS(ImageR r) {
       return;
     }
 
-    var used = new List<MpRegion>();
+    var used = new List<XElement>();
     existing ??= metadata.Jpeg.Xmp.EnsurePeople();
 
     foreach (var (person, rect, keywords) in people) {
@@ -74,24 +78,24 @@ public sealed class ImageS(ImageR r) {
       // Named region → match by PersonDisplayName
       if (!string.IsNullOrWhiteSpace(name))
         region = existing
-          .Where(x => x.PersonDisplayName == name && !used.Contains(x))
+          .Where(x => x.PersonDisplayName == name && !used.Contains(x.Element))
           .Select(x => x)
           .FirstOrDefault();
 
       // Anonymous region → match by Rectangle
       if (region == null && name == null && rect != null)
         region = existing
-          .Where(x => x.PersonDisplayName == null && x.Rectangle == rect && !used.Contains(x))
+          .Where(x => x.PersonDisplayName == null && x.Rectangle == rect && !used.Contains(x.Element))
           .Select(x => x)
           .FirstOrDefault();
 
       region ??= existing.Add(name);
       region.Rectangle = rect;
       region.Element.SetXmpArray(XmpNs.MpReg + "RectangleKeywords", keywords, XmpArrayType.Bag);
-      used.Add(region);
+      used.Add(region.Element);
     }
 
-    foreach (var eRegion in existing.Where(x => !used.Contains(x)).ToArray())
+    foreach (var eRegion in existing.Where(x => !used.Contains(x.Element)).ToArray())
       existing.Remove(eRegion);
   }
 
