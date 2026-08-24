@@ -111,7 +111,7 @@ public sealed class MediaItemS(MediaItemR r) : ObservableObject {
     mim.Width = width.Value;
     mim.Height = height.Value;
     mim.Rating = metadata.Rating ?? 0;
-    mim.Comment = metadata.Comment;
+    mim.Comment = StringUtils.NormalizeComment(metadata.Comment);
     mim.Orientation = metadata.Orientation.ToMsOrientation() ?? Orientation.Normal;
     mim.Keywords = metadata.Keywords;
     mim.PeopleSegmentsKeywords = _readPeopleSegmentsKeywords(metadata.People);
