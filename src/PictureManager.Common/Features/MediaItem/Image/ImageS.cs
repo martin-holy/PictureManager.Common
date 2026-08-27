@@ -48,8 +48,8 @@ public sealed class ImageS(ImageR r) {
     metadata.Comment = img.Comment;
     metadata.Keywords = img.Keywords?.Select(k => k.FullName).ToArray();
     metadata.Orientation = img.Orientation.ToExifOrientation();
-    metadata.Jpeg.Xmp.Doc?.SetValue(_nsGeoNames + "GeoNameId", null); // remove old location
-    metadata.Jpeg.Xmp.Doc?.SetValue(_nsMhu + "GeoNameId", img.GeoLocation?.GeoName?.Id.ToString(), XmpValueStyle.Attribute);
+    metadata.Jpeg.Xmp.Doc?.SetProperty(_nsGeoNames + "GeoNameId", null); // remove old location
+    metadata.Jpeg.Xmp.Doc?.SetProperty(_nsMhu + "GeoNameId", img.GeoLocation?.GeoName?.Id.ToString(), XmpValueStyle.Attribute);
 
     if (!metadata.IsModified) return true;
 
