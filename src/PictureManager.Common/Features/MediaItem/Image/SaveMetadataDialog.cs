@@ -18,7 +18,11 @@ public sealed class SaveMetadataDialog : ParallelProgressDialog<ImageM> {
 
   protected override Task _do(ImageM item, CancellationToken token) {
     _reportProgress(item.FilePath);
-    _imageS.TryWriteMetadata(item, _quality);
+
+    if (FF.XPlatformMetadata)
+      _imageS.TryWriteMetadata(item);
+    else
+      _imageS.TryWriteMetadata(item, _quality);
 
     return Task.CompletedTask;
   }
