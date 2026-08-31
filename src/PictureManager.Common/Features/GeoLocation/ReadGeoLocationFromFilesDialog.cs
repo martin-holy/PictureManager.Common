@@ -1,5 +1,6 @@
 ﻿using MH.UI.Dialogs;
 using MH.Utils.Imaging;
+using MH.Utils.Imaging.Jpeg;
 using PictureManager.Common.Features.MediaItem;
 using PictureManager.Common.Features.MediaItem.Image;
 using System.Threading;
@@ -28,7 +29,7 @@ public sealed class ReadGeoLocationFromFilesDialog : ProgressDialog<ImageM> {
     _reportProgress(item.FileName);
 
     var mim = new MediaItemMetadata(item);
-    var metadata = new ImageMetadata(item.FilePath);
+    var metadata = new ImageMetadata(item.FilePath, JpegMetadataLoad.All);
     
     mim.GeoNameId = ImageS.GetGeoNameId(metadata);
 
