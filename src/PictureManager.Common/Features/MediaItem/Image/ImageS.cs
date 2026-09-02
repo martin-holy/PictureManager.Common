@@ -7,6 +7,7 @@ using MH.Utils.Imaging.Xmp;
 using PictureManager.Common.Features.Person;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 
@@ -21,10 +22,44 @@ public sealed class ImageS(ImageR r) {
   private static readonly XNamespace _nsMp = "http://ns.microsoft.com/photo/1.2/";
   private static readonly XNamespace _nsMpReg = "http://ns.microsoft.com/photo/1.2/t/Region#";
   private static readonly XNamespace _nsMpRi = "http://ns.microsoft.com/photo/1.2/t/RegionInfo#";
-  private static readonly XNamespace _nsMhu = "https://github.com/martin-holy/MH.Utils/xmp";
+  private static readonly XNamespace _nsPM = "https://github.com/martin-holy/PictureManager/";
   private static readonly XNamespace _nsGeoNames = "GeoNames";
+  private static readonly XName _nCompressionQuality = _nsPM + "CompressionQuality";
 
   public static Func<ImageM, int, bool> WriteMetadata { get; set; } = null!;
+
+  public bool TryEncodeJpeg(ImageM img, int quality) {
+    try {
+      var filePath = img.FilePath;
+      var metadata = new ImageMetadata(filePath, JpegMetadataLoad.Xmp);
+      if (metadata.Jpeg.Xmp.Doc?.GetInt(_nCompressionQuality) == quality) return true;
+
+      using var encoded = new MemoryStream();
+      ImagingU.EncodeJpegTo(encoded, filePath, quality);
+
+      encoded.Position = 0;
+      metadata = new ImageMetadata(encoded, JpegMetadataLoad.All);
+      metadata.Jpeg.Xmp.EnsureDoc().SetProperty(_nCompressionQuality, quality.ToString(), XmpValueStyle.Attribute);
+
+      _writeMetadata(img, metadata);
+
+      var originalCreationTime = new FileInfo(filePath).CreationTime;
+
+      encoded.Position = 0;
+      if (!metadata.Write(encoded, filePath)) throw new("Error writing metadata");
+
+      _tryRestoreCreationTime(filePath, originalCreationTime);
+
+      img.IsOnlyInDb = false;
+    }
+    catch (Exception ex) {
+      Log.Error(ex, $"Metadata will be saved just in database. {img.FilePath}");
+      img.IsOnlyInDb = true;
+    }
+
+    r.IsModified = true;
+    return !img.IsOnlyInDb;
+  }
 
   public bool TryWriteMetadata(ImageM img) {
     try {
@@ -41,22 +76,42 @@ public sealed class ImageS(ImageR r) {
   }
 
   private static bool _writeMetadata(ImageM img) {
-    var metadata = new ImageMetadata(img.FilePath, JpegMetadataLoad.All);
+    var filePath = img.FilePath;
+    var metadata = new ImageMetadata(filePath, JpegMetadataLoad.All);
 
+    _writeMetadata(img, metadata);
+
+    if (!metadata.IsModified) return true;
+
+    var originalCreationTime = new FileInfo(filePath).CreationTime;
+
+    var success = metadata.Write(filePath);
+
+    _tryRestoreCreationTime(filePath, originalCreationTime);
+
+    return success;
+  }
+
+  private static void _tryRestoreCreationTime(string filePath, DateTime creationTime) {
+    try {
+      // TODO check what this does on android
+      new FileInfo(filePath).CreationTime = creationTime;
+    }
+    catch (Exception ex) {
+      Log.Error(ex, "Can't preserve file original creation time.");
+    }
+  }
+
+  private static void _writeMetadata(ImageM img, ImageMetadata metadata) {
     _writePeople(metadata, img);
     metadata.Rating = img.Rating;
     metadata.Comment = img.Comment;
     metadata.Keywords = img.Keywords?.Select(k => k.FullName).ToArray();
     metadata.Orientation = img.Orientation.ToExifOrientation();
-    metadata.Jpeg.Xmp.Doc?.SetProperty(_nsGeoNames + "GeoNameId", null); // remove old location
-    metadata.Jpeg.Xmp.Doc?.SetProperty(_nsMhu + "GeoNameId", img.GeoLocation?.GeoName?.Id.ToString(), XmpValueStyle.Attribute);
 
-    if (!metadata.IsModified) return true;
-
-    // TODO get file CreationTime before Write and set it to new file if Write is successful
-    var success = metadata.Write(img.FilePath);
-
-    return success;
+    var doc = metadata.Jpeg.Xmp.EnsureDoc();
+    doc.SetProperty(_nsGeoNames + "GeoNameId", null); // remove old location
+    doc.SetProperty(_nsPM + "GeoNameId", img.GeoLocation?.GeoName?.Id.ToString(), XmpValueStyle.Attribute);
   }
 
   private static void _writePeople(ImageMetadata metadata, ImageM img) {
@@ -297,6 +352,6 @@ public sealed class ImageS(ImageR r) {
   public static int? GetGeoNameId(ImageMetadata metadata) =>
     metadata.Jpeg.Xmp.Doc is not { } doc
       ? null
-      : doc.GetInt(_nsMhu + "GeoNameId") ??
+      : doc.GetInt(_nsPM + "GeoNameId") ??
         doc.GetInt(_nsGeoNames + "GeoNameId"); // this is old namespace I used before
 }
