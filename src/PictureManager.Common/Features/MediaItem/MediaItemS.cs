@@ -104,12 +104,8 @@ public sealed class MediaItemS(MediaItemR r) : ObservableObject {
   private static void _readImageMetadata(MediaItemMetadata mim) {
     var metadata = new ImageMetadata(mim.MediaItem.FilePath, JpegMetadataLoad.All);
 
-    var width = metadata.Width;
-    var height = metadata.Height;
-    if (!width.HasValue || !height.HasValue) return;
-
-    mim.Width = width.Value;
-    mim.Height = height.Value;
+    mim.Width = metadata.Width;
+    mim.Height = metadata.Height;
     mim.Rating = metadata.Rating ?? 0;
     mim.Comment = StringUtils.NormalizeComment(metadata.Comment);
     mim.Orientation = metadata.Orientation.ToMsOrientation() ?? Orientation.Normal;
