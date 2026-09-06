@@ -7,8 +7,11 @@ using MH.Utils.Imaging.Xmp;
 using PictureManager.Common.Features.Person;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Xml.Linq;
 
 namespace PictureManager.Common.Features.MediaItem.Image;
@@ -26,6 +29,8 @@ public sealed class ImageS(ImageR r) {
   private static readonly XNamespace _nsGeoNames = "GeoNames";
   private static readonly XName _nCompressionQuality = _nsPM + "CompressionQuality";
 
+  private static bool _customXmpNsPrefixAdded;
+
   public static Func<ImageM, int, bool> WriteMetadata { get; set; } = null!;
 
   public bool TryEncodeJpeg(ImageM img, int quality) {
@@ -39,6 +44,7 @@ public sealed class ImageS(ImageR r) {
 
       encoded.Position = 0;
       metadata = new ImageMetadata(encoded, JpegMetadataLoad.All);
+      _ensureCustomXmpNamespacePrefix();
       metadata.Jpeg.Xmp.EnsureDoc().SetProperty(_nCompressionQuality, quality.ToString(), XmpValueStyle.Attribute);
 
       _writeMetadata(img, metadata);
@@ -90,6 +96,12 @@ public sealed class ImageS(ImageR r) {
     _tryRestoreCreationTime(filePath, originalCreationTime);
 
     return success;
+  }
+
+  private static void _ensureCustomXmpNamespacePrefix() {
+    if (_customXmpNsPrefixAdded) return;
+    XmpNs.SetPrefix(_nsPM, "PM");
+    _customXmpNsPrefixAdded = true;
   }
 
   private static void _tryRestoreCreationTime(string filePath, DateTime creationTime) {
@@ -354,4 +366,49 @@ public sealed class ImageS(ImageR r) {
       ? null
       : doc.GetInt(_nsPM + "GeoNameId") ??
         doc.GetInt(_nsGeoNames + "GeoNameId"); // this is old namespace I used before
+
+  public static void ResizeJpeg(ImageM img, string dest, int px, bool withMetadata, bool withThumbnail, int quality) {
+    var metadata = new ImageMetadata(img.FilePath, JpegMetadataLoad.Size);
+    var dateTaken = _getDateTaken(img.FileName, metadata);
+
+    ImagingU.GetScaledSizeToPx(px, metadata.Width, metadata.Height, out var width, out var height);
+
+    using var encoded = new MemoryStream();
+    ImagingU.EncodeJpegTo(encoded, img.FilePath, quality, withMetadata, withThumbnail, width, height);
+
+    encoded.Position = 0;
+    metadata = new ImageMetadata(encoded, JpegMetadataLoad.All);
+    metadata.UpdateDimensions();
+    _ensureCustomXmpNamespacePrefix();
+    metadata.Jpeg.Xmp.EnsureDoc().SetProperty(_nCompressionQuality, quality.ToString(), XmpValueStyle.Attribute);
+
+    if (withMetadata)
+      _writeMetadata(img, metadata);
+    else
+      metadata.Orientation = img.Orientation.ToExifOrientation();
+
+    encoded.Position = 0;
+    metadata.Write(encoded, dest);
+
+    if (dateTaken != null) {
+      try {
+        new FileInfo(img.FilePath).LastWriteTime = dateTaken.Value;
+      }
+      catch (Exception ex) {
+        Log.Error(ex, "Can't update LastWriteTime to DateTaken.");
+      }
+    }
+  }
+
+  private static DateTime? _getDateTaken(string fileName, ImageMetadata metadata) {
+    var date = DateTime.MinValue;
+
+    var match = Regex.Match(fileName, "[0-9]{8}_[0-9]{6}");
+    if (match.Success)
+      DateTime.TryParseExact(match.Value, "yyyyMMdd_HHmmss", CultureInfo.InvariantCulture, DateTimeStyles.None, out date);
+
+    if (date != DateTime.MinValue) return date;
+
+    return metadata.DateTimeOriginal;
+  }
 }
