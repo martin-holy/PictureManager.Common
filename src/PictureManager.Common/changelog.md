@@ -8,6 +8,7 @@
 	- [U] VideoVM: GetVideoMetadataFunc replaced with MediaItemS.GetVideoMetadata
 	- [N] ImageS: GetGeoNameId
 	- [N] ImageS: TryEncodeJpeg
+	- [N] ImageS: ResizeJpeg method
 
 2.35.1:
 	- [B] GeoLocationDS: Saving to DB
