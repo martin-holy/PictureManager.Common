@@ -443,7 +443,7 @@ public sealed class CoreVM : ObservableObject {
   }
 
   private async Task _saveImageMetadataToFiles(ImageM[] items) {
-    await SaveMetadataDialog.Open(items, _coreS.Image, Core.Settings.Common.JpegQuality);
+    await SaveMetadataDialog.Open(items, _coreS.Image);
     _ = MainWindow.StatusBar.UpdateFileSize();
   }
 
