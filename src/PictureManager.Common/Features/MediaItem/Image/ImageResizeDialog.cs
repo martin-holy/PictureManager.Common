@@ -1,7 +1,6 @@
 ﻿using MH.UI.Dialogs;
 using MH.Utils;
 using MH.Utils.BaseClasses;
-using MH.Utils.Imaging;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -71,7 +70,7 @@ public sealed class ImageResizeDialog : ParallelProgressDialog<ImageM> {
         File.Delete(dest);
       }
 
-      ImagingU.ResizeJpg(image.FilePath, dest, _px, _preserveMetadata, _preserveThumbnail, Core.Settings.Common.JpegQuality);
+      ImageS.ResizeJpeg(image, dest, _px, _preserveMetadata, _preserveThumbnail, Core.Settings.Common.JpegQuality);
     }
     catch (Exception ex) {
       Log.Error(ex, image.FilePath);
