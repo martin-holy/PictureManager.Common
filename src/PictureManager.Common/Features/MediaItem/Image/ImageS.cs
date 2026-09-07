@@ -31,7 +31,7 @@ public sealed class ImageS(ImageR r) {
 
   private static bool _customXmpNsPrefixAdded;
 
-  public static Func<ImageM, int, bool> WriteMetadata { get; set; } = null!;
+  public static event EventHandler<MediaItemM>? OnMetadataWrittenEvent;
 
   public bool TryEncodeJpeg(ImageM img, int quality) {
     try {
@@ -94,6 +94,8 @@ public sealed class ImageS(ImageR r) {
     var success = metadata.Write(filePath);
 
     _tryRestoreCreationTime(filePath, originalCreationTime);
+
+    OnMetadataWrittenEvent?.Invoke(null, img);
 
     return success;
   }
