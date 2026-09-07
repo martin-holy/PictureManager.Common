@@ -41,9 +41,7 @@ public sealed class CompressImagesDialog : ParallelProgressDialog<ImageM> {
 
   protected override Task _do(ImageM image, CancellationToken token) {
     var sourceSize = new FileInfo(image.FilePath).Length;
-    var bSuccess = FF.XPlatformMetadata
-      ? _imageS.TryEncodeJpeg(image, _jpegQualityLevel)
-      : _imageS.TryWriteMetadata(image, _jpegQualityLevel);
+    var bSuccess = _imageS.TryEncodeJpeg(image, _jpegQualityLevel);
     var compressedSize = bSuccess ? new FileInfo(image.FilePath).Length : sourceSize;
 
     _reportProgress(image.FileName, new[] { sourceSize, compressedSize });
