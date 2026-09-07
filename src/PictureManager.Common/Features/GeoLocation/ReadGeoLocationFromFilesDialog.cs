@@ -15,17 +15,7 @@ public sealed class ReadGeoLocationFromFilesDialog : ProgressDialog<ImageM> {
     _autoRun();
   }
 
-  private Task _oldDo(ImageM item, CancellationToken token) {
-    _reportProgress(item.FileName);
-    var mim = new MediaItemMetadata(item);
-    MediaItemS.ReadMetadata(mim, true);
-    return mim.Success ? mim.FindGeoLocation(false) : Task.CompletedTask;
-  }
-
   protected override Task _do(ImageM item, CancellationToken token) {
-    if (!FF.XPlatformMetadata)
-      return _oldDo(item, token);
-
     _reportProgress(item.FileName);
 
     var mim = new MediaItemMetadata(item);
