@@ -17,16 +17,8 @@ using System.Xml.Linq;
 namespace PictureManager.Common.Features.MediaItem.Image;
 
 public sealed class ImageS(ImageR r) {
-  private static readonly XNamespace _nsX = "adobe:ns:meta/";
-  private static readonly XNamespace _nsRdf = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
-  private static readonly XNamespace _nsXmp = "http://ns.adobe.com/xap/1.0/";
-  private static readonly XNamespace _nsDc = "http://purl.org/dc/elements/1.1/";
-  private static readonly XNamespace _nsGn = "http://www.geonames.org/ontology#"; // TODO this is used only in android version now so use the _nsMhu instead and delete it
-  private static readonly XNamespace _nsMp = "http://ns.microsoft.com/photo/1.2/";
-  private static readonly XNamespace _nsMpReg = "http://ns.microsoft.com/photo/1.2/t/Region#";
-  private static readonly XNamespace _nsMpRi = "http://ns.microsoft.com/photo/1.2/t/RegionInfo#";
   private static readonly XNamespace _nsPM = "https://github.com/martin-holy/PictureManager/";
-  private static readonly XNamespace _nsGeoNames = "GeoNames";
+  private static readonly XNamespace _nsGeoNames = "GeoNames"; // old ns used before
   private static readonly XName _nCompressionQuality = _nsPM + "CompressionQuality";
 
   private static bool _customXmpNsPrefixAdded;
@@ -108,8 +100,9 @@ public sealed class ImageS(ImageR r) {
 
   private static void _tryRestoreCreationTime(string filePath, DateTime creationTime) {
     try {
-      // TODO check what this does on android
-      new FileInfo(filePath).CreationTime = creationTime;
+      // BUG System.UnauthorizedAccessException: Access to the path '...' is denied. Operation not permitted
+      if (OperatingSystem.IsWindows())
+        new FileInfo(filePath).CreationTime = creationTime;
     }
     catch (Exception ex) {
       Log.Error(ex, "Can't preserve file original creation time.");
@@ -129,7 +122,7 @@ public sealed class ImageS(ImageR r) {
   }
 
   private static void _writePeople(ImageMetadata metadata, ImageM img) {
-    var people = GetPeopleSegmentsKeywords(img);
+    var people = _getPeopleSegmentsKeywords(img);
     var existing = metadata.People;
 
     if (people == null) {
@@ -168,187 +161,7 @@ public sealed class ImageS(ImageR r) {
       existing.Remove(eRegion);
   }
 
-  public bool TryWriteMetadata(ImageM img, int quality) {
-    try {
-      if (!WriteMetadata(img, quality)) throw new("Error writing metadata");
-      img.IsOnlyInDb = false;
-    }
-    catch (Exception ex) {
-      Log.Error(ex, $"Metadata will be saved just in database. {img.FilePath}");
-      img.IsOnlyInDb = true;
-    }
-
-    r.IsModified = true;
-    return !img.IsOnlyInDb;
-  }
-
-  public static string? BuildXmp(string? existingXmp, ImageM img) {
-    if (_tryParseXmp(existingXmp) is not { } doc)
-      doc = new XDocument(new XElement(_nsX + "xmpmeta", new XAttribute(XNamespace.Xmlns + "x", _nsX)));
-
-    if (doc.Root!.Elements(_nsRdf + "RDF").FirstOrDefault() is not { } rdf) {
-      rdf = new XElement(_nsRdf + "RDF", new XAttribute(XNamespace.Xmlns + "rdf", _nsRdf));
-      doc.Root.Add(rdf);
-    }
-
-    _mergeRating(rdf, img.Rating);
-    _mergeKeywords(rdf, img);
-    _mergeGeoName(rdf, img);
-    _mergePeople(rdf, img);
-
-    return doc.ToString(SaveOptions.DisableFormatting);
-  }
-
-  private static XDocument? _tryParseXmp(string? xmp) {
-    try {
-      if (!string.IsNullOrEmpty(xmp))
-        return XDocument.Parse(xmp, LoadOptions.PreserveWhitespace);
-    }
-    catch (Exception ex) {
-      Log.Error(ex);
-    }
-
-    return null;
-  }
-
-  private static XElement? _getDescriptionFor(XElement rdf, XNamespace propertyNs, XName propertyName) =>
-    rdf.Elements(_nsRdf + "Description").FirstOrDefault(
-      d => d.Element(propertyName) != null ||
-      d.Attributes().Any(a => a.IsNamespaceDeclaration && a.Value == propertyNs));
-
-  private static XElement _addDescription(XElement rdf) {
-    var desc = new XElement(_nsRdf + "Description");
-    rdf.Add(desc);
-    return desc;
-  }
-
-  private static void _mergeRating(XElement rdf, int rating) {
-    var desc = _getDescriptionFor(rdf, _nsXmp, _nsXmp + "Rating") ?? _addDescription(rdf);
-    desc.SetAttributeValue(XNamespace.Xmlns + "xmp", _nsXmp);
-    desc.Element(_nsXmp + "Rating")?.Remove();
-    desc.Add(new XElement(_nsXmp + "Rating", rating));
-  }
-
-  private static void _mergeKeywords(XElement rdf, ImageM img) {
-    var desc = _getDescriptionFor(rdf, _nsDc, _nsDc + "subject");
-
-    var keywords = img.Keywords?.Select(k => k.FullName).ToArray();
-    if (keywords == null || keywords.Length == 0) {
-      desc?.Element(_nsDc + "subject")?.Remove();
-      return;
-    }
-
-    desc ??= _addDescription(rdf);
-    desc.SetAttributeValue(XNamespace.Xmlns + "dc", _nsDc);
-    desc.Element(_nsDc + "subject")?.Remove();
-    desc.Add(new XElement(_nsDc + "subject",
-      new XElement(_nsRdf + "Bag",
-        keywords.Select(k => new XElement(_nsRdf + "li", k)))));
-  }
-
-  private static void _mergeGeoName(XElement rdf, ImageM img) {
-    var id = img.GeoLocation?.GeoName?.Id.ToString();
-    var desc = _getDescriptionFor(rdf, _nsGn, _nsGn + "GeoNameId");
-
-    if (id == null) {
-      desc?.Element(_nsGn + "GeoNameId")?.Remove();
-      return;
-    }
-
-    desc ??= _addDescription(rdf);
-    desc.SetAttributeValue(XNamespace.Xmlns + "GeoNameId", _nsGn);
-    desc.Element(_nsGn + "GeoNameId")?.Remove();
-    desc.Add(new XElement(_nsXmp + "GeoNameId", id));
-  }
-
-  private static void _mergePeople(XElement rdf, ImageM img) {
-    var desc = _getDescriptionFor(rdf, _nsMp, _nsMp + "RegionInfo");
-
-    var people = GetPeopleSegmentsKeywords(img);
-    if (people == null || people.Count == 0) {
-      desc?.Element(_nsMp + "RegionInfo")?.Remove();
-      return;
-    }
-
-    desc ??= _addDescription(rdf);
-
-    if (desc.Element(_nsMp + "RegionInfo") is not { } regionInfo) {
-      regionInfo = new XElement(_nsMp + "RegionInfo");
-      desc.Add(regionInfo);
-    }
-
-    regionInfo.SetAttributeValue(XNamespace.Xmlns + "MP", _nsMp);
-    regionInfo.SetAttributeValue(XNamespace.Xmlns + "MPRI", _nsMpRi);
-    regionInfo.SetAttributeValue(XNamespace.Xmlns + "MPReg", _nsMpReg);
-
-    if (regionInfo.Descendants(_nsMpRi + "Regions").FirstOrDefault() is not { } regions) {
-      regions = new XElement(_nsMpRi + "Regions");
-      regionInfo.Add(regions);
-    }
-
-    if (regions.Element(_nsRdf + "Bag") is not { } bag) {
-      bag = new XElement(_nsRdf + "Bag");
-      regions.Add(bag);
-    }
-
-    var used = new List<XElement>();
-    var existing = bag.Elements(_nsRdf + "li")
-      .Select(li => li.Element(_nsRdf + "Description"))
-      .Where(d => d != null)
-      .Select(d => new {
-        Desc = d!,
-        Name = (string?)d!.Element(_nsMpReg + "PersonDisplayName"),
-        Rect = (string?)d!.Element(_nsMpReg + "Rectangle")})
-      .ToArray();
-
-    foreach (var (person, rect, keywords) in people) {
-      XElement? rDesc = null;
-      var name = person?.Name;
-
-      // Named region → match by PersonDisplayName
-      if (!string.IsNullOrWhiteSpace(name))
-        rDesc = existing
-          .Where(x => x.Name == name && !used.Contains(x.Desc))
-          .Select(x => x.Desc)
-          .FirstOrDefault();
-
-      // Anonymous region → match by Rectangle
-      if (rDesc == null && name == null && rect != null)
-        rDesc = existing
-          .Where(x => x.Name == null && x.Rect == rect && !used.Contains(x.Desc))
-          .Select(x => x.Desc)
-          .FirstOrDefault();
-
-      if (rDesc == null) {
-        rDesc = new XElement(_nsRdf + "Description");        
-        bag.Add(new XElement(_nsRdf + "li", rDesc));
-
-        if (!string.IsNullOrWhiteSpace(name))
-          rDesc.Add(new XElement(_nsMpReg + "PersonDisplayName", name));
-      }
-      else {
-        rDesc.Element(_nsMpReg + "Rectangle")?.Remove();
-        rDesc.Element(_nsMpReg + "RectangleKeywords")?.Remove();
-      }
-
-      used.Add(rDesc);
-
-      if (rect != null)
-        rDesc.Add(new XElement(_nsMpReg + "Rectangle", rect));
-
-      if (keywords?.Length > 0) {
-        rDesc.Add(
-          new XElement(_nsMpReg + "RectangleKeywords",
-            new XElement(_nsRdf + "Bag",
-              keywords.Select(k => new XElement(_nsRdf + "li", k)))));
-      }
-    }
-
-    foreach (var eDesc in existing.Select(x => x.Desc).Where(x => !used.Contains(x)))
-      eDesc.Parent?.Remove();
-  }
-
-  public static List<Tuple<PersonM?, string?, string[]?>>? GetPeopleSegmentsKeywords(ImageM img) {
+  private static List<Tuple<PersonM?, string?, string[]?>>? _getPeopleSegmentsKeywords(ImageM img) {
     var peopleOnSegments = img.Segments.EmptyIfNull().Select(x => x.Person).Distinct().ToHashSet();
 
     return img.Segments?
