@@ -9,6 +9,13 @@
 	- [N] ImageS: GetGeoNameId
 	- [N] ImageS: TryEncodeJpeg
 	- [N] ImageS: ResizeJpeg method
+	- [N] ImageS: OnMetadataWrittenEvent
+	- [U] CompressImagesDialog: Using new ImageMetadata
+	- [U] ImageResizeDialog: Using new ImageMetadata
+	- [U] SaveMetadataDialog: Using new ImageMetadata
+	- [U] ReadGeoLocationFromFilesDialog: Using new ImageMetadata
+	- [U] ImageS: Old write metadata code removed
+	- [U] MediaItemS: Old read metadata removed
 
 2.35.1:
 	- [B] GeoLocationDS: Saving to DB
