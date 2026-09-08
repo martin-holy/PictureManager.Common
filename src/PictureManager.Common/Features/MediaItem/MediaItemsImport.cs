@@ -60,7 +60,7 @@ public sealed class MediaItemsImport : ObservableObject {
     try {
       var po = new ParallelOptions { MaxDegreeOfParallelism = Environment.ProcessorCount, CancellationToken = _task.Token };
       Parallel.ForEach(items.Where(x => x.MediaItem is ImageM), po, mim => {
-        MediaItemS.ReadMetadata(mim, false);
+        MediaItemS.ReadMetadata(mim);
         _progress.Report(1);
       });
     }
@@ -69,7 +69,7 @@ public sealed class MediaItemsImport : ObservableObject {
     foreach (var mim in items.Where(x => x.MediaItem is VideoM)) {
       if (_task.Token.IsCancellationRequested) break;
       await Tasks.RunOnUiThread(() => {
-        MediaItemS.ReadMetadata(mim, false);
+        MediaItemS.ReadMetadata(mim);
         Tasks.Dispatch(delegate { DoneCount++; });
       });
     }

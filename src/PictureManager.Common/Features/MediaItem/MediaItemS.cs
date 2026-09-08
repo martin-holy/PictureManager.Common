@@ -17,7 +17,6 @@ using System.Threading.Tasks;
 namespace PictureManager.Common.Features.MediaItem;
 
 public sealed class MediaItemS(MediaItemR r) : ObservableObject {
-  public static Action<MediaItemMetadata, bool> ReadMetadata { get; set; } = null!;
   public static Func<string, string, object[]?> GetVideoMetadata { get; set; } = null!;
 
   public void DeleteFromDrive(MediaItemM[] items) =>
@@ -36,10 +35,10 @@ public sealed class MediaItemS(MediaItemR r) : ObservableObject {
 
   public Task ReloadMetadata(RealMediaItemM mi) {
     var mim = new MediaItemMetadata(mi);
-    if (mi is not VideoM) ReadMetadata(mim, false);
+    if (mi is not VideoM) ReadMetadata(mim);
 
     return Tasks.RunOnUiThread(async () => {
-      if (mi is VideoM) ReadMetadata(mim, false);
+      if (mi is VideoM) ReadMetadata(mim);
       if (mim.Success) await mim.FindRefs();
       r.Modify(mi);
       mi.IsOnlyInDb = false;
@@ -68,8 +67,7 @@ public sealed class MediaItemS(MediaItemR r) : ObservableObject {
       Core.Settings.MediaItem.ThumbSize,
       Core.Settings.Common.JpegQuality);
 
-  // TODO remove the gpsOnly param later
-  public static void ReadMetadata2(MediaItemMetadata mim, bool gpsOnly = false) {
+  public static void ReadMetadata(MediaItemMetadata mim) {
     mim.Success = false;
     try {
       switch (mim.MediaItem) {

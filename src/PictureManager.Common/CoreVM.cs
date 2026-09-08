@@ -416,7 +416,7 @@ public sealed class CoreVM : ObservableObject {
   private async Task _handleVideoCreatedAsync(FolderM folder, string fileName) {
     var mi = _coreR.Video.ItemCreate(folder, fileName);
     var mim = new MediaItemMetadata(mi);
-    MediaItemS.ReadMetadata(mim, false);
+    MediaItemS.ReadMetadata(mim);
     if (!mim.Success) return;
     await mim.FindRefs();
     await Tasks.RunOnUiThread(() => {

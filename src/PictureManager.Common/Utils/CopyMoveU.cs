@@ -308,7 +308,7 @@ public sealed class CopyMoveU(FileOperationMode mode, CoreR coreR) {
   public static async Task<RealMediaItemM?> CreateMediaItemAndReadMetadata(FolderM folder, string fileName) {
     if (Core.R.MediaItem.ItemCreate(folder, fileName) is not { } mi) return null;
     var mim = new MediaItemMetadata(mi);
-    MediaItemS.ReadMetadata(mim, false);
+    MediaItemS.ReadMetadata(mim);
     if (mim.Success) await mim.FindRefs();
     return mi;
   }
