@@ -104,16 +104,23 @@ public sealed class MediaItemS(MediaItemR r) : ObservableObject {
 
     mim.Width = metadata.Width;
     mim.Height = metadata.Height;
-    mim.Rating = metadata.Rating ?? 0;
-    mim.Comment = StringUtils.NormalizeComment(metadata.Comment);
-    mim.Orientation = metadata.Orientation.ToMsOrientation() ?? Orientation.Normal;
-    mim.Keywords = metadata.Keywords;
-    mim.PeopleSegmentsKeywords = _readPeopleSegmentsKeywords(metadata.People);
-    mim.GeoNameId = ImageS.GetGeoNameId(metadata);
 
-    if (metadata.GpsCoordinate is { } gps) {
-      mim.Lat = gps.Latitude;
-      mim.Lng = gps.Longitude;
+    // only dimensions are required
+    try {
+      mim.Rating = metadata.Rating ?? 0;
+      mim.Comment = StringUtils.NormalizeComment(metadata.Comment);
+      mim.Orientation = metadata.Orientation.ToMsOrientation() ?? Orientation.Normal;
+      mim.Keywords = metadata.Keywords;
+      mim.PeopleSegmentsKeywords = _readPeopleSegmentsKeywords(metadata.People);
+      mim.GeoNameId = ImageS.GetGeoNameId(metadata);
+
+      if (metadata.GpsCoordinate is { } gps) {
+        mim.Lat = gps.Latitude;
+        mim.Lng = gps.Longitude;
+      }
+    }
+    catch (Exception ex) {
+      Log.Error(ex);
     }
 
     mim.Success = true;
