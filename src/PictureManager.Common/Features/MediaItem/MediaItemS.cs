@@ -126,17 +126,28 @@ public sealed class MediaItemS(MediaItemR r) : ObservableObject {
     mim.Success = true;
   }
 
-  private static List<Tuple<string, List<Tuple<string, string[]?>>>>? _readPeopleSegmentsKeywords(MpRegionCollection? people) {
+  private static List<Tuple<string?, List<Tuple<string, string[]?>>>>? _readPeopleSegmentsKeywords(MpRegionCollection? people) {
     if (people == null || people.Count == 0) return null;
 
-    var output = new List<Tuple<string, List<Tuple<string, string[]?>>>>();
+    var output = new List<Tuple<string?, List<Tuple<string, string[]?>>>>();
 
     foreach (var region in people) {
       var name = region.PersonDisplayName;
       var rect = region.Rectangle;
 
-      if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(rect))
+      if (string.IsNullOrEmpty(name) && string.IsNullOrEmpty(rect))
         continue;
+
+      var person = string.IsNullOrEmpty(name)
+        ? null
+        : output.FirstOrDefault(x => string.Equals(x.Item1, name, StringComparison.OrdinalIgnoreCase));
+
+      if (person == null) {
+        person = new(name, []);
+        output.Add(person);
+      }
+
+      if (string.IsNullOrEmpty(rect)) continue;
 
       var keywords = region.Element
         .GetXmpArray(XmpNs.MpReg + "RectangleKeywords")?
@@ -144,14 +155,6 @@ public sealed class MediaItemS(MediaItemR r) : ObservableObject {
         .Where(v => v.Length > 0)
         .Distinct(StringComparer.OrdinalIgnoreCase)
         .ToArray();
-
-      var person = output.FirstOrDefault(x =>
-        string.Equals(x.Item1, name, StringComparison.OrdinalIgnoreCase));
-
-      if (person == null) {
-        person = new(name, []);
-        output.Add(person);
-      }
 
       person.Item2.Add(new(rect, keywords?.Length > 0 ? keywords : null));
     }
