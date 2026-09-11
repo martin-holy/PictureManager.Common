@@ -120,7 +120,7 @@ public sealed class MediaItemS(MediaItemR r) : ObservableObject {
       }
     }
     catch (Exception ex) {
-      Log.Error(ex);
+      Log.Error(ex, mim.MediaItem.FilePath);
     }
 
     mim.Success = true;
