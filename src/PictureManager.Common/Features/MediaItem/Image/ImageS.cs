@@ -116,6 +116,7 @@ public sealed class ImageS(ImageR r) {
     metadata.Keywords = img.Keywords?.Select(k => k.FullName).ToArray();
     metadata.Orientation = img.Orientation.ToExifOrientation();
 
+    _ensureCustomXmpNamespacePrefix();
     var doc = metadata.Jpeg.Xmp.EnsureDoc();
     doc.SetProperty(_nsGeoNames + "GeoNameId", null); // remove old location
     doc.SetProperty(_nsPM + "GeoNameId", img.GeoLocation?.GeoName?.Id.ToString(), XmpValueStyle.Attribute);
