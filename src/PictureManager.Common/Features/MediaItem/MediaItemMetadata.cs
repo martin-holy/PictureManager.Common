@@ -22,7 +22,7 @@ public class MediaItemMetadata(RealMediaItemM mediaItem) {
   public double? Lat { get; set; }
   public double? Lng { get; set; }
   public int? GeoNameId { get; set; }
-  public List<Tuple<string, List<Tuple<string, string[]?>>>>? PeopleSegmentsKeywords { get; set; }
+  public List<Tuple<string?, List<Tuple<string, string[]?>>>>? PeopleSegmentsKeywords { get; set; }
 
   public Task FindRefs() {
     MediaItem.Rating = Rating;
