@@ -162,18 +162,31 @@ public sealed class ImageS(ImageR r) {
   }
 
   private static List<Tuple<PersonM?, string?, string[]?>>? _getPeopleSegmentsKeywords(ImageM img) {
-    var peopleOnSegments = img.Segments.EmptyIfNull().Select(x => x.Person).Distinct().ToHashSet();
+    var people = img.People;
+    var segments = img.Segments;
 
-    return img.Segments?
-      .Select(x => new Tuple<PersonM?, string?, string[]?>(
-        x.Person,
-        x.ToMsRect(),
-        x.Keywords?.Select(k => k.FullName).ToArray()))
-      .Concat(img.People
-        .EmptyIfNull()
-        .Where(x => !peopleOnSegments.Contains(x))
-        .Select(x => new Tuple<PersonM?, string?, string[]?>(x, null, null)))
-      .ToList();
+    if (people == null && segments == null) return null;
+
+    var output = new List<Tuple<PersonM?, string?, string[]?>>();
+    var set = new HashSet<PersonM>();
+
+    if (segments != null)
+      foreach (var segment in segments) {
+        if (segment.Person != null)
+          set.Add(segment.Person);
+        
+        output.Add(new(
+          segment.Person,
+          segment.ToMsRect(),
+          segment.Keywords?.Select(k => k.FullName).ToArray()));
+      }
+
+    if (people != null)
+      foreach (var person in people)
+        if (!set.Contains(person))
+          output.Add(new(person, null, null));
+
+    return output;
   }
 
   public static int? GetGeoNameId(ImageMetadata metadata) =>
