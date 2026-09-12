@@ -12,10 +12,12 @@
 	- [N] ImageS: OnMetadataWrittenEvent
 	- [U] CompressImagesDialog: Using new ImageMetadata
 	- [U] ImageResizeDialog: Using new ImageMetadata
-	- [U] SaveMetadataDialog: Using new ImageMetadata
+	- [U] SaveMetadataDialog: Using new ImageMetadata, does not re-encode the image data
 	- [U] ReadGeoLocationFromFilesDialog: Using new ImageMetadata
 	- [U] ImageS: Old write metadata code removed
 	- [U] MediaItemS: Old read metadata removed
+	- [N] MediaItemS: ReadMetadata
+	- [N] FF: Feature flags class
 
 2.35.1:
 	- [B] GeoLocationDS: Saving to DB
