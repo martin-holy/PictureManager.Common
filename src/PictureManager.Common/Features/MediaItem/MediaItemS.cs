@@ -100,7 +100,7 @@ public sealed class MediaItemS(MediaItemR r) : ObservableObject {
   }
 
   private static void _readImageMetadata(MediaItemMetadata mim) {
-    var metadata = new ImageMetadata(mim.MediaItem.FilePath, JpegMetadataLoad.All);
+    var metadata = new ImageMetadata(mim.MediaItem.FilePath, JpegMetadataLoad.Size);
 
     mim.Width = metadata.Width;
     mim.Height = metadata.Height;
