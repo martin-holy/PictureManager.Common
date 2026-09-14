@@ -3,7 +3,7 @@
 [U] - Update
 [B] - Bug fix
 
-2.36.0(not released):
+2.36.0:
 	- [N] MediaItemS: GetVideoMetadata func
 	- [U] VideoVM: GetVideoMetadataFunc replaced with MediaItemS.GetVideoMetadata
 	- [N] ImageS: GetGeoNameId
@@ -18,6 +18,8 @@
 	- [U] MediaItemS: Old read metadata removed
 	- [N] MediaItemS: ReadMetadata
 	- [N] FF: Feature flags class
+	- [U] MH.Utils v5.1.0
+	- [U] MH.UI v6.1.0
 
 2.35.1:
 	- [B] GeoLocationDS: Saving to DB
