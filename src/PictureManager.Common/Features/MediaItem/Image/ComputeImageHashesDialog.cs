@@ -15,7 +15,7 @@ public sealed class ComputeImageHashesDialog : ProgressDialog<MediaItemM> {
     base("Computing Hashes ...", Res.IconCompare, items) {
     _hashes = hashes;
     _hashMethod = hashMethod;
-    _autoRun();
+    _autoStart = true;
   }
 
   protected override Task _do(MediaItemM item, CancellationToken token) {

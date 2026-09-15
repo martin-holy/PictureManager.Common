@@ -11,7 +11,7 @@ public sealed class SaveMetadataDialog : ParallelProgressDialog<ImageM> {
   public SaveMetadataDialog(ImageM[] items, ImageS imageS) :
     base("Saving metadata to files...", MH.UI.Res.IconImage, items) {
     _imageS = imageS;
-    _autoRun();
+    _autoStart = true;
   }
 
   protected override Task _do(ImageM item, CancellationToken token) {

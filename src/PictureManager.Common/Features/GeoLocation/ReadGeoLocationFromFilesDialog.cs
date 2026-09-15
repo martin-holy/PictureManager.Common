@@ -12,7 +12,7 @@ public sealed class ReadGeoLocationFromFilesDialog : ProgressDialog<ImageM> {
   public ReadGeoLocationFromFilesDialog(ImageM[] items) :
     base("Reading GeoLocations from files ...", Res.IconLocationCheckin, items) {
     RunSync = true;
-    _autoRun();
+    _autoStart = true;
   }
 
   protected override Task _do(ImageM item, CancellationToken token) {

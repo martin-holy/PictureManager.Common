@@ -13,7 +13,7 @@ public sealed class GetGeoNamesFromWebDialog : ProgressDialog<ImageM> {
     base("Getting GeoNames from web ...", Res.IconLocationCheckin, items) {
     _coreR = coreR;
     RunSync = true;
-    _autoRun();
+    _autoStart = true;
   }
 
   protected override async Task _do(ImageM item, CancellationToken token) {

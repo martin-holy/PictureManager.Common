@@ -11,7 +11,7 @@ public sealed class ReloadMetadataDialog : ParallelProgressDialog<RealMediaItemM
   public ReloadMetadataDialog(RealMediaItemM[] items, MediaItemS mediaItemS) :
     base("Reloading metadata...", MH.UI.Res.IconImage, items) {
     _mediaItemS = mediaItemS;
-    _autoRun();
+    _autoStart = true;
   }
 
   protected override Task _do(RealMediaItemM item, CancellationToken token) {

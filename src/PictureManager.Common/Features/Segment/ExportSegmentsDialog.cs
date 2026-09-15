@@ -20,7 +20,7 @@ public sealed class ExportSegmentsDialog : ParallelProgressDialog<SegmentM> {
 
   public ExportSegmentsDialog(SegmentM[] items, string destDir) : base("Export Segments", Res.IconSegment, items) {
     _destDir = destDir;
-    _autoRun();
+    _autoStart = true;
   }
 
   protected override bool _canAction() =>
