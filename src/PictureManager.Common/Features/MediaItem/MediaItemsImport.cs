@@ -1,10 +1,7 @@
 ﻿using MH.Utils;
 using MH.Utils.BaseClasses;
-using PictureManager.Common.Features.MediaItem.Image;
-using PictureManager.Common.Features.MediaItem.Video;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace PictureManager.Common.Features.MediaItem;
@@ -56,23 +53,15 @@ public sealed class MediaItemsImport : ObservableObject {
     }
   }
 
-  private async Task _readMetadata(List<MediaItemMetadata> items) {
+  private void _readMetadata(List<MediaItemMetadata> items) {
     try {
       var po = new ParallelOptions { MaxDegreeOfParallelism = Environment.ProcessorCount, CancellationToken = _task.Token };
-      Parallel.ForEach(items.Where(x => x.MediaItem is ImageM), po, mim => {
+      Parallel.ForEach(items, po, mim => {
         MediaItemS.ReadMetadata(mim);
         _progress.Report(1);
       });
     }
     catch (OperationCanceledException) { }
-
-    foreach (var mim in items.Where(x => x.MediaItem is VideoM)) {
-      if (_task.Token.IsCancellationRequested) break;
-      await Tasks.RunOnUiThread(() => {
-        MediaItemS.ReadMetadata(mim);
-        Tasks.Dispatch(delegate { DoneCount++; });
-      });
-    }
   }
 
   private async void _cancelImport() =>
