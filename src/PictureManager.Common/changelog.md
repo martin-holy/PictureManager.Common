@@ -3,6 +3,11 @@
 [U] - Update
 [B] - Bug fix
 
+2.37.0(not released):
+	- [U] VideoVM: Get FPS using new VideoMetadata
+	- [U] MediaItemS: using new VideoMetadata
+	- [U] MediaItemsImport: using new VideoMetadata
+
 2.36.0:
 	- [N] MediaItemS: GetVideoMetadata func
 	- [U] VideoVM: GetVideoMetadataFunc replaced with MediaItemS.GetVideoMetadata
