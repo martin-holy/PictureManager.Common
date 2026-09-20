@@ -17,8 +17,6 @@ using System.Threading.Tasks;
 namespace PictureManager.Common.Features.MediaItem;
 
 public sealed class MediaItemS(MediaItemR r) : ObservableObject {
-  public static Func<string, string, object[]?> GetVideoMetadata { get; set; } = null!;
-
   public void DeleteFromDrive(MediaItemM[] items) =>
     r.ItemsDeleteFromDrive(items);
 
@@ -35,10 +33,9 @@ public sealed class MediaItemS(MediaItemR r) : ObservableObject {
 
   public Task ReloadMetadata(RealMediaItemM mi) {
     var mim = new MediaItemMetadata(mi);
-    if (mi is not VideoM) ReadMetadata(mim);
+    ReadMetadata(mim);
 
     return Tasks.RunOnUiThread(async () => {
-      if (mi is VideoM) ReadMetadata(mim);
       if (mim.Success) await mim.FindRefs();
       r.Modify(mi);
       mi.IsOnlyInDb = false;
@@ -81,22 +78,27 @@ public sealed class MediaItemS(MediaItemR r) : ObservableObject {
   }
 
   private static void _readVideoMetadata(MediaItemMetadata mim) {
-    if (GetVideoMetadata(mim.MediaItem.Folder.FullPath, mim.MediaItem.FileName) is not { } data) {
-      mim.Success = false;
-      Log.Error("Can't read video metadata", mim.MediaItem.FilePath);
-      return;
+    var filePath = mim.MediaItem.FilePath;
+
+    try {
+      using var stream = File.OpenRead(filePath);
+      var vm = new VideoMetadata(stream);
+
+      mim.Width = vm.Width;
+      mim.Height = vm.Height;
+      mim.Orientation = vm.Orientation switch {
+        90 => Orientation.Rotate90,
+        180 => Orientation.Rotate180,
+        270 => Orientation.Rotate270,
+        _ => Orientation.Normal,
+      };
+
+      mim.Success = true;
     }
-
-    mim.Height = (int)data[0];
-    mim.Width = (int)data[1];
-    mim.Orientation = (int)data[2] switch {
-      90 => Orientation.Rotate90,
-      180 => Orientation.Rotate180,
-      270 => Orientation.Rotate270,
-      _ => Orientation.Normal,
-    };
-
-    mim.Success = true;
+    catch (Exception ex) {
+      mim.Success = false;
+      Log.Error(ex, $"Can't read video metadata. ({filePath})");
+    }
   }
 
   private static void _readImageMetadata(MediaItemMetadata mim) {
