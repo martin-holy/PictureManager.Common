@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using PictureManager.Common.Features.Common;
 using System.Collections.Generic;
+using MH.Utils.Imaging;
 
 namespace PictureManager.Common.Features.MediaItem.Video;
 
@@ -130,12 +131,19 @@ public sealed class VideoVM : ObservableObject {
       return;
     }
 
-    var fps = MediaItemS.GetVideoMetadata(vid.Folder.FullPath, vid.FileName) is { } data && (double)data[3] > 0
-      ? (double)data[3]
-      : 30.0;
-    var smallChange = Math.Round(1000 / fps, 0);
     var filePath = vid.FilePath;
 
+    VideoMetadata? vm = null;
+    try {
+      using var file = File.OpenRead(filePath);
+      vm = new VideoMetadata(file);
+    }
+    catch { }
+
+    var fps = vm?.FrameRate ?? 30.0;
+    var smallChange = Math.Round(1000 / fps, 0);
+
+    // TODO preset duration from VideoMetadata
     MediaPlayer.Source = filePath;
     MediaPlayer.TimelineSmallChange = smallChange;
     UiDetailVideo.Source = new Uri(filePath);
