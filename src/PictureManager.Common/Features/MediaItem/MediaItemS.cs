@@ -114,7 +114,7 @@ public sealed class MediaItemS(MediaItemR r) : ObservableObject {
       mim.Orientation = metadata.Orientation.ToMsOrientation() ?? Orientation.Normal;
       mim.Keywords = metadata.Keywords;
       mim.PeopleSegmentsKeywords = _readPeopleSegmentsKeywords(metadata.People);
-      mim.GeoNameId = ImageS.GetGeoNameId(metadata);
+      mim.GeoNameId = ImageS.GetGeoNameId(metadata.Jpeg.Xmp);
 
       if (metadata.GpsCoordinate is { } gps) {
         mim.Lat = gps.Latitude;

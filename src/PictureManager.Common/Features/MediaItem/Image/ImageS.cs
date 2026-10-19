@@ -1,5 +1,4 @@
 ﻿using MH.Utils;
-using MH.Utils.Extensions;
 using MH.Utils.Imaging;
 using MH.Utils.Imaging.Exif;
 using MH.Utils.Imaging.Jpeg;
@@ -190,8 +189,8 @@ public sealed class ImageS(ImageR r) {
     return output;
   }
 
-  public static int? GetGeoNameId(ImageMetadata metadata) =>
-    metadata.Jpeg.Xmp.Doc is not { } doc
+  public static int? GetGeoNameId(XmpMetadata metadata) =>
+    metadata.Doc is not { } doc
       ? null
       : doc.GetInt(_nsPM + "GeoNameId") ??
         doc.GetInt(_nsGeoNames + "GeoNameId"); // this is old namespace I used before
