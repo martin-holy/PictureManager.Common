@@ -79,26 +79,38 @@ public sealed class MediaItemS(MediaItemR r) : ObservableObject {
 
   private static void _readVideoMetadata(MediaItemMetadata mim) {
     var filePath = mim.MediaItem.FilePath;
+    using var stream = File.OpenRead(filePath);
+    var metadata = new VideoMetadata(stream);
 
+    mim.Width = metadata.Width;
+    mim.Height = metadata.Height;
+
+    // only dimensions are required
     try {
-      using var stream = File.OpenRead(filePath);
-      var vm = new VideoMetadata(stream);
-
-      mim.Width = vm.Width;
-      mim.Height = vm.Height;
-      mim.Orientation = vm.Orientation switch {
+      mim.Orientation = metadata.Orientation switch {
         90 => Orientation.Rotate90,
         180 => Orientation.Rotate180,
         270 => Orientation.Rotate270,
         _ => Orientation.Normal,
       };
 
-      mim.Success = true;
+      mim.Rating = metadata.Rating ?? 0;
+      mim.Comment = StringUtils.NormalizeComment(metadata.Comment);
+      mim.Keywords = metadata.Keywords;
+      mim.PeopleSegmentsKeywords = _readPeopleSegmentsKeywords(metadata.People);
+      mim.GeoNameId = ImageS.GetGeoNameId(metadata.IsoBmff.Xmp);
+
+      // TODO implement GPS reading for video files
+      /*if (metadata.GpsCoordinate is { } gps) {
+        mim.Lat = gps.Latitude;
+        mim.Lng = gps.Longitude;
+      }*/
     }
     catch (Exception ex) {
-      mim.Success = false;
       Log.Error(ex, $"Can't read video metadata. ({filePath})");
     }
+
+    mim.Success = true;
   }
 
   private static void _readImageMetadata(MediaItemMetadata mim) {
