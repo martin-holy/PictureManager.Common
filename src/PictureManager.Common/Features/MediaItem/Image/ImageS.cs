@@ -3,9 +3,7 @@ using MH.Utils.Imaging;
 using MH.Utils.Imaging.Exif;
 using MH.Utils.Imaging.Jpeg;
 using MH.Utils.Imaging.Xmp;
-using PictureManager.Common.Features.Person;
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
 using System.IO;
@@ -16,11 +14,7 @@ using System.Xml.Linq;
 namespace PictureManager.Common.Features.MediaItem.Image;
 
 public sealed class ImageS(ImageR r) {
-  private static readonly XNamespace _nsPM = "https://github.com/martin-holy/PictureManager/";
-  private static readonly XNamespace _nsGeoNames = "GeoNames"; // old ns used before
-  private static readonly XName _nCompressionQuality = _nsPM + "CompressionQuality";
-
-  private static bool _customXmpNsPrefixAdded;
+  private static readonly XName _nCompressionQuality = MediaItemS.NsPM + "CompressionQuality";
 
   public static event EventHandler<MediaItemM>? OnMetadataWrittenEvent;
 
@@ -35,7 +29,7 @@ public sealed class ImageS(ImageR r) {
 
       encoded.Position = 0;
       metadata = new ImageMetadata(encoded, JpegMetadataLoad.All);
-      _ensureCustomXmpNamespacePrefix();
+      MediaItemS.EnsureCustomXmpNamespacePrefix();
       metadata.Jpeg.Xmp.EnsureDoc().SetProperty(_nCompressionQuality, quality.ToString(), XmpValueStyle.Attribute);
 
       _writeMetadata(img, metadata);
@@ -91,23 +85,13 @@ public sealed class ImageS(ImageR r) {
     return success;
   }
 
-  private static void _ensureCustomXmpNamespacePrefix() {
-    if (_customXmpNsPrefixAdded) return;
-    XmpNs.SetPrefix(_nsPM, "PM");
-    _customXmpNsPrefixAdded = true;
-  }
-
   private static void _writeMetadata(ImageM img, ImageMetadata metadata) {
     MediaItemS.WritePeople(metadata.Jpeg.Xmp, img);
     metadata.Rating = img.Rating;
     metadata.Comment = img.Comment;
     metadata.Keywords = img.Keywords?.Select(k => k.FullName).ToArray();
     metadata.Orientation = img.Orientation.ToExifOrientation();
-
-    _ensureCustomXmpNamespacePrefix();
-    var doc = metadata.Jpeg.Xmp.EnsureDoc();
-    doc.SetProperty(_nsGeoNames + "GeoNameId", null); // remove old location
-    doc.SetProperty(_nsPM + "GeoNameId", img.GeoLocation?.GeoName?.Id.ToString(), XmpValueStyle.Attribute);
+    MediaItemS.WriteGeoNameId(metadata.Jpeg.Xmp, img);
   }
 
   public static void ResizeJpeg(ImageM img, string dest, int px, bool withMetadata, bool withThumbnail, int quality) {
@@ -122,7 +106,7 @@ public sealed class ImageS(ImageR r) {
     encoded.Position = 0;
     metadata = new ImageMetadata(encoded, JpegMetadataLoad.All);
     metadata.UpdateDimensions();
-    _ensureCustomXmpNamespacePrefix();
+    MediaItemS.EnsureCustomXmpNamespacePrefix();
     metadata.Jpeg.Xmp.EnsureDoc().SetProperty(_nCompressionQuality, quality.ToString(), XmpValueStyle.Attribute);
 
     if (withMetadata)

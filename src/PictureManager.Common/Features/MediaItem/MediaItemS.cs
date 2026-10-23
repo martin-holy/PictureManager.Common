@@ -20,6 +20,10 @@ namespace PictureManager.Common.Features.MediaItem;
 
 public sealed class MediaItemS(MediaItemR r) : ObservableObject {
   public static readonly XNamespace NsPM = "https://github.com/martin-holy/PictureManager/";
+
+  private static readonly XNamespace _nsGeoNames = "GeoNames"; // old ns used before
+  private static bool _customXmpNsPrefixAdded;
+
   public void DeleteFromDrive(MediaItemM[] items) =>
     r.ItemsDeleteFromDrive(items);
 
@@ -247,6 +251,12 @@ public sealed class MediaItemS(MediaItemR r) : ObservableObject {
     return output;
   }
 
+  public static void EnsureCustomXmpNamespacePrefix() {
+    if (_customXmpNsPrefixAdded) return;
+    XmpNs.SetPrefix(NsPM, "PM");
+    _customXmpNsPrefixAdded = true;
+  }
+
   public static void TryRestoreCreationTime(string filePath, DateTime creationTime) {
     try {
       // BUG System.UnauthorizedAccessException: Access to the path '...' is denied. Operation not permitted
@@ -263,4 +273,11 @@ public sealed class MediaItemS(MediaItemR r) : ObservableObject {
       ? null
       : doc.GetInt(NsPM + "GeoNameId") ??
         doc.GetInt(_nsGeoNames + "GeoNameId"); // this is old namespace I used before
+
+  public static void WriteGeoNameId(XmpMetadata xmp, MediaItemM mi) {
+    EnsureCustomXmpNamespacePrefix();
+    var doc = xmp.EnsureDoc();
+    doc.SetProperty(_nsGeoNames + "GeoNameId", null); // remove old location
+    doc.SetProperty(NsPM + "GeoNameId", mi.GeoLocation?.GeoName?.Id.ToString(), XmpValueStyle.Attribute);
+  }
 }
