@@ -13,10 +13,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace PictureManager.Common.Features.MediaItem;
 
 public sealed class MediaItemS(MediaItemR r) : ObservableObject {
+  public static readonly XNamespace NsPM = "https://github.com/martin-holy/PictureManager/";
   public void DeleteFromDrive(MediaItemM[] items) =>
     r.ItemsDeleteFromDrive(items);
 
@@ -98,7 +100,7 @@ public sealed class MediaItemS(MediaItemR r) : ObservableObject {
       mim.Comment = StringUtils.NormalizeComment(metadata.Comment);
       mim.Keywords = metadata.Keywords;
       mim.PeopleSegmentsKeywords = _readPeopleSegmentsKeywords(metadata.People);
-      mim.GeoNameId = ImageS.GetGeoNameId(metadata.IsoBmff.Xmp);
+      mim.GeoNameId = GetGeoNameId(metadata.IsoBmff.Xmp);
 
       // TODO implement GPS reading for video files
       /*if (metadata.GpsCoordinate is { } gps) {
@@ -126,7 +128,7 @@ public sealed class MediaItemS(MediaItemR r) : ObservableObject {
       mim.Orientation = metadata.Orientation.ToMsOrientation() ?? Orientation.Normal;
       mim.Keywords = metadata.Keywords;
       mim.PeopleSegmentsKeywords = _readPeopleSegmentsKeywords(metadata.People);
-      mim.GeoNameId = ImageS.GetGeoNameId(metadata.Jpeg.Xmp);
+      mim.GeoNameId = GetGeoNameId(metadata.Jpeg.Xmp);
 
       if (metadata.GpsCoordinate is { } gps) {
         mim.Lat = gps.Latitude;
@@ -175,4 +177,10 @@ public sealed class MediaItemS(MediaItemR r) : ObservableObject {
 
     return output.Count > 0 ? output : null;
   }
+
+  public static int? GetGeoNameId(XmpMetadata metadata) =>
+    metadata.Doc is not { } doc
+      ? null
+      : doc.GetInt(NsPM + "GeoNameId") ??
+        doc.GetInt(_nsGeoNames + "GeoNameId"); // this is old namespace I used before
 }

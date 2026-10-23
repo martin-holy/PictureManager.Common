@@ -22,7 +22,7 @@ public sealed class ReadGeoLocationFromFilesDialog : ProgressDialog<ImageM> {
     var metadata = new ImageMetadata(item.FilePath, JpegMetadataLoad.All);
 
     // TODO add video support
-    mim.GeoNameId = ImageS.GetGeoNameId(metadata.Jpeg.Xmp);
+    mim.GeoNameId = MediaItemS.GetGeoNameId(metadata.Jpeg.Xmp);
 
     if (metadata.GpsCoordinate is { } gps) {
       mim.Lat = gps.Latitude;

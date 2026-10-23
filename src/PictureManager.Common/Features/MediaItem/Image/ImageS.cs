@@ -189,12 +189,6 @@ public sealed class ImageS(ImageR r) {
     return output;
   }
 
-  public static int? GetGeoNameId(XmpMetadata metadata) =>
-    metadata.Doc is not { } doc
-      ? null
-      : doc.GetInt(_nsPM + "GeoNameId") ??
-        doc.GetInt(_nsGeoNames + "GeoNameId"); // this is old namespace I used before
-
   public static void ResizeJpeg(ImageM img, string dest, int px, bool withMetadata, bool withThumbnail, int quality) {
     var metadata = new ImageMetadata(img.FilePath, JpegMetadataLoad.Size);
     var dateTaken = _getDateTaken(img.FileName, metadata);
