@@ -247,6 +247,17 @@ public sealed class MediaItemS(MediaItemR r) : ObservableObject {
     return output;
   }
 
+  public static void TryRestoreCreationTime(string filePath, DateTime creationTime) {
+    try {
+      // BUG System.UnauthorizedAccessException: Access to the path '...' is denied. Operation not permitted
+      if (OperatingSystem.IsWindows())
+        new FileInfo(filePath).CreationTime = creationTime;
+    }
+    catch (Exception ex) {
+      Log.Error(ex, "Can't preserve file original creation time.");
+    }
+  }
+
   public static int? GetGeoNameId(XmpMetadata metadata) =>
     metadata.Doc is not { } doc
       ? null

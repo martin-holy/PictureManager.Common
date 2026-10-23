@@ -45,7 +45,7 @@ public sealed class ImageS(ImageR r) {
       encoded.Position = 0;
       if (!metadata.Write(encoded, filePath)) throw new("Error writing metadata");
 
-      _tryRestoreCreationTime(filePath, originalCreationTime);
+      MediaItemS.TryRestoreCreationTime(filePath, originalCreationTime);
 
       img.IsOnlyInDb = false;
     }
@@ -84,7 +84,7 @@ public sealed class ImageS(ImageR r) {
 
     var success = metadata.Write(filePath);
 
-    _tryRestoreCreationTime(filePath, originalCreationTime);
+    MediaItemS.TryRestoreCreationTime(filePath, originalCreationTime);
 
     OnMetadataWrittenEvent?.Invoke(null, img);
 
@@ -95,17 +95,6 @@ public sealed class ImageS(ImageR r) {
     if (_customXmpNsPrefixAdded) return;
     XmpNs.SetPrefix(_nsPM, "PM");
     _customXmpNsPrefixAdded = true;
-  }
-
-  private static void _tryRestoreCreationTime(string filePath, DateTime creationTime) {
-    try {
-      // BUG System.UnauthorizedAccessException: Access to the path '...' is denied. Operation not permitted
-      if (OperatingSystem.IsWindows())
-        new FileInfo(filePath).CreationTime = creationTime;
-    }
-    catch (Exception ex) {
-      Log.Error(ex, "Can't preserve file original creation time.");
-    }
   }
 
   private static void _writeMetadata(ImageM img, ImageMetadata metadata) {
