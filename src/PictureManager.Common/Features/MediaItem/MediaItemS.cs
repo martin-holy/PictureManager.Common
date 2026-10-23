@@ -7,6 +7,7 @@ using MH.Utils.Imaging.Xmp;
 using PictureManager.Common.Features.Folder;
 using PictureManager.Common.Features.MediaItem.Image;
 using PictureManager.Common.Features.MediaItem.Video;
+using PictureManager.Common.Features.Person;
 using PictureManager.Common.Utils;
 using System;
 using System.Collections.Generic;
@@ -176,6 +177,74 @@ public sealed class MediaItemS(MediaItemR r) : ObservableObject {
     }
 
     return output.Count > 0 ? output : null;
+  }
+
+  public static void WritePeople(XmpMetadata xmp, MediaItemM mi) {
+    var people = _getPeopleSegmentsKeywords(mi);
+    var existing = xmp.GetPeople();
+
+    if (people == null) {
+      existing?.Clear();
+      return;
+    }
+
+    var used = new List<XElement>();
+    existing ??= xmp.EnsurePeople();
+
+    foreach (var (person, rect, keywords) in people) {
+      MpRegion? region = null;
+      var name = person?.Name;
+
+      // Named region → match by PersonDisplayName
+      if (!string.IsNullOrWhiteSpace(name))
+        region = existing
+          .Where(x => x.PersonDisplayName == name && !used.Contains(x.Element))
+          .Select(x => x)
+          .FirstOrDefault();
+
+      // Anonymous region → match by Rectangle
+      if (region == null && name == null && rect != null)
+        region = existing
+          .Where(x => x.PersonDisplayName == null && x.Rectangle == rect && !used.Contains(x.Element))
+          .Select(x => x)
+          .FirstOrDefault();
+
+      region ??= existing.Add(name);
+      region.Rectangle = rect;
+      region.Element.SetXmpArray(XmpNs.MpReg + "RectangleKeywords", keywords, XmpArrayType.Bag);
+      used.Add(region.Element);
+    }
+
+    foreach (var eRegion in existing.Where(x => !used.Contains(x.Element)).ToArray())
+      existing.Remove(eRegion);
+  }
+
+  private static List<Tuple<PersonM?, string?, string[]?>>? _getPeopleSegmentsKeywords(MediaItemM mi) {
+    var people = mi.People;
+    var segments = mi.Segments;
+
+    if (people == null && segments == null) return null;
+
+    var output = new List<Tuple<PersonM?, string?, string[]?>>();
+    var set = new HashSet<PersonM>();
+
+    if (segments != null)
+      foreach (var segment in segments) {
+        if (segment.Person != null)
+          set.Add(segment.Person);
+
+        output.Add(new(
+          segment.Person,
+          segment.ToMsRect(),
+          segment.Keywords?.Select(k => k.FullName).ToArray()));
+      }
+
+    if (people != null)
+      foreach (var person in people)
+        if (!set.Contains(person))
+          output.Add(new(person, null, null));
+
+    return output;
   }
 
   public static int? GetGeoNameId(XmpMetadata metadata) =>
