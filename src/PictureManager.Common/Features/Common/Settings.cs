@@ -3,11 +3,9 @@ using MH.UI.Controls;
 using MH.Utils;
 using MH.Utils.BaseClasses;
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using System.Text.Json.Serialization.Metadata;
 
 namespace PictureManager.Common.Features.Common;
@@ -125,6 +123,7 @@ public sealed class MediaItemSettings : ObservableObject {
   private CollectionView.SortOrder _sortOrder = CollectionView.SortOrder.Ascending;
   private int _thumbSize = 400;
   private double _videoItemThumbScale = 0.28;
+  private int _videoMetadataFullRewriteThreshold = 50;
   
   public double MediaItemThumbScale { get => _mediaItemThumbScale; set { _mediaItemThumbScale = value; OnPropertyChanged(); } }
   public bool ScrollExactlyToMediaItem { get => _scrollExactlyToMediaItem; set { _scrollExactlyToMediaItem = value; OnPropertyChanged(); } }
@@ -132,6 +131,7 @@ public sealed class MediaItemSettings : ObservableObject {
   public CollectionView.SortOrder SortOrder { get => _sortOrder; set { _sortOrder = value; OnPropertyChanged(); } }
   public int ThumbSize { get => _thumbSize; set { _thumbSize = value; OnPropertyChanged(); } }
   public double VideoItemThumbScale { get => _videoItemThumbScale; set { _videoItemThumbScale = value; OnPropertyChanged(); } }
+  public int VideoMetadataFullRewriteThreshold { get => _videoMetadataFullRewriteThreshold; set { _videoMetadataFullRewriteThreshold = value; OnPropertyChanged(); } }
 }
 
 public sealed class SegmentSettings : ObservableObject {
