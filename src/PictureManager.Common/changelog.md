@@ -7,7 +7,7 @@
 	- [U] VideoVM: Get FPS using new VideoMetadata
 	- [U] MediaItemS: using new VideoMetadata
 	- [U] MediaItemsImport: using new VideoMetadata
-	- [U] MediaItemS: Reading rating, comment, keywords, people and GeoNameId from MP4
+	- [N] MediaItemS: Read and write of rating, comment, keywords, people and GeoNameId from/to MP4 files
 	- [N] MediaItemSettings: VideoMetadataFullRewriteThreshold
 
 2.36.0:
