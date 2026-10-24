@@ -3,18 +3,15 @@ using MH.Utils;
 using MH.Utils.BaseClasses;
 using PictureManager.Common.Features.Folder;
 using PictureManager.Common.Features.MediaItem;
-using PictureManager.Common.Features.MediaItem.Image;
 using PictureManager.Common.Features.Person;
 using PictureManager.Common.Features.Segment;
 using PictureManager.Common.Features.Viewer;
 
 namespace PictureManager.Common;
 
-// TODO add Image inside MediaItem
 public class CoreS(CoreR coreR) : ObservableObject {
   public FolderS Folder { get; } = new();
-  public ImageS Image { get; } = new(coreR.Image);
-  public MediaItemS MediaItem { get; } = new(coreR.MediaItem);
+  public MediaItemS MediaItem { get; } = new(coreR.MediaItem, coreR.Image, coreR.Video);
   public PersonS Person { get; } = new(coreR.Person);
   public SegmentS Segment { get; } = new(coreR.Segment);
   public ViewerS Viewer { get; } = new(coreR);

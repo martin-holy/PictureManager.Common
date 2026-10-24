@@ -39,7 +39,7 @@ public class MainMenuVM : TreeView {
       new MenuItem(CoreVM.ResizeSelectedImagesCommand),
       new MenuItem(CoreVM.ReloadMetadataCommand),
       new MenuItem(CoreVM.RotateMediaItemsCommand) { InputGestureText = "Ctrl+R"},
-      new MenuItem(CoreVM.SaveImageMetadataToFilesCommand),
+      new MenuItem(CoreVM.SaveMetadataToFilesCommand),
       new MenuItem(MediaItemsViewsVM.ViewModifiedCommand),
       new MenuItem(MediaItemVM.ViewSelectedCommand)]);
 

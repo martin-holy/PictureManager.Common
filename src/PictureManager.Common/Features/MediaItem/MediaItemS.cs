@@ -18,11 +18,14 @@ using System.Xml.Linq;
 
 namespace PictureManager.Common.Features.MediaItem;
 
-public sealed class MediaItemS(MediaItemR r) : ObservableObject {
+public sealed class MediaItemS(MediaItemR r, ImageR imageR, VideoR videoR) : ObservableObject {
   public static readonly XNamespace NsPM = "https://github.com/martin-holy/PictureManager/";
 
   private static readonly XNamespace _nsGeoNames = "GeoNames"; // old ns used before
   private static bool _customXmpNsPrefixAdded;
+
+  public ImageS Image { get; } = new(imageR);
+  public VideoS Video { get; } = new(videoR);
 
   public static event EventHandler<MediaItemM>? OnMetadataWrittenEvent;
 
@@ -183,6 +186,12 @@ public sealed class MediaItemS(MediaItemR r) : ObservableObject {
     }
 
     return output.Count > 0 ? output : null;
+  }
+
+  public bool TryWriteMetadata(MediaItemM mi) {
+    if (mi is ImageM img) return Image.TryWriteMetadata(img);
+    if (mi is VideoM vid) return Video.TryWriteMetadata(vid);
+    return false;
   }
 
   public static void WritePeople(XmpMetadata xmp, MediaItemM mi) {

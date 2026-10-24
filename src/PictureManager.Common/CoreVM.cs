@@ -74,7 +74,7 @@ public sealed class CoreVM : ObservableObject {
   public static RelayCommand<FolderM> ResizeImagesToFolderCommand { get; private set; } = null!;
   public static RelayCommand ResizeSelectedImagesCommand { get; private set; } = null!;
   public static AsyncRelayCommand<FolderM> RotateMediaItemsCommand { get; private set; } = null!;
-  public static AsyncRelayCommand<FolderM> SaveImageMetadataToFilesCommand { get; private set; } = null!;
+  public static AsyncRelayCommand<FolderM> SaveMetadataToFilesCommand { get; private set; } = null!;
 
   internal CoreVM(CoreS coreS, CoreR coreR, ICoreP coreP) {
     _coreS = coreS;
@@ -117,7 +117,7 @@ public sealed class CoreVM : ObservableObject {
     ResizeSelectedImagesCommand = new(() => _resizeImages(GetActive<ImageM>(null)), () => AnyActive<ImageM>(null), null, "Resize selected Images");
 
     RotateMediaItemsCommand = new((x, _) => _rotateMediaItems(GetActive<RealMediaItemM>(x)), AnyActive<RealMediaItemM>, Res.IconRotate, "Rotate");
-    SaveImageMetadataToFilesCommand = new((x, _) => _saveImageMetadataToFiles(GetActive<ImageM>(x)), AnyActive<ImageM>, MH.UI.Res.IconSave, "Save Image metadata to files");
+    SaveMetadataToFilesCommand = new((x, _) => _saveMetadataToFiles(GetActive<RealMediaItemM>(x)), AnyActive<RealMediaItemM>, MH.UI.Res.IconSave, "Save metadata to files");
 
     MainWindow.MainMenu.Build(this);
   }
@@ -176,7 +176,7 @@ public sealed class CoreVM : ObservableObject {
     ResizeImagesToFolderCommand.RaiseCanExecuteChanged();
     ResizeSelectedImagesCommand.RaiseCanExecuteChanged();
     RotateMediaItemsCommand.RaiseCanExecuteChanged();
-    SaveImageMetadataToFilesCommand.RaiseCanExecuteChanged();
+    SaveMetadataToFilesCommand.RaiseCanExecuteChanged();
     MediaItemVM.DeleteCommand.RaiseCanExecuteChanged();
   }
 
@@ -401,7 +401,7 @@ public sealed class CoreVM : ObservableObject {
   }
 
   private void _compressImages(ImageM[] items) =>
-    _ = Dialog.ShowAsync(new CompressImagesDialog(items, _coreS.Image, Core.Settings.Common.JpegQuality));
+    _ = Dialog.ShowAsync(new CompressImagesDialog(items, _coreS.MediaItem.Image, Core.Settings.Common.JpegQuality));
 
   private async Task _getGeoNamesFromWeb(ImageM[] items) {
     if (await GetGeoNamesFromWebDialog.Open(items, _coreR))
@@ -442,8 +442,8 @@ public sealed class CoreVM : ObservableObject {
     _coreR.MediaItem.Rotate(items, rotation);
   }
 
-  private async Task _saveImageMetadataToFiles(ImageM[] items) {
-    await SaveMetadataDialog.Open(items, _coreS.Image);
+  private async Task _saveMetadataToFiles(RealMediaItemM[] items) {
+    await SaveMetadataDialog.Open(items, _coreS.MediaItem, MediaItem);
     _ = MainWindow.StatusBar.UpdateFileSize();
   }
 

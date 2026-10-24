@@ -61,7 +61,7 @@ public static class MenuFactory {
       new MenuItem(CoreVM.ReloadMetadataCommand, item),
       new MenuItem(CoreVM.ResizeImagesInFolderCommand, item),
       new MenuItem(CoreVM.ResizeImagesToFolderCommand, item),
-      new MenuItem(CoreVM.SaveImageMetadataToFilesCommand, item)]),
+      new MenuItem(CoreVM.SaveMetadataToFilesCommand, item)]),
     new MenuItem(Res.IconSegment, "Segments", [
       new MenuItem(CoreVM.ExportSegmentsToCommand, item)]),
     new MenuItem(Res.IconEye, "Viewer", [
