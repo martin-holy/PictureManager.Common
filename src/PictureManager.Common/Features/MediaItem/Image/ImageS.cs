@@ -16,8 +16,6 @@ namespace PictureManager.Common.Features.MediaItem.Image;
 public sealed class ImageS(ImageR r) {
   private static readonly XName _nCompressionQuality = MediaItemS.NsPM + "CompressionQuality";
 
-  public static event EventHandler<MediaItemM>? OnMetadataWrittenEvent;
-
   public bool TryEncodeJpeg(ImageM img, int quality) {
     try {
       var filePath = img.FilePath;
@@ -79,8 +77,7 @@ public sealed class ImageS(ImageR r) {
     var success = metadata.Write(filePath);
 
     MediaItemS.TryRestoreCreationTime(filePath, originalCreationTime);
-
-    OnMetadataWrittenEvent?.Invoke(null, img);
+    MediaItemS.RaiseMetadataWritten(img);
 
     return success;
   }

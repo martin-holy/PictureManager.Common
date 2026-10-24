@@ -24,6 +24,8 @@ public sealed class MediaItemS(MediaItemR r) : ObservableObject {
   private static readonly XNamespace _nsGeoNames = "GeoNames"; // old ns used before
   private static bool _customXmpNsPrefixAdded;
 
+  public static event EventHandler<MediaItemM>? OnMetadataWrittenEvent;
+
   public void DeleteFromDrive(MediaItemM[] items) =>
     r.ItemsDeleteFromDrive(items);
 
@@ -280,4 +282,7 @@ public sealed class MediaItemS(MediaItemR r) : ObservableObject {
     doc.SetProperty(_nsGeoNames + "GeoNameId", null); // remove old location
     doc.SetProperty(NsPM + "GeoNameId", mi.GeoLocation?.GeoName?.Id.ToString(), XmpValueStyle.Attribute);
   }
+
+  public static void RaiseMetadataWritten(MediaItemM mi) =>
+    OnMetadataWrittenEvent?.Invoke(null, mi);
 }
