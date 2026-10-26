@@ -35,7 +35,7 @@ public sealed class VideoS(VideoR r) {
     var writePlan = metadata.CreateWritePlan();
     var fullRewriteThreshold = Core.Settings.MediaItem.VideoMetadataFullRewriteThreshold * 1024 * 1024;
 
-    if (writePlan.IsFullRewriteRequired && fi.Length > fullRewriteThreshold)
+    if (writePlan.RequiresFullRewrite && fi.Length > fullRewriteThreshold)
       return false;
 
     metadata.Write(writePlan);
