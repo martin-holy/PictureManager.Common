@@ -9,6 +9,7 @@
 	- [U] MediaItemsImport: using new VideoMetadata
 	- [N] MediaItemS: Read and write of rating, comment, keywords, people and GeoNameId from/to MP4 files
 	- [N] MediaItemSettings: VideoMetadataFullRewriteThreshold
+	- [B] MediaItem: Removing comment
 
 2.36.0:
 	- [N] MediaItemS: GetVideoMetadata func
