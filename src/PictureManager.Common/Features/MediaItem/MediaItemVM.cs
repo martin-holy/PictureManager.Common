@@ -78,14 +78,12 @@ public sealed class MediaItemVM : ObservableObject {
       "Add a comment.",
       Res.IconNotification,
       mi.Comment,
-      x => string.IsNullOrEmpty(x)
-        ? "Comment is empty!"
-        : x.Length > 256
-          ? "Comment is too long!"
-          : null);
+      x => x != null && x.Length > 256
+        ? "Comment is too long!"
+        : null);
 
     if (await Dialog.ShowAsync(commentDialog) == 1)
-      _s.SetComment(mi, StringUtils.NormalizeComment(commentDialog.Answer!));
+      _s.SetComment(mi, StringUtils.NormalizeComment(commentDialog.Answer));
   }
 
   private Task _loadBy(object? o, CancellationToken token) =>
