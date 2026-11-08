@@ -162,6 +162,7 @@ public sealed class MediaItemsViewsVM : ObservableObject {
 
     foreach (var mi in mediaItems) {
       File.Delete(mi.FilePathCache);
+      MediaItemVM.ThumbConverter.ErrorCache.Remove(mi);
       mi.OnPropertyChanged(nameof(mi.FilePathCache));
     }
   }
