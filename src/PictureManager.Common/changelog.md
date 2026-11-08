@@ -10,6 +10,7 @@
 	- [N] MediaItemS: Read and write of rating, comment, keywords, people and GeoNameId from/to MP4 files
 	- [N] MediaItemSettings: VideoMetadataFullRewriteThreshold
 	- [B] MediaItem: Removing comment
+	- [U] ImageS: ResizeJpeg - metadata padding
 
 2.36.0:
 	- [N] MediaItemS: GetVideoMetadata func
