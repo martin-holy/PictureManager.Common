@@ -11,6 +11,7 @@
 	- [N] MediaItemSettings: VideoMetadataFullRewriteThreshold
 	- [B] MediaItem: Removing comment
 	- [U] ImageS: ResizeJpeg - metadata padding
+	- [U] Remove MediaItem from thumbnail error cache when rebuilding thumbnail
 
 2.36.0:
 	- [N] MediaItemS: GetVideoMetadata func
