@@ -108,8 +108,10 @@ public sealed class ImageS(ImageR r) {
 
     if (withMetadata)
       _writeMetadata(img, metadata);
-    else
+    else {
+      metadata.Jpeg.Exif.EnsurePadding = false;
       metadata.Orientation = img.Orientation.ToExifOrientation();
+    }
 
     encoded.Position = 0;
     metadata.Write(encoded, dest);
