@@ -12,6 +12,8 @@
 	- [B] MediaItem: Removing comment
 	- [U] ImageS: ResizeJpeg - metadata padding
 	- [U] Remove MediaItem from thumbnail error cache when rebuilding thumbnail
+	- [U] MediaItemS: TryRestoreCreationTime, check for different DateTime
+	- [U] ImageS: TryEncodeJpeg, write metadata even if image doesn't need encoding
 
 2.36.0:
 	- [N] MediaItemS: GetVideoMetadata func
