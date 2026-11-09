@@ -20,15 +20,24 @@ public sealed class ImageS(ImageR r) {
     try {
       var filePath = img.FilePath;
       var metadata = new ImageMetadata(filePath, JpegMetadataLoad.Xmp);
-      if (metadata.Jpeg.Xmp.Doc?.GetInt(_nCompressionQuality) == quality) return true;
+      var sameQuality = metadata.Jpeg.Xmp.Doc?.GetInt(_nCompressionQuality) == quality;
+
+      if (sameQuality && !img.IsOnlyInDb) return true;
 
       using var encoded = new MemoryStream();
-      ImagingU.EncodeJpegTo(encoded, filePath, quality);
+
+      if (!sameQuality)
+        ImagingU.EncodeJpegTo(encoded, filePath, quality);
+      else
+        encoded.Write(File.ReadAllBytes(filePath));
 
       encoded.Position = 0;
       metadata = new ImageMetadata(encoded, JpegMetadataLoad.All);
-      MediaItemS.EnsureCustomXmpNamespacePrefix();
-      metadata.Jpeg.Xmp.EnsureDoc().SetProperty(_nCompressionQuality, quality.ToString(), XmpValueStyle.Attribute);
+
+      if (!sameQuality) {
+        MediaItemS.EnsureCustomXmpNamespacePrefix();
+        metadata.Jpeg.Xmp.EnsureDoc().SetProperty(_nCompressionQuality, quality.ToString(), XmpValueStyle.Attribute);
+      }
 
       _writeMetadata(img, metadata);
 
