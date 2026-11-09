@@ -271,8 +271,11 @@ public sealed class MediaItemS(MediaItemR r, ImageR imageR, VideoR videoR) : Obs
   public static void TryRestoreCreationTime(string filePath, DateTime creationTime) {
     try {
       // BUG System.UnauthorizedAccessException: Access to the path '...' is denied. Operation not permitted
-      if (OperatingSystem.IsWindows())
-        new FileInfo(filePath).CreationTime = creationTime;
+      if (OperatingSystem.IsWindows()) {
+        var fi = new FileInfo(filePath);
+        if (fi.CreationTime != creationTime)
+          fi.CreationTime = creationTime;
+      }
     }
     catch (Exception ex) {
       Log.Error(ex, "Can't preserve file original creation time.");
