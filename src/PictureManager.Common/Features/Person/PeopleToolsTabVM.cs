@@ -36,7 +36,6 @@ public sealed class PeopleToolsTabVM : PersonCollectionView {
 
   public async Task Reload(PersonM[]? people) {
     var src = (people ?? await _getPeople()).EmptyIfNull().ToList();
-    if (src.Count == 0) return;
     Reload(src, GroupMode.ThenByRecursive, null, true, true);
   }
 }
