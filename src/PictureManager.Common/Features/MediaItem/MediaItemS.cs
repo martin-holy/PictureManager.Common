@@ -8,11 +8,13 @@ using PictureManager.Common.Features.Folder;
 using PictureManager.Common.Features.MediaItem.Image;
 using PictureManager.Common.Features.MediaItem.Video;
 using PictureManager.Common.Features.Person;
+using PictureManager.Common.Features.Viewer;
 using PictureManager.Common.Utils;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
@@ -297,4 +299,23 @@ public sealed class MediaItemS(MediaItemR r, ImageR imageR, VideoR videoR) : Obs
 
   public static void RaiseMetadataWritten(MediaItemM mi) =>
     OnMetadataWrittenEvent?.Invoke(null, mi);
+
+  public static async Task<MediaItemM[]> FilterByViewer(MediaItemM[] items, ViewerS viewerS, CancellationToken token) {
+    HashSet<FolderM> foldersSet;
+
+    try {
+      foldersSet = await Task.Run(() => items
+        .Select(x => x.Folder)
+        .Distinct()
+        .Where(viewerS.CanViewerSeeContentOf)
+        .ToHashSet(), token);
+    }
+    catch (OperationCanceledException) {
+      return [];
+    }
+
+    var skip = items.Where(x => !foldersSet.Contains(x.Folder) || !viewerS.CanViewerSee(x));
+
+    return [.. items.Except(skip)];
+  }
 }

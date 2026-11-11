@@ -159,7 +159,7 @@ public class MediaItemsViewVM : MediaItemCollectionView {
 
   public async Task LoadByTag(MediaItemM[] items, bool and, CancellationToken token) {
     IsLoading = true;
-    items = await _filterByViewer(items, token);
+    items = await MediaItemS.FilterByViewer(items, Core.S.Viewer, token);
     _load(items, and, false);
     IsLoading = false;
     _openItemIfInViewMode();
@@ -197,25 +197,6 @@ public class MediaItemsViewVM : MediaItemCollectionView {
       SelectFirstItem();
       OpenItem(Root.Source[0]);
     }
-  }
-
-  private async Task<MediaItemM[]> _filterByViewer(MediaItemM[] items, CancellationToken token) {
-    HashSet<Folder.FolderM> foldersSet;
-
-    try {
-      foldersSet = await Task.Run(() => items
-        .Select(x => x.Folder)
-        .Distinct()
-        .Where(Core.S.Viewer.CanViewerSeeContentOf)
-        .ToHashSet(), token);
-    }
-    catch (OperationCanceledException) {
-      return [];
-    }
-
-    var skip = items.Where(x => !foldersSet.Contains(x.Folder) && Core.S.Viewer.CanViewerSee(x));
-
-    return items.Except(skip).ToArray();
   }
 
   private void _onFilterApplied(object? sender, EventArgs e) {

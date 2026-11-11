@@ -167,8 +167,10 @@ public sealed class MediaItemsViewsVM : ObservableObject {
     }
   }
 
-  private Task _viewModified(CancellationToken token) =>
-    _addView("Modified").LoadByTag(Core.R.MediaItem.GetModified().ToArray(), false, token);
+  private async Task<Task> _viewModified(CancellationToken token) {
+    var mis = await MediaItemS.FilterByViewer([.. Core.R.MediaItem.GetModified()], Core.S.Viewer, token);
+    return _addView("Modified").LoadByTag(mis, false, token);
+  }
 
   public Task ViewMediaItems(MediaItemM[] items, string name, CancellationToken token) =>
     _addView(name).LoadByTag(items, false, token);
