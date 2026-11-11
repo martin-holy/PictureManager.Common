@@ -20,6 +20,7 @@ public static class GroupByItems {
   private static readonly ListItem _dateGroup = new(Res.IconCalendar, "Date");
   private static readonly ListItem _peopleGroupsGroup = new(Res.IconPeopleMultiple, "Groups");
   private static readonly ListItem _segmentSizeGroup = new(Res.IconRuler, "Size");
+  private static readonly Dictionary<(int GroupSize, int Bucket), SizeM> _segmentSizeGroups = [];
 
   private static readonly Dictionary<string, string> _mediaItemsDates = new();
   private static readonly Dictionary<string, string> _dateFormats =
@@ -53,17 +54,25 @@ public static class GroupByItems {
       .GetSegmentSizes()
       .InGroup(_segmentSizeGroup, GroupSegmentBySize);
 
-  public static IEnumerable<GroupByItem<SegmentM>> GetSegmentSizes(this IEnumerable<SegmentM> items) =>
-    items
-      .GroupBy(x => (int)(x.Size / Core.Settings.Segment.GroupSize))
-      .Distinct()
+  public static IEnumerable<GroupByItem<SegmentM>> GetSegmentSizes(this IEnumerable<SegmentM> items) {
+    var groupSize = Core.Settings.Segment.GroupSize;
+
+    return items
+      .GroupBy(x => (int)(x.Size / groupSize))
       .OrderBy(x => x.Key)
       .Select(x => {
-        var min = x.Key * Core.Settings.Segment.GroupSize + 1;
-        var max = min + Core.Settings.Segment.GroupSize - 1;
-        var text = max.ToString();
-        return new GroupByItem<SegmentM>(new SizeM(Res.IconRuler, text, min, max), GroupSegmentBySize);
+        var key = (groupSize, x.Key);
+
+        if (!_segmentSizeGroups.TryGetValue(key, out var size)) {
+          var min = x.Key * groupSize + 1;
+          var max = min + groupSize - 1;
+          size = new SizeM(Res.IconRuler, max.ToString(), min, max);
+          _segmentSizeGroups.Add(key, size);
+        }
+
+        return new GroupByItem<SegmentM>(size, GroupSegmentBySize);
       });
+  }
 
   public static IEnumerable<GroupByItem<T>> GetFolders<T>(IEnumerable<T> items)
     where T : MediaItemM =>
