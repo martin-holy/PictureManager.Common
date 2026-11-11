@@ -15,6 +15,7 @@
 	- [U] MediaItemS: TryRestoreCreationTime, check for different DateTime
 	- [U] ImageS: TryEncodeJpeg, write metadata even if image doesn't need encoding
 	- [B] PeopleToolsTab: Clear the view if load didn't return any person
+	- [B] View modified media items filtered by current viewer
 
 2.36.0:
 	- [N] MediaItemS: GetVideoMetadata func
