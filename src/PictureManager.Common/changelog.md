@@ -17,6 +17,7 @@
 	- [B] PeopleToolsTab: Clear the view if load didn't return any person
 	- [B] View modified media items filtered by current viewer
 	- [B] Duplicated segment size group when segment keywords changed
+	- [B] MediaItemsViewVM: Updating filter size ranges and marked tags after MediaItems load
 
 2.36.0:
 	- [N] MediaItemS: GetVideoMetadata func
