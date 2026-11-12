@@ -154,6 +154,7 @@ public class MediaItemsViewVM : MediaItemCollectionView {
     var items = toProcess.Except(notImported).Where(Core.S.Viewer.CanViewerSee).ToArray();
     _load(items, and, hide);
     IsLoading = false;
+    Filter.UpdateSizeRanges(GetUnfilteredItems().ToArray());
     _openItemIfInViewMode();
   }
 
@@ -162,6 +163,7 @@ public class MediaItemsViewVM : MediaItemCollectionView {
     items = await MediaItemS.FilterByViewer(items, Core.S.Viewer, token);
     _load(items, and, false);
     IsLoading = false;
+    Filter.UpdateSizeRanges(GetUnfilteredItems().ToArray());
     _openItemIfInViewMode();
   }
 
@@ -188,7 +190,6 @@ public class MediaItemsViewVM : MediaItemCollectionView {
         Reload([.. items], GroupMode.ThenByRecursive, null, true, true);
     }
 
-    Filter.UpdateSizeRanges(GetUnfilteredItems().ToArray());
     _selectionChanged();
   }
 
