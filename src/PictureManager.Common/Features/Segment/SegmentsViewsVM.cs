@@ -64,8 +64,9 @@ public sealed class SegmentsViewsVM : ObservableObject {
   }
 
   public void RemoveSegments(IList<SegmentM> items) {
+    var arr = items.ToArray();
     foreach (var view in _views.Keys)
-      view.RemoveSegments(items);
+      view.Remove(arr);
   }
 
   public void Close() {

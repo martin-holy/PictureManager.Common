@@ -1,7 +1,6 @@
 ﻿using MH.UI.Controls;
 using MH.Utils.Extensions;
 using PictureManager.Common.Features.Person;
-using System.Collections.Generic;
 using System.Linq;
 using static MH.Utils.DragDropHelper;
 
@@ -27,12 +26,6 @@ public sealed class SegmentsViewVM : SegmentCollectionView {
 
   public void ReloadPeople() {
     CvPeople.Reload(Root.Source.GetPeople().ToList(), GroupMode.GroupByRecursive, null, true, true);
-  }
-
-  public void RemoveSegments(IList<SegmentM> items) {
-    if (!Root.Source.Any(items.Contains)) return;
-    TopItem = Root.Source.GetNextOrPreviousItem(items);
-    Remove(items.ToArray());
   }
 
   private SegmentM[]? _getOneOrSelected(SegmentM? one) {
