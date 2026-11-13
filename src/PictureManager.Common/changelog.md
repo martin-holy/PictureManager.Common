@@ -19,6 +19,7 @@
 	- [B] Duplicated segment size group when segment keywords changed
 	- [B] MediaItemsViewVM: Updating filter size ranges and marked tags after MediaItems load
 	- [U] MediaItem thumbnail info box: comment is now last item
+	- [B] SegmentsViews: Remove segment when deleted right after creation
 
 2.36.0:
 	- [N] MediaItemS: GetVideoMetadata func
