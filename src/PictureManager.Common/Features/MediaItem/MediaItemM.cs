@@ -88,14 +88,14 @@ public abstract class MediaItemM(int id) : ObservableObject, ISelectable, IEquat
     if (Rating != 0)
       InfoBoxThumb.Add(Rating.ToString());
 
-    if (!string.IsNullOrEmpty(Comment))
-      InfoBoxThumb.Add(Comment);
-
     if (GeoLocation?.GeoName != null)
       InfoBoxThumb.Add(GeoLocation.GeoName.Name);
 
     InfoBoxThumb.AddItems(DisplayPeople.EmptyIfNull().Select(x => x.Name).ToArray(), null);
     InfoBoxThumb.AddItems(DisplayKeywords, null);
+
+    if (!string.IsNullOrEmpty(Comment))
+      InfoBoxThumb.Add(Comment);
 
     if (InfoBoxThumb.Count == 0)
       InfoBoxThumb = null;
