@@ -26,10 +26,12 @@ public sealed class Core {
   public List<IPluginCore> Plugins { get; } = [];
   public static string Version => GetVersionWithoutHash(Assembly.GetExecutingAssembly());
   public static string UiVersion { get; set; } = "?";
+  public string AppDir { get; private set; } = string.Empty;
 
   private Core() { }
 
   public Task InitAsync(IProgress<string> progress, string appDir) {
+    AppDir = appDir;
     Settings = Settings.Load(Path.Combine(appDir, "settings.json"));
     R = new(appDir);
     return Task.Run(async () => {
