@@ -65,6 +65,9 @@ internal static class L {
       ["MediaItem.SaveMetadata.Open.dlg.Title"] = "Save metadata to files",
 
       ["MediaItem.ViewSelected.cmd"] = "View selected",
+
+      ["VideoItem.CollectionView.SortField.Time"] = "Time",
+      ["VideoItem.CollectionView.Title"] = "Video Items"
     };
 
   static L() {
