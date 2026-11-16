@@ -27,4 +27,8 @@
 		<ProjectReference Include="..\..\..\MH.Utils\src\MH.Utils\MH.Utils.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+		<EmbeddedResource Include="Languages\*.lang" WithCulture="false" LogicalName="%(Filename)%(Extension)" />
+	</ItemGroup>
+
 </Project>
