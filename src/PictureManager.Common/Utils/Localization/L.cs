@@ -14,6 +14,10 @@ internal static class L {
 
       ["Image.ComputeImageHashes.dlg.Title"] = "Computing Hashes ...",
 
+      ["Image.Resize.dlg.btn.Resize"] = "Resize",
+      ["Image.Resize.dlg.Title"] = "Resize images",
+      ["Image.Resize.OpenFolderBrowser.cmd"] = "Select folder",
+
       ["MediaItem.Comment.cmd"] = "Comment",
       ["MediaItem.Comment.dlg.err.TooLong"] = "Comment is too long!",
       ["MediaItem.Comment.dlg.Message"] = "Add a comment",

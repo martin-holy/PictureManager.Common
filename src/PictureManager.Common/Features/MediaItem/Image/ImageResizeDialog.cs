@@ -1,6 +1,7 @@
 ﻿using MH.UI.Dialogs;
 using MH.Utils;
 using MH.Utils.BaseClasses;
+using PictureManager.Common.Utils.Localization;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -31,8 +32,10 @@ public sealed class ImageResizeDialog : ParallelProgressDialog<ImageM> {
 
   public AsyncRelayCommand OpenFolderBrowserCommand { get; }
 
-  public ImageResizeDialog(ImageM[] items) : base("Resize Images", Res.IconImageMultiple, items, null, "Resize") {
-    OpenFolderBrowserCommand = new(_openFolderBrowser, Res.IconFolder, "Select folder");
+  public ImageResizeDialog(ImageM[] items) : base(
+    L.Get("Image.Resize.dlg.Title"), Res.IconImageMultiple, items, null, L.Get("Image.Resize.dlg.btn.Resize")) {
+
+    OpenFolderBrowserCommand = new(_openFolderBrowser, Res.IconFolder, L.Get("Image.Resize.OpenFolderBrowser.cmd"));
     _setMaxMpx(items);
   }
 
