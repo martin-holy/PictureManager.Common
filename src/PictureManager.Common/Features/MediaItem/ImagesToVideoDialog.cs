@@ -6,6 +6,7 @@ using MH.Utils.Extensions;
 using MH.Utils.Imaging;
 using PictureManager.Common.Features.Folder;
 using PictureManager.Common.Features.MediaItem.Image;
+using PictureManager.Common.Utils.Localization;
 using System;
 using System.Diagnostics;
 using System.Globalization;
@@ -29,9 +30,10 @@ public sealed class ImagesToVideoDialog : Dialog {
 
   public bool IsBusy { get => _isBusy; set { _isBusy = value; OnPropertyChanged(); } }
 
-  public ImagesToVideoDialog(ImageM[] items, Func<FolderM, string, Task> onVideoCreated) : base("Images to Video", MH.UI.Res.IconMovieClapper) {
+  public ImagesToVideoDialog(ImageM[] items, Func<FolderM, string, Task> onVideoCreated) :
+    base(L.Get("Image.ImagesToVideo.dlg.Title"), MH.UI.Res.IconMovieClapper) {
     Buttons = [
-      new(new AsyncRelayCommand(_createVideo, () => !IsBusy, MH.UI.Res.IconMovieClapper, "Create Video"), true),
+      new(new AsyncRelayCommand(_createVideo, () => !IsBusy, MH.UI.Res.IconMovieClapper, L.Get("Image.ImagesToVideo.dlg.btn.Create")), true),
       new(CloseCommand, false, true)
     ];
 
@@ -129,8 +131,8 @@ public sealed class ImagesToVideoDialog : Dialog {
     // check for FFMPEG
     if (!File.Exists(Core.Settings.Common.FfmpegPath)) {
       await ShowAsync(new MessageDialog(
-        "FFMPEG not found",
-        "FFMPEG was not found. Install it and set the path in the settings.",
+        L.Get("Image.ImagesToVideo.err.FFMPEG.dlg.Title"),
+        L.Get("Image.ImagesToVideo.err.FFMPEG.dlg.Message"),
         Res.IconInformation,
         false));
       Result = 0;

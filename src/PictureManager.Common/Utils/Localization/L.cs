@@ -14,6 +14,11 @@ internal static class L {
 
       ["Image.ComputeImageHashes.dlg.Title"] = "Computing Hashes ...",
 
+      ["Image.ImagesToVideo.dlg.btn.Create"] = "Create Video",
+      ["Image.ImagesToVideo.dlg.Title"] = "Images to Video",
+      ["Image.ImagesToVideo.err.FFMPEG.dlg.Message"] = "FFMPEG was not found. Install it and set the path in the settings.",
+      ["Image.ImagesToVideo.err.FFMPEG.dlg.Title"] = "FFMPEG not found",
+
       ["Image.Resize.dlg.btn.Resize"] = "Resize",
       ["Image.Resize.dlg.Title"] = "Resize images",
       ["Image.Resize.OpenFolderBrowser.cmd"] = "Select folder",
