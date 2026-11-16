@@ -1,5 +1,6 @@
 ﻿using MH.UI.Dialogs;
 using MH.Utils.Extensions;
+using PictureManager.Common.Utils.Localization;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -16,8 +17,14 @@ public sealed class CompressImagesDialog : ParallelProgressDialog<ImageM> {
   public string TotalSourceSize => IOExtensions.FileSizeToString(_totalSourceSize);
   public string TotalCompressedSize => IOExtensions.FileSizeToString(_totalCompressedSize);
 
-  public CompressImagesDialog(ImageM[] items, ImageS imageS, int quality) :
-    base("Compress images", MH.UI.Res.IconImage, items, MH.UI.Res.IconImage, "Compress", false) {
+  public CompressImagesDialog(ImageM[] items, ImageS imageS, int quality) : base(
+    L.Get("Image.Compress.dlg.Title"),
+    MH.UI.Res.IconImage,
+    items,
+    MH.UI.Res.IconImage,
+    L.Get("Image.Compress.dlg.btn.Compress"),
+    autoClose: false) {
+
     _imageS = imageS;
     _jpegQualityLevel = quality;
   }

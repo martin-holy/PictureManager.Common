@@ -9,6 +9,9 @@ internal static class L {
     new(StringComparer.Ordinal) {
       ["App.ExportTranslations"] = "Export translations",
 
+      ["Image.Compress.dlg.btn.Compress"] = "Compress",
+      ["Image.Compress.dlg.Title"] = "Compress images",
+
       ["MediaItem.Comment.cmd"] = "Comment",
       ["MediaItem.Comment.dlg.err.TooLong"] = "Comment is too long!",
       ["MediaItem.Comment.dlg.Message"] = "Add a comment",
