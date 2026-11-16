@@ -20,6 +20,11 @@
 	- [B] MediaItemsViewVM: Updating filter size ranges and marked tags after MediaItems load
 	- [U] MediaItem thumbnail info box: comment is now last item
 	- [B] SegmentsViews: Remove segment when deleted right after creation
+	- [N] Settings: Preferred app language with multiple fallback languages for missing translations
+	- [N] Core: AppDir prop
+	- [N] Localization
+	- [N] MainMenu: Export translations
+	- [N] Czech translation
 
 2.36.0:
 	- [N] MediaItemS: GetVideoMetadata func
