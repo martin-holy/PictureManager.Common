@@ -77,11 +77,13 @@ public sealed class CommonSettings : ObservableObject {
   private string[] _directorySelectFolders = [];
   private string _ffmpegPath = string.Empty;
   private int _jpegQuality = 80;
+  private string _languages = "en";
   
   public string CachePath { get => _cachePath; set => OnCachePathChange(value); }
   public string[] DirectorySelectFolders { get => _directorySelectFolders; set { _directorySelectFolders = value; OnPropertyChanged(); } }
   public string FfmpegPath { get => _ffmpegPath; set { _ffmpegPath = value; OnPropertyChanged(); } }
   public int JpegQuality { get => _jpegQuality; set { _jpegQuality = value; OnPropertyChanged(); } }
+  public string Languages { get => _languages; set { _languages = value; OnPropertyChanged(); } }
 
   private void OnCachePathChange(string value) {
     if (value.Length < 4 || !value.StartsWith(":\\") || value.EndsWith("\\")) return;
