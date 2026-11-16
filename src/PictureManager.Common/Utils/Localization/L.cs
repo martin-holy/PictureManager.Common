@@ -14,6 +14,10 @@ internal static class L {
 
       ["Image.ComputeImageHashes.dlg.Title"] = "Computing Hashes ...",
 
+      ["Image.err.MetadataSavedJustInDB"] = "Metadata will be saved just in database.",
+      ["Image.err.MetadataWriting"] = "Error writing metadata",
+      ["Image.err.UdateLastWriteTime"] = "Can't update LastWriteTime to DateTaken.",
+
       ["Image.Resize.dlg.btn.Resize"] = "Resize",
       ["Image.Resize.dlg.Title"] = "Resize images",
       ["Image.Resize.OpenFolderBrowser.cmd"] = "Select folder",
