@@ -12,6 +12,8 @@ internal static class L {
       ["Image.Compress.dlg.btn.Compress"] = "Compress",
       ["Image.Compress.dlg.Title"] = "Compress images",
 
+      ["Image.ComputeImageHashes.dlg.Title"] = "Computing Hashes ...",
+
       ["MediaItem.Comment.cmd"] = "Comment",
       ["MediaItem.Comment.dlg.err.TooLong"] = "Comment is too long!",
       ["MediaItem.Comment.dlg.Message"] = "Add a comment",

@@ -1,5 +1,6 @@
 ﻿using MH.UI.Dialogs;
 using MH.Utils.Imaging;
+using PictureManager.Common.Utils.Localization;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
@@ -12,7 +13,7 @@ public sealed class ComputeImageHashesDialog : ProgressDialog<MediaItemM> {
   private readonly ImagingU.ImageHashFunc _hashMethod;
 
   public ComputeImageHashesDialog(MediaItemM[] items, Dictionary<object, long> hashes, ImagingU.ImageHashFunc hashMethod) :
-    base("Computing Hashes ...", Res.IconCompare, items) {
+    base(L.Get("Image.ComputeImageHashes.dlg.Title"), Res.IconCompare, items) {
     _hashes = hashes;
     _hashMethod = hashMethod;
     _autoStart = true;
