@@ -1,5 +1,5 @@
 ﻿using MH.UI.Dialogs;
-using MH.Utils.Extensions;
+using PictureManager.Common.Utils.Localization;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -9,7 +9,7 @@ public sealed class SaveMetadataDialog : ParallelProgressDialog<RealMediaItemM> 
   private readonly MediaItemS _mediaItemS;
 
   public SaveMetadataDialog(RealMediaItemM[] items, MediaItemS mediaItemS) :
-    base("Saving metadata to files...", Res.IconImageMultiple, items) {
+    base(L.Get("MediaItem.SaveMetadata.dlg.Title"), Res.IconImageMultiple, items) {
     _mediaItemS = mediaItemS;
     _autoStart = true;
   }
@@ -23,8 +23,8 @@ public sealed class SaveMetadataDialog : ParallelProgressDialog<RealMediaItemM> 
 
   public static async Task Open(RealMediaItemM[] items, MediaItemS mediaItemS, MediaItemVM mediaItemVM) {
     if (await ShowAsync(new MessageDialog(
-      "Save metadata to files",
-      "Do you really want to save metadata to {0} file{1}?".Plural(items.Length),
+      L.Get("MediaItem.SaveMetadata.Open.dlg.Title"),
+      L.FormatPlural("MediaItem.SaveMetadata.Open.dlg.Message", items.Length),
       MH.UI.Res.IconQuestion,
       true)) != 1) return;
 
