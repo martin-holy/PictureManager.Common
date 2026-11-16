@@ -7,6 +7,7 @@ using MH.Utils.BaseClasses;
 using MH.Utils.Extensions;
 using MH.Utils.Imaging;
 using MH.Utils.Interfaces;
+using MH.Utils.Localization;
 using PictureManager.Common.Features.Common;
 using PictureManager.Common.Features.Folder;
 using PictureManager.Common.Features.GeoLocation;
@@ -20,11 +21,14 @@ using PictureManager.Common.Features.Rating;
 using PictureManager.Common.Features.Segment;
 using PictureManager.Common.Features.Viewer;
 using PictureManager.Common.Layout;
+using PictureManager.Common.Utils.Localization;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -64,6 +68,7 @@ public sealed class CoreVM : ObservableObject {
   public static RelayCommand OpenLogCommand { get; private set; } = null!;
   public static AsyncRelayCommand OpenSegmentsViewsCommand { get; private set; } = null!;
   public static RelayCommand OpenSettingsCommand { get; private set; } = null!;
+  public static RelayCommand ExportTranslationsCommand { get; set; } = null!;
   public static RelayCommand SaveDbCommand { get; private set; } = null!;
   public static RelayCommand<FolderM> CompressImagesCommand { get; private set; } = null!;
   public static AsyncRelayCommand<FolderM> GetGeoNamesFromWebCommand { get; private set; } = null!;
@@ -104,6 +109,7 @@ public sealed class CoreVM : ObservableObject {
     ExportSegmentsToCommand = new((x, _) => _exportSegmentsTo(x), () => _coreS.Segment.Selected.Items.Any(x => x.MediaItem is ImageM), Res.IconSegment, "Export");
     OpenLogCommand = new(_openLog, MH.UI.Res.IconSort, "Open log");
     OpenSettingsCommand = new(_openSettings, Res.IconSettings, "Settings");
+    ExportTranslationsCommand = new(() => _exportTranslations(), text: L.Get("App.ExportTranslations"));
     OpenSegmentsViewsCommand = new(_ => OpenSegmentsViews(null, string.Empty), Res.IconSegment, "Segments View");
     SaveDbCommand = new(() => _coreR.DB.SaveAll(), () => _coreR.DB.Changes > 0, Res.IconDatabase, "Save changes");
     CompressImagesCommand = new(x => _compressImages(GetActive<ImageM>(x)), AnyActive<ImageM>, null, "Compress Images");
@@ -381,6 +387,15 @@ public sealed class CoreVM : ObservableObject {
 
   private void _openSettings() =>
     MainTabs.Activate(Res.IconSettings, "Settings", Core.Inst.AllSettings);
+
+  private static void _exportTranslations(string language = "en") {
+    var translations = LocalizationManager.ExportTranslations(language);
+
+    foreach (var pair in translations) {
+      string path = Path.Combine(Core.Inst.AppDir, $"{pair.Key}.{language}.lang");
+      File.WriteAllText(path, pair.Value, Encoding.UTF8);
+    }
+  }
 
   public void OpenPeopleView() {
     People ??= new();
