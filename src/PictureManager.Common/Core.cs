@@ -1,5 +1,6 @@
 using MH.Utils;
 using MH.Utils.Extensions;
+using MH.Utils.Localization;
 using PictureManager.Common.Features.Common;
 using PictureManager.Common.Interfaces.Plugin;
 using PictureManager.Common.Utils;
@@ -33,6 +34,7 @@ public sealed class Core {
   public Task InitAsync(IProgress<string> progress, string appDir) {
     AppDir = appDir;
     Settings = Settings.Load(Path.Combine(appDir, "settings.json"));
+    LocalizationManager.Initialize(Settings.Common.Languages, new EmbeddedLanguageFileProvider(appDir));
     R = new(appDir);
     return Task.Run(async () => {
       R.AddDataSources();

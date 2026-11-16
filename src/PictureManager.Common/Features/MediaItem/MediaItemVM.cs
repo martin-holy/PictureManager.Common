@@ -8,6 +8,7 @@ using PictureManager.Common.Features.Keyword;
 using PictureManager.Common.Features.Person;
 using PictureManager.Common.Interfaces;
 using PictureManager.Common.Utils;
+using PictureManager.Common.Utils.Localization;
 using System;
 using System.IO;
 using System.Linq;
@@ -51,16 +52,16 @@ public sealed class MediaItemVM : ObservableObject {
   public MediaItemVM(CoreVM coreVM, MediaItemS s) {
     _coreVM = coreVM;
     _s = s;
-    CommentCommand = new(_ => _comment(Current!), () => Current != null, Res.IconNotification, "Comment");
-    DeleteCommand = new(_ => Delete(_coreVM.GetActive<MediaItemM>()), () => _coreVM.AnyActive<MediaItemM>(), Res.IconTrash, "Delete");
-    LoadByGeoNameCommand = new(_loadBy, Res.IconImageMultiple, "Load Media items");
-    LoadByKeywordCommand = new(_loadBy, Res.IconImageMultiple, "Load Media items");
-    LoadByPersonCommand = new(_loadBy, Res.IconImageMultiple, "Load Media items");
-    LoadByPeopleOrSegmentsCommand = new(_loadByPeopleOrSegments, Res.IconImageMultiple, "Load Media items with selected People or Segments");
-    RenameCommand = new(_ => Rename((RealMediaItemM)Current!), () => Current is RealMediaItemM, null, "Rename");
-    ViewSelectedCommand = new(_viewSelected, _canViewSelected, Res.IconImageMultiple, "View selected");
-    CopySelectedToFolderCommand = new(_copySelectedToFolder, _canCopyMoveSelectedToFolder, Res.IconCopy, "Copy");
-    MoveSelectedToFolderCommand = new(_moveSelectedToFolder, _canCopyMoveSelectedToFolder, Res.IconMove, "Move");
+    CommentCommand = new(_ => _comment(Current!), () => Current != null, Res.IconNotification, L.Get("MediaItem.Comment.cmd"));
+    DeleteCommand = new(_ => Delete(_coreVM.GetActive<MediaItemM>()), () => _coreVM.AnyActive<MediaItemM>(), Res.IconTrash, L.Get("MediaItem.Delete.cmd"));
+    LoadByGeoNameCommand = new(_loadBy, Res.IconImageMultiple, L.Get("MediaItem.LoadByGeoName.cmd"));
+    LoadByKeywordCommand = new(_loadBy, Res.IconImageMultiple, L.Get("MediaItem.LoadByKeyword.cmd"));
+    LoadByPersonCommand = new(_loadBy, Res.IconImageMultiple, L.Get("MediaItem.LoadByPerson.cmd"));
+    LoadByPeopleOrSegmentsCommand = new(_loadByPeopleOrSegments, Res.IconImageMultiple, L.Get("MediaItem.LoadByPeopleOrSegments.cmd"));
+    RenameCommand = new(_ => Rename((RealMediaItemM)Current!), () => Current is RealMediaItemM, null, L.Get("MediaItem.Rename.cmd"));
+    ViewSelectedCommand = new(_viewSelected, _canViewSelected, Res.IconImageMultiple, L.Get("MediaItem.ViewSelected.cmd"));
+    CopySelectedToFolderCommand = new(_copySelectedToFolder, _canCopyMoveSelectedToFolder, Res.IconCopy, L.Get("MediaItem.CopySelectedToFolder.cmd"));
+    MoveSelectedToFolderCommand = new(_moveSelectedToFolder, _canCopyMoveSelectedToFolder, Res.IconMove, L.Get("MediaItem.MoveSelectedToFolder.cmd"));
 
     Views.CurrentViewSelectionChangedEvent += (_, _) => _updateCommands();
   }
@@ -74,12 +75,12 @@ public sealed class MediaItemVM : ObservableObject {
 
   private async Task _comment(MediaItemM mi) {
     var commentDialog = new InputDialog(
-      "Comment",
-      "Add a comment.",
+      L.Get("MediaItem.Comment.dlg.Title"),
+      L.Get("MediaItem.Comment.dlg.Message"),
       Res.IconNotification,
       mi.Comment,
       x => x != null && x.Length > 256
-        ? "Comment is too long!"
+        ? L.Get("MediaItem.Comment.dlg.err.TooLong")
         : null);
 
     if (await Dialog.ShowAsync(commentDialog) == 1)
@@ -91,14 +92,14 @@ public sealed class MediaItemVM : ObservableObject {
 
   private async Task _loadByPeopleOrSegments(CancellationToken token) {
     var md = new MessageDialog(
-      "Load Media items",
-      "Do you want to load Media items from selected People or Segments?",
+      L.Get("MediaItem.LoadByPeopleOrSegments.dlg.Title"),
+      L.Get("MediaItem.LoadByPeopleOrSegments.dlg.Message"),
       Res.IconImageMultiple,
       true);
 
     md.Buttons = [
-      new(md.SetResult(1, Res.IconPeople, "People"), true),
-      new(md.SetResult(2, Res.IconSegment, "Segments"))
+      new(md.SetResult(1, Res.IconPeople, L.Get("MediaItem.LoadByPeopleOrSegments.dlg.btn.People")), true),
+      new(md.SetResult(2, Res.IconSegment, L.Get("MediaItem.LoadByPeopleOrSegments.dlg.btn.Segments")))
     ];
 
     var result = await Dialog.ShowAsync(md);
@@ -135,10 +136,10 @@ public sealed class MediaItemVM : ObservableObject {
   public async Task<bool> CopyMoveSelectedToFolder(FolderM? folder, bool copy) {
     if (folder == null || Views.Current?.Selected.Items.OfType<RealMediaItemM>().ToArray() is not { Length: > 0 } items) return false;
     if (await Dialog.ShowAsync(new MessageDialog(
-          $"{(copy ? "Copy" : "Move")} media items",
-          $"Do you really want to {(copy ? "copy" : "move")} {"{0} media item{1}".Plural(items.Length)} to\n'{folder.Name}'?",
-          MH.UI.Res.IconQuestion,
-          true)) != 1)
+      L.Get($"MediaItem.{(copy ? "Copy" : "Move")}SelectedToFolder.dlg.Title"),
+      L.FormatPlural($"MediaItem.{(copy ? "Copy" : "Move")}SelectedToFolder.dlg.Message", items.Length, folder.Name),
+      MH.UI.Res.IconQuestion,
+      true)) != 1)
       return false;
 
     await CopyMoveU.CopyMoveMediaItems(items, folder, copy ? FileOperationMode.Copy : FileOperationMode.Move);
@@ -147,10 +148,10 @@ public sealed class MediaItemVM : ObservableObject {
 
   public async Task<bool> Delete(MediaItemM[] items) {
     if (items.Length == 0 || await Dialog.ShowAsync(new MessageDialog(
-          "Delete Confirmation",
-          "Do you really want to delete {0} item{1}?".Plural(items.Length),
-          MH.UI.Res.IconQuestion,
-          true)) != 1) return false;
+      L.Get("MediaItem.Delete.dlg.Title"),
+      L.FormatPlural("MediaItem.Delete.dlg.Message", items.Length),
+      MH.UI.Res.IconQuestion,
+      true)) != 1) return false;
 
     _s.DeleteFromDrive(items);
     return true;
@@ -162,18 +163,18 @@ public sealed class MediaItemVM : ObservableObject {
   public async Task Rename(RealMediaItemM current) {
     var ext = Path.GetExtension(current.FileName);
     var dlg = new InputDialog(
-      "Rename",
-      "Add a new name.",
+      L.Get("MediaItem.Rename.dlg.Title"),
+      L.Get("MediaItem.Rename.dlg.Message"),
       Res.IconNotification,
       Path.GetFileNameWithoutExtension(current.FileName),
       answer => {
         var newFileName = answer + ext;
 
         if (Path.GetInvalidFileNameChars().Any(x => newFileName.IndexOf(x) != -1))
-          return "New file name contains invalid character!";
+          return L.Get("MediaItem.Rename.dlg.err.InvalidCharacters");
 
         if (File.Exists(IOExtensions.PathCombine(current.Folder.FullPath, newFileName)))
-          return "New file name already exists!";
+          return L.Get("MediaItem.Rename.dlg.err.FileExists");
 
         return string.Empty;
       });
