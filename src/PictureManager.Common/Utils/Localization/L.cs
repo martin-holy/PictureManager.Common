@@ -14,10 +14,6 @@ internal static class L {
 
       ["Image.ComputeImageHashes.dlg.Title"] = "Computing Hashes ...",
 
-      ["Image.err.MetadataSavedJustInDB"] = "Metadata will be saved just in database.",
-      ["Image.err.MetadataWriting"] = "Error writing metadata",
-      ["Image.err.UdateLastWriteTime"] = "Can't update LastWriteTime to DateTaken.",
-
       ["Image.Resize.dlg.btn.Resize"] = "Resize",
       ["Image.Resize.dlg.Title"] = "Resize images",
       ["Image.Resize.OpenFolderBrowser.cmd"] = "Select folder",
@@ -36,6 +32,10 @@ internal static class L {
       ["MediaItem.Delete.dlg.Message.one"] = "Do you really want to delete {0} item?",
       ["MediaItem.Delete.dlg.Message.other"] = "Do you really want to delete {0} items?",
       ["MediaItem.Delete.dlg.Title"] = "Delete Confirmation",
+
+      ["MediaItem.err.MetadataSavedJustInDB"] = "Metadata will be saved just in database.",
+      ["MediaItem.err.MetadataWriting"] = "Error writing metadata",
+      ["MediaItem.err.UdateLastWriteTime"] = "Can't update LastWriteTime to DateTaken.",
 
       ["MediaItem.LoadByGeoName.cmd"] = "Load Media items",
       ["MediaItem.LoadByKeyword.cmd"] = "Load Media items",
