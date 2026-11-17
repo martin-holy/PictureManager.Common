@@ -7,6 +7,7 @@ using PictureManager.Common.Features.Keyword;
 using PictureManager.Common.Features.Person;
 using PictureManager.Common.Features.Rating;
 using PictureManager.Common.Features.Segment;
+using PictureManager.Common.Utils.Localization;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -35,21 +36,21 @@ public sealed class MediaItemsViewsVM : ObservableObject {
   public event EventHandler? CurrentViewSelectionChangedEvent;
 
   public MediaItemsViewsVM() {
-    FilterSetAndCommand = new(item => Current!.Filter.Set(item, DisplayFilter.And), _ => Current != null, Res.IconFilter, "Filter And");
-    FilterSetOrCommand = new(item => Current!.Filter.Set(item, DisplayFilter.Or), _ => Current != null, Res.IconFilter, "Filter Or");
-    FilterSetNotCommand = new(item => Current!.Filter.Set(item, DisplayFilter.Not), _ => Current != null, Res.IconFilter, "Filter Not");
+    FilterSetAndCommand = new(item => Current!.Filter.Set(item, DisplayFilter.And), _ => Current != null, Res.IconFilter, L.Get("MediaItem.Views.FilterSetAnd.cmd"));
+    FilterSetOrCommand = new(item => Current!.Filter.Set(item, DisplayFilter.Or), _ => Current != null, Res.IconFilter, L.Get("MediaItem.Views.FilterSetOr.cmd"));
+    FilterSetNotCommand = new(item => Current!.Filter.Set(item, DisplayFilter.Not), _ => Current != null, Res.IconFilter, L.Get("MediaItem.Views.FilterSetNot.cmd"));
 
-    AddViewCommand = new(() => _addView("Empty"), Res.IconTabPlus, "Add Media Items View Tab");
+    AddViewCommand = new(() => _addView(L.Get("MediaItem.Views.TabName.Empty")), Res.IconTabPlus, L.Get("MediaItem.Views.AddView.cmd"));
     CopyPathsCommand = new(
       () => Clipboard.SetText(string.Join("\n", Current!.Selected.Items.Select(x => x.FilePath))),
-      () => Current?.Selected.Items.Any() == true, null, "Copy Paths");
-    LoadByTagCommand = new(LoadByTag, null, "Load");
+      () => Current?.Selected.Items.Any() == true, null, L.Get("MediaItem.Views.CopyPaths.cmd"));
+    LoadByTagCommand = new(LoadByTag, null, L.Get("MediaItem.Views.LoadByTag.cmd"));
     RebuildThumbnailsCommand = new(
       x => _rebuildThumbnails(x, Keyboard.IsShiftOn()),
-      x => x != null || Current?.Root.Source.Count > 0, null, "Rebuild Thumbnails");
-    ViewModifiedCommand = new(_viewModified, Res.IconImageMultiple, "Show modified");
-    CompareAverageHashCommand = new(_ => _current!.CompareImages(c => c.CompareAverageHash()), () => _current != null, Res.IconCompare, "Compare images using average hash");
-    ComparePHashCommand = new(_ => _current!.CompareImages(c => c.ComparePHash()), () => _current != null, Res.IconCompare, "Compare images using perceptual hash");
+      x => x != null || Current?.Root.Source.Count > 0, null, L.Get("MediaItem.Views.RebuildThumbnails.cmd"));
+    ViewModifiedCommand = new(_viewModified, Res.IconImageMultiple, L.Get("MediaItem.Views.ViewModified.cmd"));
+    CompareAverageHashCommand = new(_ => _current!.CompareImages(c => c.CompareAverageHash()), () => _current != null, Res.IconCompare, L.Get("MediaItem.Views.CompareAverageHash.cmd"));
+    ComparePHashCommand = new(_ => _current!.CompareImages(c => c.ComparePHash()), () => _current != null, Res.IconCompare, L.Get("MediaItem.Views.ComparePHash.cmd"));
   }
 
   public void RemoveMediaItems(IList<MediaItemM> items) {
@@ -134,8 +135,8 @@ public sealed class MediaItemsViewsVM : ObservableObject {
       : item switch {
         RatingTreeM rating => rating.Rating.Value.ToString(),
         PersonM person => person.Name,
-        PersonM[] => "By People",
-        SegmentM[] => "By Segments",
+        PersonM[] => L.Get("MediaItem.Views.TabName.People"),
+        SegmentM[] => L.Get("MediaItem.Views.TabName.Segments"),
         KeywordM keyword => keyword.Name,
         GeoNameM geoName => geoName.Name,
         _ => string.Empty
@@ -169,7 +170,7 @@ public sealed class MediaItemsViewsVM : ObservableObject {
 
   private async Task<Task> _viewModified(CancellationToken token) {
     var mis = await MediaItemS.FilterByViewer([.. Core.R.MediaItem.GetModified()], Core.S.Viewer, token);
-    return _addView("Modified").LoadByTag(mis, false, token);
+    return _addView(L.Get("MediaItem.Views.TabName.Modified")).LoadByTag(mis, false, token);
   }
 
   public Task ViewMediaItems(MediaItemM[] items, string name, CancellationToken token) =>

@@ -80,6 +80,22 @@ internal static class L {
       ["MediaItem.SaveMetadata.Open.dlg.Message.other"] = "Do you really want to save metadata to {0} files?",
       ["MediaItem.SaveMetadata.Open.dlg.Title"] = "Save metadata to files",
 
+
+      ["MediaItem.Views.AddView.cmd"] = "Add Media Items View Tab",
+      ["MediaItem.Views.CompareAverageHash.cmd"] = "Compare images using average hash",
+      ["MediaItem.Views.ComparePHash.cmd"] = "Compare images using perceptual hash",
+      ["MediaItem.Views.CopyPaths.cmd"] = "Copy Paths",
+      ["MediaItem.Views.FilterSetAnd.cmd"] = "Filter And",
+      ["MediaItem.Views.FilterSetNot.cmd"] = "Filter Not",
+      ["MediaItem.Views.FilterSetOr.cmd"] = "Filter Or",
+      ["MediaItem.Views.LoadByTag.cmd"] = "Load",
+      ["MediaItem.Views.RebuildThumbnails.cmd"] = "Rebuild Thumbnails",
+      ["MediaItem.Views.TabName.Empty"] = "Empty",
+      ["MediaItem.Views.TabName.Modified"] = "Modified",
+      ["MediaItem.Views.TabName.People"] = "By People",
+      ["MediaItem.Views.TabName.Segments"] = "By Segments",
+      ["MediaItem.Views.ViewModified.cmd"] = "Show Modified",
+
       ["MediaItem.ViewSelected.cmd"] = "View selected",
 
       ["VideoItem.CollectionView.SortField.Time"] = "Time",
