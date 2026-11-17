@@ -4,6 +4,7 @@ using PictureManager.Common.Features.MediaItem.Image;
 using PictureManager.Common.Features.MediaItem.Video;
 using PictureManager.Common.Features.Rating;
 using PictureManager.Common.Interfaces;
+using PictureManager.Common.Utils.Localization;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -33,7 +34,7 @@ public sealed class MediaItemsFilterVM : ObservableObject, ICollectionViewFilter
     Height.ChangedEvent += delegate { _raiseFilterChanged(); };
     Width.ChangedEvent += delegate { _raiseFilterChanged(); };
     Size.ChangedEvent += delegate { _raiseFilterChanged(); };
-    ClearCommand = new(_clear, null, "Clear");
+    ClearCommand = new(_clear, null, L.Get("MediaItem.Filter.Clear.cmd"));
   }
 
   private void _raiseFilterChanged() => FilterChangedEvent(this, EventArgs.Empty);

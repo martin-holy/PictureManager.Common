@@ -49,6 +49,8 @@ internal static class L {
       ["MediaItem.err.UpdateLastWriteTime"] = "Can't update file 'last write time'.",
       ["MediaItem.err.UpdateCreationTime"] = "Can't update file 'creation time'",
 
+      ["MediaItem.Filter.Clear.cmd"] = "Clear",
+
       ["MediaItem.LoadByGeoName.cmd"] = "Load Media items",
       ["MediaItem.LoadByKeyword.cmd"] = "Load Media items",
 
@@ -57,7 +59,7 @@ internal static class L {
       ["MediaItem.LoadByPeopleOrSegments.dlg.btn.Segments"] = "Segments",
       ["MediaItem.LoadByPeopleOrSegments.dlg.Message"] = "Do you want to load Media items from selected People or Segments?",
       ["MediaItem.LoadByPeopleOrSegments.dlg.Title"] = "Load Media items",
-      
+
       ["MediaItem.LoadByPerson.cmd"] = "Load Media items",
 
       ["MediaItem.MoveSelectedToFolder.cmd"] = "Move",
