@@ -51,6 +51,8 @@ internal static class L {
 
       ["MediaItem.Filter.Clear.cmd"] = "Clear",
 
+      ["MediaItem.Import.Cancel.cmd"] = "Cancel",
+
       ["MediaItem.LoadByGeoName.cmd"] = "Load Media items",
       ["MediaItem.LoadByKeyword.cmd"] = "Load Media items",
 

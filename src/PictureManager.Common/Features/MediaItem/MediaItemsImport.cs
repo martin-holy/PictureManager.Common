@@ -1,5 +1,6 @@
 ﻿using MH.Utils;
 using MH.Utils.BaseClasses;
+using PictureManager.Common.Utils.Localization;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -22,7 +23,7 @@ public sealed class MediaItemsImport : ObservableObject {
 
   public MediaItemsImport() {
     _progress = new Progress<int>(x => DoneCount += x);
-    CancelCommand = new(_cancelImport, null, "Cancel");
+    CancelCommand = new(_cancelImport, null, L.Get("MediaItem.Import.Cancel.cmd"));
   }
 
   public async Task Import(List<MediaItemMetadata> items) {
