@@ -23,6 +23,11 @@ internal static class L {
       ["Image.Resize.dlg.Title"] = "Resize images",
       ["Image.Resize.OpenFolderBrowser.cmd"] = "Select folder",
 
+      ["MediaItem.CollectionView.SortField.CreationTime"] = "Created",
+      ["MediaItem.CollectionView.SortField.FileName"] = "File name",
+      ["MediaItem.CollectionView.SortField.LastWriteTime"] = "Modified",
+      ["MediaItem.CollectionView.Title"] = "Media Items",
+
       ["MediaItem.Comment.cmd"] = "Comment",
       ["MediaItem.Comment.dlg.err.TooLong"] = "Comment is too long!",
       ["MediaItem.Comment.dlg.Message"] = "Add a comment",

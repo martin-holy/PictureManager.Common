@@ -3,7 +3,7 @@ using MH.Utils;
 using MH.Utils.BaseClasses;
 using MH.Utils.EventsArgs;
 using PictureManager.Common.Features.Common;
-using PictureManager.Common.Features.Person;
+using PictureManager.Common.Utils.Localization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,9 +14,9 @@ public class MediaItemCollectionView : CollectionView<MediaItemM> {
   private double _thumbScale;
 
   public static readonly IReadOnlyList<SortField<MediaItemM>> SortFields = [
-    new SortField<MediaItemM>("File name", x => x.FileName, StringComparer.CurrentCultureIgnoreCase),
-    new SortField<MediaItemM>("Modified", x => new System.IO.FileInfo(x.FilePath).LastWriteTime),
-    new SortField<MediaItemM>("Created", x => new System.IO.FileInfo(x.FilePath).CreationTime)
+    new SortField<MediaItemM>(L.Get("MediaItem.CollectionView.SortField.FileName"), x => x.FileName, StringComparer.CurrentCultureIgnoreCase),
+    new SortField<MediaItemM>(L.Get("MediaItem.CollectionView.SortField.LastWriteTime"), x => new System.IO.FileInfo(x.FilePath).LastWriteTime),
+    new SortField<MediaItemM>(L.Get("MediaItem.CollectionView.SortField.CreationTime"), x => new System.IO.FileInfo(x.FilePath).CreationTime)
   ];
 
   public double ThumbScale { get => _thumbScale; set { _thumbScale = value; OnPropertyChanged(); } }
@@ -24,7 +24,9 @@ public class MediaItemCollectionView : CollectionView<MediaItemM> {
 
   public RelayCommand ThumbScaleChangedCommand { get; }
 
-  public MediaItemCollectionView(double thumbScale) : base(Res.IconImageMultiple, "Media Items", [ViewMode.ThumbBig]) {
+  public MediaItemCollectionView(double thumbScale) :
+    base(Res.IconImageMultiple, L.Get("MediaItem.CollectionView.Title"), [ViewMode.ThumbBig]) {
+
     ThumbScale = thumbScale;
     ThumbScaleChangedCommand = new(_onThumbScaleChanged);
     DefaultSortField = SortFields.SingleOrDefault(x => x.Name.Equals(Core.Settings.MediaItem.SortField), SortFields[0]);
