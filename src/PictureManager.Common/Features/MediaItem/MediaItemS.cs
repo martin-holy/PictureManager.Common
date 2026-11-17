@@ -10,6 +10,7 @@ using PictureManager.Common.Features.MediaItem.Video;
 using PictureManager.Common.Features.Person;
 using PictureManager.Common.Features.Viewer;
 using PictureManager.Common.Utils;
+using PictureManager.Common.Utils.Localization;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -121,7 +122,7 @@ public sealed class MediaItemS(MediaItemR r, ImageR imageR, VideoR videoR) : Obs
       }*/
     }
     catch (Exception ex) {
-      Log.Error(ex, $"Can't read video metadata. ({filePath})");
+      Log.Error(ex, $"{L.Get("MediaItem.err.MetadataReading")} ({filePath})");
     }
 
     mim.Success = true;
@@ -148,7 +149,7 @@ public sealed class MediaItemS(MediaItemR r, ImageR imageR, VideoR videoR) : Obs
       }
     }
     catch (Exception ex) {
-      Log.Error(ex, mim.MediaItem.FilePath);
+      Log.Error(ex, $"{L.Get("MediaItem.err.MetadataReading")} ({mim.MediaItem.FilePath})");
     }
 
     mim.Success = true;
@@ -280,7 +281,7 @@ public sealed class MediaItemS(MediaItemR r, ImageR imageR, VideoR videoR) : Obs
       }
     }
     catch (Exception ex) {
-      Log.Error(ex, "Can't preserve file original creation time.");
+      Log.Error(ex, L.Get("MediaItem.err.UpdateCreationTime"));
     }
   }
 

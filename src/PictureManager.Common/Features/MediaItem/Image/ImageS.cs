@@ -131,7 +131,7 @@ public sealed class ImageS(ImageR r) {
         new FileInfo(img.FilePath).LastWriteTime = dateTaken.Value;
       }
       catch (Exception ex) {
-        Log.Error(ex, L.Get("MediaItem.err.UdateLastWriteTime"));
+        Log.Error(ex, L.Get("MediaItem.err.UpdateLastWriteTime"));
       }
     }
   }

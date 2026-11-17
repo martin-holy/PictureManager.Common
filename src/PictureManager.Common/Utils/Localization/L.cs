@@ -43,9 +43,11 @@ internal static class L {
       ["MediaItem.Delete.dlg.Message.other"] = "Do you really want to delete {0} items?",
       ["MediaItem.Delete.dlg.Title"] = "Delete Confirmation",
 
+      ["MediaItem.err.MetadataReading"] = "Error reading metadata.",
       ["MediaItem.err.MetadataSavedJustInDB"] = "Metadata will be saved just in database.",
-      ["MediaItem.err.MetadataWriting"] = "Error writing metadata",
-      ["MediaItem.err.UdateLastWriteTime"] = "Can't update LastWriteTime to DateTaken.",
+      ["MediaItem.err.MetadataWriting"] = "Error writing metadata.",
+      ["MediaItem.err.UpdateLastWriteTime"] = "Can't update file 'last write time'.",
+      ["MediaItem.err.UpdateCreationTime"] = "Can't update file 'creation time'",
 
       ["MediaItem.LoadByGeoName.cmd"] = "Load Media items",
       ["MediaItem.LoadByKeyword.cmd"] = "Load Media items",
