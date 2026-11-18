@@ -1,8 +1,9 @@
 ﻿using MH.UI.Controls;
 using MH.Utils;
 using MH.Utils.EventsArgs;
+using MH.Utils.Localization;
 using PictureManager.Common.Features.Common;
-using PictureManager.Common.Utils.Localization;
+using PictureManager.Common.Localization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,13 +11,36 @@ using System.Linq;
 namespace PictureManager.Common.Features.MediaItem.Video;
 
 public class VideoItemCollectionView : CollectionView<VideoItemM> {
-  private static readonly IReadOnlyList<SortField<VideoItemM>> _sortFields = [
-    new SortField<VideoItemM>(L.Get("VideoItem.CollectionView.SortField.Time"), x => x.TimeStart, StringComparer.CurrentCultureIgnoreCase)
-  ];
+  private static class _loc {
+    private const string _prefix = "VideoItem.CollectionView.";
+    public const string Title = _prefix + "Title";
+    public const string SortFieldTime = _prefix + "SortField.Time";
+
+    static _loc() {
+      LocalizationManager.Register(typeof(_loc).Assembly, [
+        (Title, "Video Items"),
+        (SortFieldTime, "Time")
+      ]);
+    }
+
+    public static void Register() { }
+  }
+
+  static VideoItemCollectionView() {
+    _loc.Register();
+
+    _sortFields = [
+      new SortField<VideoItemM>(L.Get(_loc.SortFieldTime), x => x.TimeStart, StringComparer.CurrentCultureIgnoreCase)
+    ];
+  }
+
+  public static void RegisterLocalization() => _loc.Register();
+
+  private static readonly IReadOnlyList<SortField<VideoItemM>> _sortFields;
 
   public Selecting<VideoItemM> Selected { get; } = new();
 
-  public VideoItemCollectionView() : base(Res.IconImageMultiple, L.Get("VideoItem.CollectionView.Title"), [ViewMode.ThumbBig]) {
+  public VideoItemCollectionView() : base(Res.IconImageMultiple, L.Get(_loc.Title), [ViewMode.ThumbBig]) {
     DefaultSortField = _sortFields[0];
   }
 

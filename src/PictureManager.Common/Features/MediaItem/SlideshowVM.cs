@@ -1,8 +1,10 @@
 ﻿using MH.UI.Controls;
 using MH.Utils;
 using MH.Utils.BaseClasses;
+using MH.Utils.Localization;
 using PictureManager.Common.Features.MediaItem.Image;
 using PictureManager.Common.Features.MediaItem.Video;
+using PictureManager.Common.Localization;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -12,6 +14,24 @@ namespace PictureManager.Common.Features.MediaItem;
 public enum SlideshowState { On, Paused, Stopped }
 
 public sealed class SlideshowVM : ObservableObject {
+  private static class _loc {
+    private const string _prefix = "MediaItem.Slideshow.";
+    public const string Start = _prefix + "Start.cmd";
+    public const string Stop = _prefix + "Stop.cmd";
+
+    static _loc() {
+      LocalizationManager.Register(typeof(_loc).Assembly, [
+        (Start, "Start slideshow"),
+        (Stop, "Stop slideshow")
+      ]);
+    }
+
+    public static void Register() { }
+  }
+
+  static SlideshowVM() { _loc.Register(); }
+  public static void RegisterLocalization() => _loc.Register();
+
   private ZoomAndPan? _zoomAndPan;
   private bool _isTimerOn;
   private int _repeatCount;
@@ -31,8 +51,8 @@ public sealed class SlideshowVM : ObservableObject {
 
   public SlideshowVM(MediaViewerVM mediaViewer) {
     _mediaViewer = mediaViewer;
-    StartCommand = new(_slideshow, MH.UI.Res.IconPlay, "Start slideshow");
-    StopCommand = new(_slideshow, MH.UI.Res.IconStop, "Stop slideshow");
+    StartCommand = new(_slideshow, MH.UI.Res.IconPlay, L.Get(_loc.Start));
+    StopCommand = new(_slideshow, MH.UI.Res.IconStop, L.Get(_loc.Stop));
   }
 
   /// <summary>

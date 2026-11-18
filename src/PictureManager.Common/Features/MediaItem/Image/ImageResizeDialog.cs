@@ -1,7 +1,8 @@
 ﻿using MH.UI.Dialogs;
 using MH.Utils;
 using MH.Utils.BaseClasses;
-using PictureManager.Common.Utils.Localization;
+using MH.Utils.Localization;
+using PictureManager.Common.Localization;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,6 +13,26 @@ using System.Threading.Tasks;
 namespace PictureManager.Common.Features.MediaItem.Image;
 
 public sealed class ImageResizeDialog : ParallelProgressDialog<ImageM> {
+  private static class _loc {
+    private const string _prefix = "Image.Resize.";
+    public const string Title = _prefix + "dlg.Title";
+    public const string BtnResize = _prefix + "dlg.btn.Resize";
+    public const string OpenFolderBrowser = _prefix + "OpenFolderBrowser.cmd";
+
+    static _loc() {
+      LocalizationManager.Register(typeof(_loc).Assembly, [
+        (Title, "Resize images"),
+        (BtnResize, "Resize"),
+        (OpenFolderBrowser, "Select folder")
+      ]);
+    }
+
+    public static void Register() { }
+  }
+
+  static ImageResizeDialog() { _loc.Register(); }
+  public static void RegisterLocalization() => _loc.Register();
+
   private bool _preserveThumbnail;
   private bool _preserveMetadata;
   private bool _preserveFolders;
@@ -33,9 +54,9 @@ public sealed class ImageResizeDialog : ParallelProgressDialog<ImageM> {
   public AsyncRelayCommand OpenFolderBrowserCommand { get; }
 
   public ImageResizeDialog(ImageM[] items) : base(
-    L.Get("Image.Resize.dlg.Title"), Res.IconImageMultiple, items, null, L.Get("Image.Resize.dlg.btn.Resize")) {
+    L.Get(_loc.Title), Res.IconImageMultiple, items, null, L.Get(_loc.BtnResize)) {
 
-    OpenFolderBrowserCommand = new(_openFolderBrowser, Res.IconFolder, L.Get("Image.Resize.OpenFolderBrowser.cmd"));
+    OpenFolderBrowserCommand = new(_openFolderBrowser, Res.IconFolder, L.Get(_loc.OpenFolderBrowser));
     _setMaxMpx(items);
   }
 
@@ -53,7 +74,7 @@ public sealed class ImageResizeDialog : ParallelProgressDialog<ImageM> {
 
     foreach (var dir in _pathMap.Values.Select(Path.GetDirectoryName).Distinct()!)
       Directory.CreateDirectory(dir!);
-    
+
     return true;
   }
 

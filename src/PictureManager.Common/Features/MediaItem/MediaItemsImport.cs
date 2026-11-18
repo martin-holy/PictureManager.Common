@@ -1,6 +1,7 @@
 ﻿using MH.Utils;
 using MH.Utils.BaseClasses;
-using PictureManager.Common.Utils.Localization;
+using MH.Utils.Localization;
+using PictureManager.Common.Localization;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -8,6 +9,22 @@ using System.Threading.Tasks;
 namespace PictureManager.Common.Features.MediaItem;
 
 public sealed class MediaItemsImport : ObservableObject {
+  private static class _loc {
+    private const string _prefix = "MediaItem.Import.";
+    public const string Cancel = _prefix + "Cancel.cmd";
+
+    static _loc() {
+      LocalizationManager.Register(typeof(_loc).Assembly, [
+        (Cancel, "Cancel")
+      ]);
+    }
+
+    public static void Register() { }
+  }
+
+  static MediaItemsImport() { _loc.Register(); }
+  public static void RegisterLocalization() => _loc.Register();
+
   private readonly IProgress<int> _progress;
   private readonly WorkTask _task = new();
 
@@ -23,7 +40,7 @@ public sealed class MediaItemsImport : ObservableObject {
 
   public MediaItemsImport() {
     _progress = new Progress<int>(x => DoneCount += x);
-    CancelCommand = new(_cancelImport, null, L.Get("MediaItem.Import.Cancel.cmd"));
+    CancelCommand = new(_cancelImport, null, L.Get(_loc.Cancel));
   }
 
   public async Task Import(List<MediaItemMetadata> items) {

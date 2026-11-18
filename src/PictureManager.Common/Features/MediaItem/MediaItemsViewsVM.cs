@@ -1,5 +1,6 @@
 ﻿using MH.Utils;
 using MH.Utils.BaseClasses;
+using MH.Utils.Localization;
 using MH.Utils.Tree;
 using PictureManager.Common.Features.Folder;
 using PictureManager.Common.Features.GeoName;
@@ -7,7 +8,7 @@ using PictureManager.Common.Features.Keyword;
 using PictureManager.Common.Features.Person;
 using PictureManager.Common.Features.Rating;
 using PictureManager.Common.Features.Segment;
-using PictureManager.Common.Utils.Localization;
+using PictureManager.Common.Localization;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -18,6 +19,48 @@ using System.Threading.Tasks;
 namespace PictureManager.Common.Features.MediaItem;
 
 public sealed class MediaItemsViewsVM : ObservableObject {
+  private static class _loc {
+    private const string _prefix = "MediaItem.Views.";
+    public const string AddView = _prefix + "AddView.cmd";
+    public const string CompareAverageHash = _prefix + "CompareAverageHash.cmd";
+    public const string ComparePHash = _prefix + "ComparePHash.cmd";
+    public const string CopyPaths = _prefix + "CopyPaths.cmd";
+    public const string FilterSetAnd = _prefix + "FilterSetAnd.cmd";
+    public const string FilterSetOr = _prefix + "FilterSetOr.cmd";
+    public const string FilterSetNot = _prefix + "FilterSetNot.cmd";
+    public const string LoadByTag = _prefix + "LoadByTag.cmd";
+    public const string RebuildThumbnails = _prefix + "RebuildThumbnails.cmd";
+    public const string TabNameEmpty = _prefix + "TabName.Empty";
+    public const string TabNameModified = _prefix + "TabName.Modified";
+    public const string TabNamePeople = _prefix + "TabName.People";
+    public const string TabNameSegments = _prefix + "TabName.Segments";
+    public const string ViewModified = _prefix + "ViewModified.cmd";
+
+    static _loc() {
+      LocalizationManager.Register(typeof(_loc).Assembly, [
+        (AddView, "Add Media Items View Tab"),
+        (CompareAverageHash, "Compare images using average hash"),
+        (ComparePHash, "Compare images using perceptual hash"),
+        (CopyPaths, "Copy Paths"),
+        (FilterSetAnd, "Filter And"),
+        (FilterSetOr, "Filter Or"),
+        (FilterSetNot, "Filter Not"),
+        (LoadByTag, "Load"),
+        (RebuildThumbnails, "Rebuild Thumbnails"),
+        (TabNameEmpty, "Empty"),
+        (TabNameModified, "Modified"),
+        (TabNamePeople, "By People"),
+        (TabNameSegments, "By Segments"),
+        (ViewModified, "Show Modified"),
+      ]);
+    }
+
+    public static void Register() { }
+  }
+
+  static MediaItemsViewsVM() { _loc.Register(); }
+  public static void RegisterLocalization() => _loc.Register();
+
   private readonly List<MediaItemsViewVM> _all = [];
   private MediaItemsViewVM? _current;
 
@@ -36,21 +79,21 @@ public sealed class MediaItemsViewsVM : ObservableObject {
   public event EventHandler? CurrentViewSelectionChangedEvent;
 
   public MediaItemsViewsVM() {
-    FilterSetAndCommand = new(item => Current!.Filter.Set(item, DisplayFilter.And), _ => Current != null, Res.IconFilter, L.Get("MediaItem.Views.FilterSetAnd.cmd"));
-    FilterSetOrCommand = new(item => Current!.Filter.Set(item, DisplayFilter.Or), _ => Current != null, Res.IconFilter, L.Get("MediaItem.Views.FilterSetOr.cmd"));
-    FilterSetNotCommand = new(item => Current!.Filter.Set(item, DisplayFilter.Not), _ => Current != null, Res.IconFilter, L.Get("MediaItem.Views.FilterSetNot.cmd"));
+    FilterSetAndCommand = new(item => Current!.Filter.Set(item, DisplayFilter.And), _ => Current != null, Res.IconFilter, L.Get(_loc.FilterSetAnd));
+    FilterSetOrCommand = new(item => Current!.Filter.Set(item, DisplayFilter.Or), _ => Current != null, Res.IconFilter, L.Get(_loc.FilterSetOr));
+    FilterSetNotCommand = new(item => Current!.Filter.Set(item, DisplayFilter.Not), _ => Current != null, Res.IconFilter, L.Get(_loc.FilterSetNot));
 
-    AddViewCommand = new(() => _addView(L.Get("MediaItem.Views.TabName.Empty")), Res.IconTabPlus, L.Get("MediaItem.Views.AddView.cmd"));
+    AddViewCommand = new(() => _addView(L.Get(_loc.TabNameEmpty)), Res.IconTabPlus, L.Get(_loc.AddView));
     CopyPathsCommand = new(
       () => Clipboard.SetText(string.Join("\n", Current!.Selected.Items.Select(x => x.FilePath))),
-      () => Current?.Selected.Items.Any() == true, null, L.Get("MediaItem.Views.CopyPaths.cmd"));
-    LoadByTagCommand = new(LoadByTag, null, L.Get("MediaItem.Views.LoadByTag.cmd"));
+      () => Current?.Selected.Items.Any() == true, null, L.Get(_loc.CopyPaths));
+    LoadByTagCommand = new(LoadByTag, null, L.Get(_loc.LoadByTag));
     RebuildThumbnailsCommand = new(
       x => _rebuildThumbnails(x, Keyboard.IsShiftOn()),
-      x => x != null || Current?.Root.Source.Count > 0, null, L.Get("MediaItem.Views.RebuildThumbnails.cmd"));
-    ViewModifiedCommand = new(_viewModified, Res.IconImageMultiple, L.Get("MediaItem.Views.ViewModified.cmd"));
-    CompareAverageHashCommand = new(_ => _current!.CompareImages(c => c.CompareAverageHash()), () => _current != null, Res.IconCompare, L.Get("MediaItem.Views.CompareAverageHash.cmd"));
-    ComparePHashCommand = new(_ => _current!.CompareImages(c => c.ComparePHash()), () => _current != null, Res.IconCompare, L.Get("MediaItem.Views.ComparePHash.cmd"));
+      x => x != null || Current?.Root.Source.Count > 0, null, L.Get(_loc.RebuildThumbnails));
+    ViewModifiedCommand = new(_viewModified, Res.IconImageMultiple, L.Get(_loc.ViewModified));
+    CompareAverageHashCommand = new(_ => _current!.CompareImages(c => c.CompareAverageHash()), () => _current != null, Res.IconCompare, L.Get(_loc.CompareAverageHash));
+    ComparePHashCommand = new(_ => _current!.CompareImages(c => c.ComparePHash()), () => _current != null, Res.IconCompare, L.Get(_loc.ComparePHash));
   }
 
   public void RemoveMediaItems(IList<MediaItemM> items) {
@@ -76,7 +119,7 @@ public sealed class MediaItemsViewsVM : ObservableObject {
   private MediaItemsViewVM _addViewIfNotActive(string? tabName) {
     if (Core.VM.MainTabs.Selected?.Data is not MediaItemsViewVM view)
       return _addView(tabName ?? string.Empty);
-    
+
     if (tabName != null)
       Core.VM.MainTabs.Selected.Name = tabName;
 
@@ -119,7 +162,7 @@ public sealed class MediaItemsViewsVM : ObservableObject {
     var recursive = Keyboard.IsShiftOn();
     var view = _addViewIfNotActive(and || hide ? null : item.Name);
     item.IsSelected = true;
-    
+
     return view.LoadByFolder(item, and, hide, recursive);
   }
 
@@ -135,8 +178,8 @@ public sealed class MediaItemsViewsVM : ObservableObject {
       : item switch {
         RatingTreeM rating => rating.Rating.Value.ToString(),
         PersonM person => person.Name,
-        PersonM[] => L.Get("MediaItem.Views.TabName.People"),
-        SegmentM[] => L.Get("MediaItem.Views.TabName.Segments"),
+        PersonM[] => L.Get(_loc.TabNamePeople),
+        SegmentM[] => L.Get(_loc.TabNameSegments),
         KeywordM keyword => keyword.Name,
         GeoNameM geoName => geoName.Name,
         _ => string.Empty
@@ -170,7 +213,7 @@ public sealed class MediaItemsViewsVM : ObservableObject {
 
   private async Task<Task> _viewModified(CancellationToken token) {
     var mis = await MediaItemS.FilterByViewer([.. Core.R.MediaItem.GetModified()], Core.S.Viewer, token);
-    return _addView(L.Get("MediaItem.Views.TabName.Modified")).LoadByTag(mis, false, token);
+    return _addView(L.Get(_loc.TabNameModified)).LoadByTag(mis, false, token);
   }
 
   public Task ViewMediaItems(MediaItemM[] items, string name, CancellationToken token) =>

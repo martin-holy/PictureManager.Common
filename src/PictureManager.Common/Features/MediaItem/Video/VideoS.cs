@@ -1,6 +1,6 @@
 ﻿using MH.Utils;
 using MH.Utils.Imaging;
-using PictureManager.Common.Utils.Localization;
+using PictureManager.Common.Localization;
 using System;
 using System.IO;
 using System.Linq;
@@ -14,7 +14,7 @@ public sealed class VideoS(VideoR r) {
         vid.IsOnlyInDb = false;
     }
     catch (Exception ex) {
-      Log.Error(ex, $"{L.Get("MediaItem.err.MetadataSavedJustInDB")} {vid.FilePath}");
+      Log.Error(ex, $"{L.Get(MediaItemS._loc.ErrMetadataSavedJustInDB)} {vid.FilePath}");
       vid.IsOnlyInDb = true;
     }
 

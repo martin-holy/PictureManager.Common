@@ -3,7 +3,7 @@ using MH.Utils.Imaging;
 using MH.Utils.Imaging.Exif;
 using MH.Utils.Imaging.Jpeg;
 using MH.Utils.Imaging.Xmp;
-using PictureManager.Common.Utils.Localization;
+using PictureManager.Common.Localization;
 using System;
 using System.Data;
 using System.Globalization;
@@ -45,14 +45,14 @@ public sealed class ImageS(ImageR r) {
       var originalCreationTime = new FileInfo(filePath).CreationTime;
 
       encoded.Position = 0;
-      if (!metadata.Write(encoded, filePath)) throw new(L.Get("MediaItem.err.MetadataWriting"));
+      if (!metadata.Write(encoded, filePath)) throw new(L.Get(MediaItemS._loc.ErrMetadataWriting));
 
       MediaItemS.TryRestoreCreationTime(filePath, originalCreationTime);
 
       img.IsOnlyInDb = false;
     }
     catch (Exception ex) {
-      Log.Error(ex, $"{L.Get("MediaItem.err.MetadataSavedJustInDB")} {img.FilePath}");
+      Log.Error(ex, $"{L.Get(MediaItemS._loc.ErrMetadataSavedJustInDB)} {img.FilePath}");
       img.IsOnlyInDb = true;
     }
 
@@ -62,11 +62,11 @@ public sealed class ImageS(ImageR r) {
 
   public bool TryWriteMetadata(ImageM img) {
     try {
-      if (!_writeMetadata(img)) throw new(L.Get("MediaItem.err.MetadataWriting"));
+      if (!_writeMetadata(img)) throw new(L.Get(MediaItemS._loc.ErrMetadataWriting));
       img.IsOnlyInDb = false;
     }
     catch (Exception ex) {
-      Log.Error(ex, $"{L.Get("MediaItem.err.MetadataSavedJustInDB")} {img.FilePath}");
+      Log.Error(ex, $"{L.Get(MediaItemS._loc.ErrMetadataSavedJustInDB)} {img.FilePath}");
       img.IsOnlyInDb = true;
     }
 
@@ -131,7 +131,7 @@ public sealed class ImageS(ImageR r) {
         new FileInfo(img.FilePath).LastWriteTime = dateTaken.Value;
       }
       catch (Exception ex) {
-        Log.Error(ex, L.Get("MediaItem.err.UpdateLastWriteTime"));
+        Log.Error(ex, L.Get(MediaItemS._loc.ErrUpdateLastWriteTime));
       }
     }
   }

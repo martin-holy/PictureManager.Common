@@ -1,10 +1,11 @@
 ﻿using MH.UI.Interfaces;
 using MH.Utils.BaseClasses;
+using MH.Utils.Localization;
 using PictureManager.Common.Features.MediaItem.Image;
 using PictureManager.Common.Features.MediaItem.Video;
 using PictureManager.Common.Features.Rating;
 using PictureManager.Common.Interfaces;
-using PictureManager.Common.Utils.Localization;
+using PictureManager.Common.Localization;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -13,6 +14,22 @@ using System.Linq;
 namespace PictureManager.Common.Features.MediaItem;
 
 public sealed class MediaItemsFilterVM : ObservableObject, ICollectionViewFilter<MediaItemM> {
+  private static class _loc {
+    private const string _prefix = "MediaItem.Filter.";
+    public const string Clear = _prefix + "Clear.cmd";
+
+    static _loc() {
+      LocalizationManager.Register(typeof(_loc).Assembly, [
+        (Clear, "Clear")
+      ]);
+    }
+
+    public static void Register() { }
+  }
+
+  static MediaItemsFilterVM() { _loc.Register(); }
+  public static void RegisterLocalization() => _loc.Register();
+
   private bool _showImages = true;
   private bool _showVideos = true;
 
@@ -34,7 +51,7 @@ public sealed class MediaItemsFilterVM : ObservableObject, ICollectionViewFilter
     Height.ChangedEvent += delegate { _raiseFilterChanged(); };
     Width.ChangedEvent += delegate { _raiseFilterChanged(); };
     Size.ChangedEvent += delegate { _raiseFilterChanged(); };
-    ClearCommand = new(_clear, null, L.Get("MediaItem.Filter.Clear.cmd"));
+    ClearCommand = new(_clear, null, L.Get(_loc.Clear));
   }
 
   private void _raiseFilterChanged() => FilterChangedEvent(this, EventArgs.Empty);

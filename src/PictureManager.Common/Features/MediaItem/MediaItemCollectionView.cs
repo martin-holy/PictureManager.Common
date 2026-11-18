@@ -2,8 +2,9 @@
 using MH.Utils;
 using MH.Utils.BaseClasses;
 using MH.Utils.EventsArgs;
+using MH.Utils.Localization;
 using PictureManager.Common.Features.Common;
-using PictureManager.Common.Utils.Localization;
+using PictureManager.Common.Localization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,13 +12,40 @@ using System.Linq;
 namespace PictureManager.Common.Features.MediaItem;
 
 public class MediaItemCollectionView : CollectionView<MediaItemM> {
+  private static class _loc {
+    private const string _prefix = "MediaItem.CollectionView.";
+    public const string Title = _prefix + "Title";
+    public const string SortFieldFileName = _prefix + "SortField.FileName";
+    public const string SortFieldLastWriteTime = _prefix + "SortField.LastWriteTime";
+    public const string SortFieldCreationTime = _prefix + "SortField.CreationTime";
+
+    static _loc() {
+      LocalizationManager.Register(typeof(_loc).Assembly, [
+        (Title, "Media Items"),
+        (SortFieldFileName, "File name"),
+        (SortFieldLastWriteTime, "Modified"),
+        (SortFieldCreationTime, "Created")
+      ]);
+    }
+
+    public static void Register() { }
+  }
+
+  static MediaItemCollectionView() {
+    _loc.Register();
+
+    SortFields = [
+      new SortField<MediaItemM>(L.Get(_loc.SortFieldFileName), x => x.FileName, StringComparer.CurrentCultureIgnoreCase),
+      new SortField<MediaItemM>(L.Get(_loc.SortFieldLastWriteTime), x => new System.IO.FileInfo(x.FilePath).LastWriteTime),
+      new SortField<MediaItemM>(L.Get(_loc.SortFieldCreationTime), x => new System.IO.FileInfo(x.FilePath).CreationTime)
+    ];
+  }
+
+  public static void RegisterLocalization() => _loc.Register();
+
   private double _thumbScale;
 
-  public static readonly IReadOnlyList<SortField<MediaItemM>> SortFields = [
-    new SortField<MediaItemM>(L.Get("MediaItem.CollectionView.SortField.FileName"), x => x.FileName, StringComparer.CurrentCultureIgnoreCase),
-    new SortField<MediaItemM>(L.Get("MediaItem.CollectionView.SortField.LastWriteTime"), x => new System.IO.FileInfo(x.FilePath).LastWriteTime),
-    new SortField<MediaItemM>(L.Get("MediaItem.CollectionView.SortField.CreationTime"), x => new System.IO.FileInfo(x.FilePath).CreationTime)
-  ];
+  public static readonly IReadOnlyList<SortField<MediaItemM>> SortFields;
 
   public double ThumbScale { get => _thumbScale; set { _thumbScale = value; OnPropertyChanged(); } }
   public Selecting<MediaItemM> Selected { get; } = new();
@@ -25,7 +53,7 @@ public class MediaItemCollectionView : CollectionView<MediaItemM> {
   public RelayCommand ThumbScaleChangedCommand { get; }
 
   public MediaItemCollectionView(double thumbScale) :
-    base(Res.IconImageMultiple, L.Get("MediaItem.CollectionView.Title"), [ViewMode.ThumbBig]) {
+    base(Res.IconImageMultiple, L.Get(_loc.Title), [ViewMode.ThumbBig]) {
 
     ThumbScale = thumbScale;
     ThumbScaleChangedCommand = new(_onThumbScaleChanged);

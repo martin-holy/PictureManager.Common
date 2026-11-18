@@ -4,9 +4,10 @@ using MH.Utils;
 using MH.Utils.BaseClasses;
 using MH.Utils.Extensions;
 using MH.Utils.Imaging;
+using MH.Utils.Localization;
 using PictureManager.Common.Features.Folder;
 using PictureManager.Common.Features.MediaItem.Image;
-using PictureManager.Common.Utils.Localization;
+using PictureManager.Common.Localization;
 using System;
 using System.Diagnostics;
 using System.Globalization;
@@ -19,6 +20,28 @@ using System.Threading.Tasks;
 namespace PictureManager.Common.Features.MediaItem;
 
 public sealed class ImagesToVideoDialog : Dialog {
+  private static class _loc {
+    private const string _prefix = "Image.ImagesToVideo.";
+    public const string Title = _prefix + "dlg.Title";
+    public const string BtnCreate = _prefix + "dlg.btn.Create";
+    public const string ErrFfmpegTitle = _prefix + "err.FFMPEG.dlg.Title";
+    public const string ErrFfmpegMessage = _prefix + "err.FFMPEG.dlg.Message";
+
+    static _loc() {
+      LocalizationManager.Register(typeof(_loc).Assembly, [
+        (Title, "Images to Video"),
+        (BtnCreate, "Create Video"),
+        (ErrFfmpegTitle, "FFMPEG not found"),
+        (ErrFfmpegMessage , "FFMPEG was not found. Install it and set the path in the settings.")
+      ]);
+    }
+
+    public static void Register() { }
+  }
+
+  static ImagesToVideoDialog() { _loc.Register(); }
+  public static void RegisterLocalization() => _loc.Register();
+
   private bool _isBusy;
   private readonly ImageM[] _items;
   private Process? _process;
@@ -31,9 +54,9 @@ public sealed class ImagesToVideoDialog : Dialog {
   public bool IsBusy { get => _isBusy; set { _isBusy = value; OnPropertyChanged(); } }
 
   public ImagesToVideoDialog(ImageM[] items, Func<FolderM, string, Task> onVideoCreated) :
-    base(L.Get("Image.ImagesToVideo.dlg.Title"), MH.UI.Res.IconMovieClapper) {
+    base(L.Get(_loc.Title), MH.UI.Res.IconMovieClapper) {
     Buttons = [
-      new(new AsyncRelayCommand(_createVideo, () => !IsBusy, MH.UI.Res.IconMovieClapper, L.Get("Image.ImagesToVideo.dlg.btn.Create")), true),
+      new(new AsyncRelayCommand(_createVideo, () => !IsBusy, MH.UI.Res.IconMovieClapper, L.Get(_loc.BtnCreate)), true),
       new(CloseCommand, false, true)
     ];
 
@@ -131,8 +154,8 @@ public sealed class ImagesToVideoDialog : Dialog {
     // check for FFMPEG
     if (!File.Exists(Core.Settings.Common.FfmpegPath)) {
       await ShowAsync(new MessageDialog(
-        L.Get("Image.ImagesToVideo.err.FFMPEG.dlg.Title"),
-        L.Get("Image.ImagesToVideo.err.FFMPEG.dlg.Message"),
+        L.Get(_loc.ErrFfmpegTitle),
+        L.Get(_loc.ErrFfmpegMessage),
         Res.IconInformation,
         false));
       Result = 0;

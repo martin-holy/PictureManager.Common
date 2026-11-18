@@ -4,13 +4,14 @@ using MH.Utils.Imaging;
 using MH.Utils.Imaging.Exif;
 using MH.Utils.Imaging.Jpeg;
 using MH.Utils.Imaging.Xmp;
+using MH.Utils.Localization;
 using PictureManager.Common.Features.Folder;
 using PictureManager.Common.Features.MediaItem.Image;
 using PictureManager.Common.Features.MediaItem.Video;
 using PictureManager.Common.Features.Person;
 using PictureManager.Common.Features.Viewer;
+using PictureManager.Common.Localization;
 using PictureManager.Common.Utils;
-using PictureManager.Common.Utils.Localization;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -22,6 +23,30 @@ using System.Xml.Linq;
 namespace PictureManager.Common.Features.MediaItem;
 
 public sealed class MediaItemS(MediaItemR r, ImageR imageR, VideoR videoR) : ObservableObject {
+  internal static class _loc {
+    private const string _prefix = "MediaItem.";
+    public const string ErrMetadataReading = _prefix + "err.MetadataReading";
+    public const string ErrUpdateCreationTime = _prefix + "err.UpdateCreationTime";
+    public const string ErrMetadataWriting = _prefix + "err.MetadataWriting";
+    public const string ErrMetadataSavedJustInDB = _prefix + "err.MetadataSavedJustInDB";
+    public const string ErrUpdateLastWriteTime = _prefix + "err.UpdateLastWriteTime";
+
+    static _loc() {
+      LocalizationManager.Register(typeof(_loc).Assembly, [
+        (ErrMetadataReading, "Error reading metadata."),
+        (ErrUpdateCreationTime, "Can't update file 'creation time'"),
+        (ErrMetadataWriting, "Error writing metadata."),
+        (ErrMetadataSavedJustInDB, "Metadata will be saved just in database."),
+        (ErrUpdateLastWriteTime, "Can't update file 'last write time'.")
+      ]);
+    }
+
+    public static void Register() { }
+  }
+
+  static MediaItemS() { _loc.Register(); }
+  public static void RegisterLocalization() => _loc.Register();
+
   public static readonly XNamespace NsPM = "https://github.com/martin-holy/PictureManager/";
 
   private static readonly XNamespace _nsGeoNames = "GeoNames"; // old ns used before
@@ -122,7 +147,7 @@ public sealed class MediaItemS(MediaItemR r, ImageR imageR, VideoR videoR) : Obs
       }*/
     }
     catch (Exception ex) {
-      Log.Error(ex, $"{L.Get("MediaItem.err.MetadataReading")} ({filePath})");
+      Log.Error(ex, $"{L.Get(_loc.ErrMetadataReading)} ({filePath})");
     }
 
     mim.Success = true;
@@ -149,7 +174,7 @@ public sealed class MediaItemS(MediaItemR r, ImageR imageR, VideoR videoR) : Obs
       }
     }
     catch (Exception ex) {
-      Log.Error(ex, $"{L.Get("MediaItem.err.MetadataReading")} ({mim.MediaItem.FilePath})");
+      Log.Error(ex, $"{L.Get(_loc.ErrMetadataReading)} ({mim.MediaItem.FilePath})");
     }
 
     mim.Success = true;
@@ -281,7 +306,7 @@ public sealed class MediaItemS(MediaItemR r, ImageR imageR, VideoR videoR) : Obs
       }
     }
     catch (Exception ex) {
-      Log.Error(ex, L.Get("MediaItem.err.UpdateCreationTime"));
+      Log.Error(ex, L.Get(_loc.ErrUpdateCreationTime));
     }
   }
 

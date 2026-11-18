@@ -21,7 +21,7 @@ using PictureManager.Common.Features.Rating;
 using PictureManager.Common.Features.Segment;
 using PictureManager.Common.Features.Viewer;
 using PictureManager.Common.Layout;
-using PictureManager.Common.Utils.Localization;
+using PictureManager.Common.Localization;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -35,6 +35,23 @@ using System.Threading.Tasks;
 namespace PictureManager.Common;
 
 public sealed class CoreVM : ObservableObject {
+  private static class _loc {
+    private const string _prefix = "App.";
+
+    public const string ExportTranslations = _prefix + "ExportTranslations";
+
+    static _loc() {
+      LocalizationManager.Register(typeof(_loc).Assembly, [
+        (ExportTranslations, "Export translations")
+      ]);
+    }
+
+    public static void Register() { }
+  }
+
+  static CoreVM() { _loc.Register(); }
+  public static void RegisterLocalization() => _loc.Register();
+
   private readonly CoreS _coreS;
   private readonly CoreR _coreR;
 
@@ -109,7 +126,7 @@ public sealed class CoreVM : ObservableObject {
     ExportSegmentsToCommand = new((x, _) => _exportSegmentsTo(x), () => _coreS.Segment.Selected.Items.Any(x => x.MediaItem is ImageM), Res.IconSegment, "Export");
     OpenLogCommand = new(_openLog, MH.UI.Res.IconSort, "Open log");
     OpenSettingsCommand = new(_openSettings, Res.IconSettings, "Settings");
-    ExportTranslationsCommand = new(() => _exportTranslations(), text: L.Get("App.ExportTranslations"));
+    ExportTranslationsCommand = new(() => _exportTranslations(), text: L.Get(_loc.ExportTranslations));
     OpenSegmentsViewsCommand = new(_ => OpenSegmentsViews(null, string.Empty), Res.IconSegment, "Segments View");
     SaveDbCommand = new(() => _coreR.DB.SaveAll(), () => _coreR.DB.Changes > 0, Res.IconDatabase, "Save changes");
     CompressImagesCommand = new(x => _compressImages(GetActive<ImageM>(x)), AnyActive<ImageM>, null, "Compress Images");
@@ -389,6 +406,7 @@ public sealed class CoreVM : ObservableObject {
     MainTabs.Activate(Res.IconSettings, "Settings", Core.Inst.AllSettings);
 
   private static void _exportTranslations(string language = "en") {
+    Localization.Registration.RegisterAll();
     var translations = LocalizationManager.ExportTranslations(language);
 
     foreach (var pair in translations) {
