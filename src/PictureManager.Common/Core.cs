@@ -34,7 +34,11 @@ public sealed class Core {
   public Task InitAsync(IProgress<string> progress, string appDir) {
     AppDir = appDir;
     Settings = Settings.Load(Path.Combine(appDir, "settings.json"));
+
+    LocalizationManager.MissingTranslation +=
+      (ass, key) => Log.Warning("Missing translation", $"Assembly: {ass.GetName().Name}, Key: {key}");
     LocalizationManager.Initialize(Settings.Common.Languages, new EmbeddedLanguageFileProvider(appDir));
+
     R = new(appDir);
     return Task.Run(async () => {
       R.AddDataSources();
