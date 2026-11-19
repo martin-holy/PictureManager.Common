@@ -17,14 +17,15 @@ using System.Threading.Tasks;
 namespace PictureManager.Common.Features.Segment;
 
 public sealed class SegmentsViewsVM : ObservableObject {
-  private static class _loc {
+  internal static class _loc {
     private const string _prefix = "Segment.View.";
     public const string LoadFromTitle = _prefix + "LoadFrom.dlg.Title";
     public const string LoadFromMessage = _prefix + "LoadFrom.dlg.Message";
     public const string LoadFromMediaItems = _prefix + "LoadFrom.dlg.btn.MediaItems";
     public const string LoadFromPeople = _prefix + "LoadFrom.dlg.btn.People";
     public const string LoadFromSegments = _prefix + "LoadFrom.dlg.btn.Segments";
-    public const string InnerTabName = _prefix + "InnerTabName";
+    public const string TabName = _prefix + "TabName";
+    public const string TabNameInner = _prefix + "TabNameInner";
 
     static _loc() {
       LocalizationManager.Register(typeof(_loc).Assembly, [
@@ -33,7 +34,8 @@ public sealed class SegmentsViewsVM : ObservableObject {
         (LoadFromMediaItems, "Media items"),
         (LoadFromPeople, "People"),
         (LoadFromSegments, "Segments"),
-        (InnerTabName, "Segments {0}")
+        (TabName, "Segments"),
+        (TabNameInner, "Segments {0}")
       ]);
     }
 
@@ -178,7 +180,7 @@ public sealed class SegmentsViewsVM : ObservableObject {
 
   public void Load(SegmentM[] items, string tabTitle) {
     if (string.IsNullOrEmpty(tabTitle))
-      tabTitle = L.Format(_loc.InnerTabName, _views.Count + 1);
+      tabTitle = L.Format(_loc.TabNameInner, _views.Count + 1);
 
     var and = Keyboard.IsCtrlOn() && Current != null;
     var source = (and ? items.Union(Current!.Root.Source) : items).ToList();

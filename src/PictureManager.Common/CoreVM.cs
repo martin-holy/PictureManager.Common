@@ -42,7 +42,6 @@ public sealed class CoreVM : ObservableObject {
     public const string SegmentExport = "Segment.Export.cmd";
     public const string SegmentExportToFolderTitle = "Segment.Export.ToFolder.dlg.Title";
     public const string SegmentExportToFolderMessage = "Segment.Export.ToFolder.dlg.Message";
-    public const string SegmentTabName = "Segment.TabName";
     public const string LogOpen = _prefix + "Log.Open.cmd";
     public const string LogTabName = _prefix + "Log.TabName";
     public const string SettingsOpen = _prefix + "Settings.Open.cmd";
@@ -82,7 +81,6 @@ public sealed class CoreVM : ObservableObject {
         (SegmentExport, "Export Segments"),
         (SegmentExportToFolderTitle, "Export Segments"),
         (SegmentExportToFolderMessage, "Do you really want to export segments to \"{0}\"?"),
-        (SegmentTabName, "Segments"),
         (LogOpen, "Open log"),
         (LogTabName, "Log"),
         (SettingsOpen, "Settings"),
@@ -505,7 +503,7 @@ public sealed class CoreVM : ObservableObject {
       segments = SegmentsViewsVM.GetSegments(result).ToArray();
     }
     
-    MainTabs.Activate(Res.IconSegment, L.Get(_loc.SegmentTabName), Segment.Views);
+    MainTabs.Activate(Res.IconSegment, L.Get(SegmentsViewsVM._loc.TabName), Segment.Views);
     MainWindow.IsInViewMode = false;
     Segment.Views.Load(segments, tabTitle);
   }
