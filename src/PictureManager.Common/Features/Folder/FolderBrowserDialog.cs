@@ -1,12 +1,32 @@
 ﻿using MH.UI.Controls;
 using MH.Utils.BaseClasses;
+using MH.Utils.Localization;
 using MH.Utils.Tree;
+using PictureManager.Common.Localization;
 using System;
 using System.IO;
 
 namespace PictureManager.Common.Features.Folder;
 
 public sealed class FolderBrowserDialog : Dialog {
+  private static class _loc {
+    private const string _prefix = "FolderBrowser.";
+    public const string Title = _prefix + "dlg.Title";
+    public const string Ok = _prefix + "dlg.btn.Ok";
+
+    static _loc() {
+      LocalizationManager.Register(typeof(_loc).Assembly, [
+        (Title, "Browse For Folder"),
+        (Ok, "Ok")
+      ]);
+    }
+
+    public static void Register() { }
+  }
+
+  static FolderBrowserDialog() { _loc.Register(); }
+  public static void RegisterLocalization() => _loc.Register();
+
   private FolderTreeViewItem? _selectedFolder;
 
   public FolderTreeViewItem? SelectedFolder { get => _selectedFolder; private set { _selectedFolder = value; OnPropertyChanged(); } }
@@ -14,9 +34,9 @@ public sealed class FolderBrowserDialog : Dialog {
 
   public new RelayCommand OkCommand { get; }
 
-  public FolderBrowserDialog() : base("Browse For Folder", Res.IconFolder) {
+  public FolderBrowserDialog() : base(L.Get(_loc.Title), Res.IconFolder) {
     TreeView.ItemSelectedEvent += (_, item) => SelectedFolder = item as FolderTreeViewItem;
-    OkCommand = new(() => SetResult(this, 1), () => SelectedFolder != null, null, "Ok");
+    OkCommand = new(() => SetResult(this, 1), () => SelectedFolder != null, null, L.Get(_loc.Ok));
     Buttons = [
       new(OkCommand, true),
       new(CloseCommand, false, true)
