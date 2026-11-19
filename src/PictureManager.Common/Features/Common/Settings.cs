@@ -2,6 +2,8 @@
 using MH.UI.Controls;
 using MH.Utils;
 using MH.Utils.BaseClasses;
+using MH.Utils.Localization;
+using PictureManager.Common.Localization;
 using System;
 using System.IO;
 using System.Linq;
@@ -11,6 +13,30 @@ using System.Text.Json.Serialization.Metadata;
 namespace PictureManager.Common.Features.Common;
 
 public sealed class Settings : UserSettings {
+  private static class _loc {
+    private const string _prefix = "App.Settings.";
+    public const string CommonTitle = _prefix + "Common.Title";
+    public const string GeoNameTitle = _prefix + "GeoName.Title";
+    public const string MediaItemTitle = _prefix + "MediaItem.Title";
+    public const string SegmentTitle = _prefix + "Segment.Title";
+    public const string MediaViewerTitle = _prefix + "MediaViewer.Title";
+
+    static _loc() {
+      LocalizationManager.Register(typeof(_loc).Assembly, [
+        (CommonTitle, "Common"),
+        (GeoNameTitle, "GeoName"),
+        (MediaItemTitle, "MediaItem"),
+        (SegmentTitle, "Segment"),
+        (MediaViewerTitle, "MediaViewer")
+      ]);
+    }
+
+    public static void Register() { }
+  }
+
+  static Settings() { _loc.Register(); }
+  public static void RegisterLocalization() => _loc.Register();
+
   public CommonSettings Common { get; }
   public GeoNameSettings GeoName { get; }
   public ImagesToVideoSettings ImagesToVideo { get; }
@@ -25,14 +51,15 @@ public sealed class Settings : UserSettings {
     MediaItem = mediaItem;
     Segment = segment;
     MediaViewer = mediaViewer;
+  }
 
+  public void InitGroups() {
     Groups = [
-      new(Res.IconSettings, "Common", common),
-      new(Res.IconLocationCheckin, "GeoName", geoName),
-      //new(Res.IconBug, "Images to video", imagesToVideo),
-      new(Res.IconImageMultiple, "MediaItem", mediaItem),
-      new(Res.IconSegment, "Segment", segment),
-      new(Res.IconImageMultiple, "MediaViewer", mediaViewer)
+      new(Res.IconSettings, L.Get(_loc.CommonTitle), Common),
+      new(Res.IconLocationCheckin, L.Get(_loc.GeoNameTitle), GeoName),
+      new(Res.IconImageMultiple, L.Get(_loc.MediaItemTitle), MediaItem),
+      new(Res.IconSegment, L.Get(_loc.SegmentTitle), Segment),
+      new(Res.IconImageMultiple, L.Get(_loc.MediaItemTitle), MediaViewer)
     ];
 
     _watchForChanges();

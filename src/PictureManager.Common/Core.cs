@@ -39,6 +39,8 @@ public sealed class Core {
       (ass, key) => Log.Warning("Missing translation", $"Assembly: {ass.GetName().Name}, Key: {key}");
     LocalizationManager.Initialize(Settings.Common.Languages, new EmbeddedLanguageFileProvider(appDir));
 
+    Settings.InitGroups(); // this already needs localization
+
     R = new(appDir);
     return Task.Run(async () => {
       R.AddDataSources();
