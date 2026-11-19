@@ -54,5 +54,6 @@ public static class Registration {
     Features.Segment.SegmentsViewsVM.RegisterLocalization();
     Features.Segment.SegmentVM.RegisterLocalization();
     Features.Viewer.ViewerTreeCategory.RegisterLocalization();
+    Features.Viewer.ViewerVM.RegisterLocalization();
   }
 }
