@@ -2,8 +2,10 @@
 using MH.Utils;
 using MH.Utils.BaseClasses;
 using MH.Utils.Extensions;
+using MH.Utils.Localization;
 using PictureManager.Common.Features.Folder;
 using PictureManager.Common.Features.MediaItem;
+using PictureManager.Common.Localization;
 using PictureManager.Common.Utils;
 using System;
 using System.IO;
@@ -14,6 +16,30 @@ using System.Threading.Tasks;
 namespace PictureManager.Common.Features.Common;
 
 public sealed class FileOperationCollisionDialog : Dialog {
+  private static class _loc {
+    private const string _prefix = "MediaItem.FileOperationCollision.";
+    public const string Title = _prefix + "dlg.Title";
+    public const string Rename = _prefix + "dlg.btn.Rename";
+    public const string Replace = _prefix + "dlg.btn.Replace";
+    public const string Skip = _prefix + "dlg.btn.Skip";
+    public const string ErrEmptyFileName = _prefix + "dlg.err.EmptyFileName";
+
+    static _loc() {
+      LocalizationManager.Register(typeof(_loc).Assembly, [
+        (Title, "File already exists"),
+        (Rename, "Rename"),
+        (Replace, "Replace"),
+        (Skip, "Skip"),
+        (ErrEmptyFileName, "New file name is empty!")
+      ]);
+    }
+
+    public static void Register() { }
+  }
+
+  static FileOperationCollisionDialog() { _loc.Register(); }
+  public static void RegisterLocalization() => _loc.Register();
+
   private readonly FolderM _destFolder;
 
   private string _error = string.Empty;
@@ -25,16 +51,16 @@ public sealed class FileOperationCollisionDialog : Dialog {
   public FileCollisionInfo SrcFile { get; }
   public FileCollisionInfo DstFile { get => _dstFile; set { _dstFile = value; OnPropertyChanged(); } }
 
-  public FileOperationCollisionDialog(FolderM srcFolder, FolderM dstFolder, RealMediaItemM? srcMi, RealMediaItemM? dstMi, string fileName) : base("File already exists", Res.IconImageMultiple) {
+  public FileOperationCollisionDialog(FolderM srcFolder, FolderM dstFolder, RealMediaItemM? srcMi, RealMediaItemM? dstMi, string fileName) : base(L.Get(_loc.Title), Res.IconImageMultiple) {
     _destFolder = dstFolder;
     SrcFile = new(srcMi, IOExtensions.PathCombine(srcFolder.FullPath, fileName));
     _dstFile = new(dstMi, IOExtensions.PathCombine(dstFolder.FullPath, fileName));
     _fileName = fileName;
 
     Buttons = [
-      new(new AsyncRelayCommand(_rename, null, "Rename")),
-      new(new RelayCommand(() => Result = (int)CollisionResult.Replace, null, "Replace")),
-      new(new RelayCommand(() => Result = (int)CollisionResult.Skip, null, "Skip"))
+      new(new AsyncRelayCommand(_rename, null, L.Get(_loc.Rename))),
+      new(new RelayCommand(() => Result = (int)CollisionResult.Replace, null, L.Get(_loc.Replace))),
+      new(new RelayCommand(() => Result = (int)CollisionResult.Skip, null, L.Get(_loc.Skip)))
     ]; 
   }
 
@@ -74,12 +100,12 @@ public sealed class FileOperationCollisionDialog : Dialog {
     Error = string.Empty;
 
     if (string.IsNullOrEmpty(FileName)) {
-      Error = "New file name is empty!";
+      Error = L.Get(_loc.ErrEmptyFileName);
       return;
     }
 
     if (Path.GetInvalidFileNameChars().Any(FileName.Contains)) {
-      Error = "New file name contains incorrect character(s)!";
+      Error = L.Get(MediaItemVM._loc.RenameDlgErrInvalidCharacters);
       return;
     }
 

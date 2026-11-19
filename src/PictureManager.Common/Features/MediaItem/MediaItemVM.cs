@@ -19,7 +19,7 @@ using System.Threading.Tasks;
 namespace PictureManager.Common.Features.MediaItem;
 
 public sealed class MediaItemVM : ObservableObject {
-  private static class _loc {
+  internal static class _loc {
     private const string _prefix = "MediaItem.";
 
     public const string Comment = _prefix + "Comment.cmd";
