@@ -1,16 +1,34 @@
 ﻿using MH.UI.Tree;
+using MH.Utils.Localization;
 using MH.Utils.Tree;
 using PictureManager.Common.Features.CategoryGroup;
+using PictureManager.Common.Localization;
 using System;
 using System.Linq;
 
 namespace PictureManager.Common.Features.Keyword;
 
 public sealed class KeywordTreeCategory : TreeCategory<KeywordM, CategoryGroupM> {
+  private static class _loc {
+    private const string _prefix = "Keyword.";
+    public const string Title = _prefix + "TreeCategory.Title";
+
+    static _loc() {
+      LocalizationManager.Register(typeof(_loc).Assembly, [
+        (Title, "Keywords")
+      ]);
+    }
+
+    public static void Register() { }
+  }
+
+  static KeywordTreeCategory() { _loc.Register(); }
+  public static void RegisterLocalization() => _loc.Register();
+
   public CategoryGroupM AutoAddedGroup { get; set; } = null!;
 
   public KeywordTreeCategory(KeywordR r, CategoryGroupR groupR)
-    : base(new(), Res.IconTagLabel, "Keywords", (int)Category.Keywords, r, groupR) {
+    : base(new(), Res.IconTagLabel, L.Get(_loc.Title), (int)Category.Keywords, r, groupR) {
     CanMoveItem = true;
     UseTreeDelete = true;
     ScrollToAfterCreate = true;
