@@ -38,11 +38,87 @@ public sealed class CoreVM : ObservableObject {
   private static class _loc {
     private const string _prefix = "App.";
 
+    public const string About = _prefix + "About";
+    public const string SegmentExport = "Segment.Export.cmd";
+    public const string SegmentExportToFolderTitle = "Segment.Export.ToFolder.dlg.Title";
+    public const string SegmentExportToFolderMessage = "Segment.Export.ToFolder.dlg.Message";
+    public const string SegmentTabName = "Segment.TabName";
+    public const string LogOpen = _prefix + "Log.Open.cmd";
+    public const string LogTabName = _prefix + "Log.TabName";
+    public const string SettingsOpen = _prefix + "Settings.Open.cmd";
+    public const string SettingsTabName = _prefix + "Settings.TabName";
     public const string ExportTranslations = _prefix + "ExportTranslations";
+    public const string SegmentOpenViews = "Segment.OpenViews.cmd";
+    public const string DbSave = _prefix + "Db.Save.cmd";
+    public const string DbChangesTitle = _prefix + "Db.Changes.dld.Title";
+    public const string DbChangesMessage = _prefix + "Db.Changes.dld.Message";
+    public const string ImageCompress = "Image.Compress.cmd";
+    public const string GeoNameGetFromWeb = "GeoName.GetFromWeb.cmd";
+    public const string ImagesToVideo = "Image.ImagesToVideo.cmd";
+    public const string ReadGeoLocationFromFiles = "GeoLocation.ReadFromFiles.cmd";
+    public const string ReloadMetadata = "MediaItem.ReloadMetadata.cmd";
+    public const string ImageResizeInFolder = "Image.Resize.InFolder.cmd";
+    public const string ImageResizeToFolder = "Image.Resize.ToFolder.cmd";
+    public const string ImageResizeSelected = "Image.Resize.Selected.cmd";
+    public const string MediaItemRotate = "MediaItem.Rotate.cmd";
+    public const string SaveMetadataToFiles = "MediaItem.SaveMetadataToFiles.cmd";
+    public const string PeopleTabName = "People.TabName";
+    public const string ToggleOnSegment = "Toggle.btn.Segment";
+    public const string ToggleOnPerson = "Toggle.btn.Person";
+    public const string ToggleOnMediaItem = "Toggle.btn.MediaItem";
+    public const string ToggleOnVideoItem = "Toggle.btn.VideoItem";
+    public const string ToggleKeywordTitle = "Toggle.Keyword.Title";
+    public const string ToggleKeywordMessage = "Toggle.Keyword.Message";
+    public const string TogglePersonTitle = "Toggle.Person.Title";
+    public const string TogglePersonMessage = "Toggle.Person.Message";
+    public const string ToggleGeoNameTitle = "Toggle.GeoName.Title";
+    public const string ToggleGeoNameMessage = "Toggle.GeoName.Message";
+    public const string ToggleRatingTitle = "Toggle.Rating.Title";
+    public const string ToggleRatingMessage = "Toggle.Rating.Message";
 
     static _loc() {
       LocalizationManager.Register(typeof(_loc).Assembly, [
-        (ExportTranslations, "Export translations")
+        (About, "About"),
+        (SegmentExport, "Export Segments"),
+        (SegmentExportToFolderTitle, "Export Segments"),
+        (SegmentExportToFolderMessage, "Do you really want to export segments to \"{0}\"?"),
+        (SegmentTabName, "Segments"),
+        (LogOpen, "Open log"),
+        (LogTabName, "Log"),
+        (SettingsOpen, "Settings"),
+        (SettingsTabName, "Settings"),
+        (ExportTranslations, "Export translations"),
+        (SegmentOpenViews, "Segments View"),
+        (DbSave, "Save changes"),
+        (DbChangesTitle, "Database changes"),
+        (DbChangesMessage, "There are some changes in Picture Manager database.\nDo you want to save them?"),
+        (ImageCompress, "Compress Images"),
+        (GeoNameGetFromWeb, "Get GeoNames from web"),
+        (ImagesToVideo, "Images to Video"),
+        (ReadGeoLocationFromFiles, "Read GeoLocation from files"),
+        (ReloadMetadata, "Reload metadata"),
+        (ImageResizeInFolder, "Resize Images in folder"),
+        (ImageResizeToFolder, "Resize Images to folder"),
+        (ImageResizeSelected, "Resize selected Images"),
+        (MediaItemRotate, "Rotate"),
+        (SaveMetadataToFiles, "Save metadata to files"),
+        (PeopleTabName, "People"),
+        (ToggleOnSegment + "one", "Segment"),
+        (ToggleOnSegment + "other", "Segments"),
+        (ToggleOnPerson + "one", "Person"),
+        (ToggleOnPerson + "other", "Persons"),
+        (ToggleOnMediaItem + "one", "MediaItem"),
+        (ToggleOnMediaItem + "other", "MediaItems"),
+        (ToggleOnVideoItem + "one", "VideoItem"),
+        (ToggleOnVideoItem + "other", "VideoItems"),
+        (ToggleKeywordTitle, "Add/Remove Keyword"),
+        (ToggleKeywordMessage, "Add or Remove on:"),
+        (TogglePersonTitle, "Add/Remove Person"),
+        (TogglePersonMessage, "Add or Remove on:"),
+        (ToggleGeoNameTitle, "Set GeoName"),
+        (ToggleGeoNameMessage, "Set GeoName on:"),
+        (ToggleRatingTitle, "Set Rating"),
+        (ToggleRatingMessage, "Set Rating on:")
       ]);
     }
 
@@ -81,7 +157,7 @@ public sealed class CoreVM : ObservableObject {
   public static AsyncRelayCommand AppClosingCommand { get; private set; } = null!;
   public static RelayCommand ExportSegmentsCommand { get; private set; } = null!;
   public static AsyncRelayCommand<FolderM> ExportSegmentsToCommand { get; private set; } = null!;
-  public static RelayCommand OpenAboutCommand { get; } = new(() => _ = Dialog.ShowAsync(new AboutDialog()), null, "About");
+  public static RelayCommand OpenAboutCommand { get; private set; } = null!;
   public static RelayCommand OpenLogCommand { get; private set; } = null!;
   public static AsyncRelayCommand OpenSegmentsViewsCommand { get; private set; } = null!;
   public static RelayCommand OpenSettingsCommand { get; private set; } = null!;
@@ -122,25 +198,26 @@ public sealed class CoreVM : ObservableObject {
     _initToggleDialog();
 
     AppClosingCommand = new(_onAppClosing);
-    ExportSegmentsCommand = new(_exportSegments, () => _coreS.Segment.Selected.Items.Any(x => x.MediaItem is ImageM), Res.IconSegment, "Export Segments");
-    ExportSegmentsToCommand = new((x, _) => _exportSegmentsTo(x), () => _coreS.Segment.Selected.Items.Any(x => x.MediaItem is ImageM), Res.IconSegment, "Export");
-    OpenLogCommand = new(_openLog, MH.UI.Res.IconSort, "Open log");
-    OpenSettingsCommand = new(_openSettings, Res.IconSettings, "Settings");
+    ExportSegmentsCommand = new(_exportSegments, () => _coreS.Segment.Selected.Items.Any(x => x.MediaItem is ImageM), Res.IconSegment, L.Get(_loc.SegmentExport));
+    ExportSegmentsToCommand = new((x, _) => _exportSegmentsTo(x), () => _coreS.Segment.Selected.Items.Any(x => x.MediaItem is ImageM), Res.IconSegment, L.Get(_loc.SegmentExport));
+    OpenAboutCommand = new(() => _ = Dialog.ShowAsync(new AboutDialog()), null, L.Get(_loc.About));
+    OpenLogCommand = new(_openLog, MH.UI.Res.IconSort, L.Get(_loc.LogOpen));
+    OpenSettingsCommand = new(_openSettings, Res.IconSettings, L.Get(_loc.SettingsOpen));
     ExportTranslationsCommand = new(() => _exportTranslations(), text: L.Get(_loc.ExportTranslations));
-    OpenSegmentsViewsCommand = new(_ => OpenSegmentsViews(null, string.Empty), Res.IconSegment, "Segments View");
-    SaveDbCommand = new(() => _coreR.DB.SaveAll(), () => _coreR.DB.Changes > 0, Res.IconDatabase, "Save changes");
-    CompressImagesCommand = new(x => _compressImages(GetActive<ImageM>(x)), AnyActive<ImageM>, null, "Compress Images");
-    GetGeoNamesFromWebCommand = new((x, _) => _getGeoNamesFromWeb(GetActive<ImageM>(x)), AnyActive<ImageM>, Res.IconLocationCheckin, "Get GeoNames from web");
-    ImagesToVideoCommand = new(x => _imagesToVideo(GetActive<ImageM>(x)), AnyActive<ImageM>, null, "Images to Video");
-    ReadGeoLocationFromFilesCommand = new((f, _) => _readGeoLocationFromFiles(GetActive<ImageM>(f)), AnyActive<ImageM>, Res.IconLocationCheckin, "Read GeoLocation from files");
-    ReloadMetadataCommand = new((x, _) => MediaItem.ReloadMetadata(GetActive<RealMediaItemM>(x)), AnyActive<RealMediaItemM>, null, "Reload metadata");
+    OpenSegmentsViewsCommand = new(_ => OpenSegmentsViews(null, string.Empty), Res.IconSegment, L.Get(_loc.SegmentOpenViews));
+    SaveDbCommand = new(() => _coreR.DB.SaveAll(), () => _coreR.DB.Changes > 0, Res.IconDatabase, L.Get(_loc.DbSave));
+    CompressImagesCommand = new(x => _compressImages(GetActive<ImageM>(x)), AnyActive<ImageM>, null, L.Get(_loc.ImageCompress));
+    GetGeoNamesFromWebCommand = new((x, _) => _getGeoNamesFromWeb(GetActive<ImageM>(x)), AnyActive<ImageM>, Res.IconLocationCheckin, L.Get(_loc.GeoNameGetFromWeb));
+    ImagesToVideoCommand = new(x => _imagesToVideo(GetActive<ImageM>(x)), AnyActive<ImageM>, null, L.Get(_loc.ImagesToVideo));
+    ReadGeoLocationFromFilesCommand = new((f, _) => _readGeoLocationFromFiles(GetActive<ImageM>(f)), AnyActive<ImageM>, Res.IconLocationCheckin, L.Get(_loc.ReadGeoLocationFromFiles));
+    ReloadMetadataCommand = new((x, _) => MediaItem.ReloadMetadata(GetActive<RealMediaItemM>(x)), AnyActive<RealMediaItemM>, null, L.Get(_loc.ReloadMetadata));
     
-    ResizeImagesInFolderCommand = new(x => _resizeImages(GetActive<ImageM>(x)), null, "Resize Images in folder");
-    ResizeImagesToFolderCommand = new(x => _resizeImages(GetActive<ImageM>(null), x!.FullPath), x => AnyActive<ImageM>(null), null, "Resize Images to folder");
-    ResizeSelectedImagesCommand = new(() => _resizeImages(GetActive<ImageM>(null)), () => AnyActive<ImageM>(null), null, "Resize selected Images");
+    ResizeImagesInFolderCommand = new(x => _resizeImages(GetActive<ImageM>(x)), null, L.Get(_loc.ImageResizeInFolder));
+    ResizeImagesToFolderCommand = new(x => _resizeImages(GetActive<ImageM>(null), x!.FullPath), x => AnyActive<ImageM>(null), null, L.Get(_loc.ImageResizeToFolder));
+    ResizeSelectedImagesCommand = new(() => _resizeImages(GetActive<ImageM>(null)), () => AnyActive<ImageM>(null), null, L.Get(_loc.ImageResizeSelected));
 
-    RotateMediaItemsCommand = new((x, _) => _rotateMediaItems(GetActive<RealMediaItemM>(x)), AnyActive<RealMediaItemM>, Res.IconRotate, "Rotate");
-    SaveMetadataToFilesCommand = new((x, _) => _saveMetadataToFiles(GetActive<RealMediaItemM>(x)), AnyActive<RealMediaItemM>, MH.UI.Res.IconSave, "Save metadata to files");
+    RotateMediaItemsCommand = new((x, _) => _rotateMediaItems(GetActive<RealMediaItemM>(x)), AnyActive<RealMediaItemM>, Res.IconRotate, L.Get(_loc.MediaItemRotate));
+    SaveMetadataToFilesCommand = new((x, _) => _saveMetadataToFiles(GetActive<RealMediaItemM>(x)), AnyActive<RealMediaItemM>, MH.UI.Res.IconSave, L.Get(_loc.SaveMetadataToFiles));
 
     MainWindow.MainMenu.Build(this);
   }
@@ -369,8 +446,8 @@ public sealed class CoreVM : ObservableObject {
 
     if (_coreR.DB.Changes > 0 &&
         await Dialog.ShowAsync(new MessageDialog(
-          "Database changes",
-          "There are some changes in Picture Manager database.\nDo you want to save them?",
+          L.Get(_loc.DbChangesTitle),
+          L.Get(_loc.DbChangesMessage),
           Res.IconDatabase,
           true)) == 1)
       _coreR.DB.SaveAll();
@@ -384,8 +461,8 @@ public sealed class CoreVM : ObservableObject {
   private async Task _exportSegmentsTo(FolderM? folder) {
     if (folder == null ||
       await Dialog.ShowAsync(new MessageDialog(
-        "Export Segments",
-        $"Do you really want to export segments to \"{folder.Name}\"?",
+        L.Get(_loc.SegmentExportToFolderTitle),
+        L.Format(_loc.SegmentExportToFolderMessage, folder.Name),
         MH.UI.Res.IconQuestion,
         true)) != 1)
       return;
@@ -399,11 +476,11 @@ public sealed class CoreVM : ObservableObject {
     if (System.OperatingSystem.IsWindows())
       Dialog.ShowAsync(new LogDialog());
     else
-      MainTabs.Activate(MH.UI.Res.IconSort, "Log", Log);
+      MainTabs.Activate(MH.UI.Res.IconSort, L.Get(_loc.LogTabName), Log);
   }
 
   private void _openSettings() =>
-    MainTabs.Activate(Res.IconSettings, "Settings", Core.Inst.AllSettings);
+    MainTabs.Activate(Res.IconSettings, L.Get(_loc.SettingsTabName), Core.Inst.AllSettings);
 
   private static void _exportTranslations(string language = "en") {
     Localization.Registration.RegisterAll();
@@ -418,7 +495,7 @@ public sealed class CoreVM : ObservableObject {
   public void OpenPeopleView() {
     People ??= new();
     People.Reload();
-    MainTabs.Activate(Res.IconPeopleMultiple, "People", People);
+    MainTabs.Activate(Res.IconPeopleMultiple, L.Get(_loc.PeopleTabName), People);
   }
 
   public async Task OpenSegmentsViews(SegmentM[]? segments, string tabTitle) {
@@ -428,7 +505,7 @@ public sealed class CoreVM : ObservableObject {
       segments = SegmentsViewsVM.GetSegments(result).ToArray();
     }
     
-    MainTabs.Activate(Res.IconSegment, "Segments", Segment.Views);
+    MainTabs.Activate(Res.IconSegment, L.Get(_loc.SegmentTabName), Segment.Views);
     MainWindow.IsInViewMode = false;
     Segment.Views.Load(segments, tabTitle);
   }
@@ -497,43 +574,43 @@ public sealed class CoreVM : ObservableObject {
     var ttSegment = new ToggleDialogTargetType<SegmentM>(
       Res.IconSegment,
       _ => _coreS.Segment.Selected.Items.ToArray(),
-      count => "{0} Segment{1}".Plural(count));
+      count => L.FormatPlural(_loc.ToggleOnSegment, count));
 
     var ttPerson = new ToggleDialogTargetType<PersonM>(
       Res.IconPeople,
       _ => _coreS.Person.Selected.Items.ToArray(),
-      count => "{0} Person{1}".Plural(count));
+      count => L.FormatPlural(_loc.ToggleOnPerson, count));
 
     var ttMediaItem = new ToggleDialogTargetType<MediaItemM>(
       MH.UI.Res.IconImage,
       item => item is PersonM person
         ? GetActive<MediaItemM>().Where(mi => mi.Segments?.GetPeople().Contains(person) != true).ToArray()
         : GetActive<MediaItemM>(),
-      count => "{0} Media Item{1}".Plural(count));
+      count => L.FormatPlural(_loc.ToggleOnMediaItem, count));
 
     var ttVideoItem = new ToggleDialogTargetType<MediaItemM>(
       MH.UI.Res.IconMovieClapper,
       item => item is PersonM person
         ? Video.CurrentVideoItems.Selected.Items.Where(mi => mi.Segments?.GetPeople().Contains(person) != true).Cast<MediaItemM>().ToArray()
         : Video.CurrentVideoItems.Selected.Items.Cast<MediaItemM>().ToArray(),
-      count => "{0} Video Item{1}".Plural(count));
+      count => L.FormatPlural(_loc.ToggleOnVideoItem, count));
 
-    var stKeyword = new ToggleDialogSourceType<KeywordM>(Res.IconTagLabel, "Add/Remove Keyword", "Add or Remove on:");
+    var stKeyword = new ToggleDialogSourceType<KeywordM>(Res.IconTagLabel, L.Get(_loc.ToggleKeywordTitle), L.Get(_loc.ToggleKeywordMessage));
     stKeyword.Options.Add(new ToggleDialogOption<KeywordM, MediaItemM>(ttMediaItem, _coreR.MediaItem.ToggleKeyword));
     stKeyword.Options.Add(new ToggleDialogOption<KeywordM, MediaItemM>(ttVideoItem, _coreR.MediaItem.ToggleKeyword));
     stKeyword.Options.Add(new ToggleDialogOption<KeywordM, PersonM>(ttPerson, _coreR.Person.ToggleKeyword));
     stKeyword.Options.Add(new ToggleDialogOption<KeywordM, SegmentM>(ttSegment, _coreR.Segment.ToggleKeyword));
 
-    var stPerson = new ToggleDialogSourceType<PersonM>(Res.IconPeople, "Add/Remove Person", "Add or Remove on:");
+    var stPerson = new ToggleDialogSourceType<PersonM>(Res.IconPeople, L.Get(_loc.TogglePersonTitle), L.Get(_loc.TogglePersonMessage));
     stPerson.Options.Add(new ToggleDialogOption<PersonM, MediaItemM>(ttMediaItem, _coreR.MediaItem.TogglePerson));
     stPerson.Options.Add(new ToggleDialogOption<PersonM, MediaItemM>(ttVideoItem, _coreR.MediaItem.TogglePerson));
     stPerson.Options.Add(new ToggleDialogOption<PersonM, SegmentM>(ttSegment, _coreS.Segment.SetSelectedAsPerson));
 
-    var stGeoName = new ToggleDialogSourceType<GeoNameM>(Res.IconLocationCheckin, "Set GeoName", "Set GeoName on:");
+    var stGeoName = new ToggleDialogSourceType<GeoNameM>(Res.IconLocationCheckin, L.Get(_loc.ToggleGeoNameTitle), L.Get(_loc.ToggleGeoNameMessage));
     stGeoName.Options.Add(new ToggleDialogOption<GeoNameM, MediaItemM>(ttMediaItem, _coreR.MediaItem.SetGeoName));
     stGeoName.Options.Add(new ToggleDialogOption<GeoNameM, MediaItemM>(ttVideoItem, _coreR.MediaItem.SetGeoName));
 
-    var stRating = new ToggleDialogSourceType<RatingTreeM>(Res.IconStar, "Set Rating", "Set Rating on:");
+    var stRating = new ToggleDialogSourceType<RatingTreeM>(Res.IconStar, L.Get(_loc.ToggleRatingTitle), L.Get(_loc.ToggleRatingMessage));
     stRating.Options.Add(new ToggleDialogOption<RatingTreeM, MediaItemM>(ttMediaItem, (items, item) => _coreR.MediaItem.SetRating(items, item.Rating)));
     stRating.Options.Add(new ToggleDialogOption<RatingTreeM, MediaItemM>(ttVideoItem, (items, item) => _coreR.MediaItem.SetRating(items, item.Rating)));
     
