@@ -1,7 +1,9 @@
 ﻿using MH.Utils.BaseClasses;
 using MH.Utils.DB.Repositories;
 using MH.Utils.Extensions;
+using MH.Utils.Localization;
 using MH.Utils.Tree;
+using PictureManager.Common.Localization;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -10,6 +12,26 @@ using System.Linq;
 namespace PictureManager.Common.Features.Folder;
 
 public sealed class FolderR : TreeRepository<FolderM> {
+  private static class _loc {
+    private const string _prefix = "Folder.";
+    public const string ErrEmptyName = _prefix + "err.EmptyName";
+    public const string ErrFolderExists = _prefix + "err.FolderExists";
+    public const string ErrInvalidCharacters = _prefix + "err.InvalidCharacters";
+
+    static _loc() {
+      LocalizationManager.Register(typeof(_loc).Assembly, [
+        (ErrEmptyName, "The name is empty!"),
+        (ErrFolderExists, "Folder already exists!"),
+        (ErrInvalidCharacters, "New folder's name contains incorrect character(s)!")
+      ]);
+    }
+
+    public static void Register() { }
+  }
+
+  static FolderR() { _loc.Register(); }
+  public static void RegisterLocalization() => _loc.Register();
+
   public static FolderM Dummy { get; } = new(0, string.Empty, null);
   public FolderTreeView Tree { get; }
   public FolderDS DataSource { get; }
@@ -46,15 +68,15 @@ public sealed class FolderR : TreeRepository<FolderM> {
   }
 
   public override string? ValidateNewItemName(ITreeItem parent, string? name) {
-    if (string.IsNullOrEmpty(name)) return "The name is empty!";
+    if (string.IsNullOrEmpty(name)) return L.Get(_loc.ErrEmptyName);
 
     // check if folder already exists
     if (Directory.Exists(IOExtensions.PathCombine(((FolderM)parent).FullPath, name)))
-      return "Folder already exists!";
+      return L.Get(_loc.ErrFolderExists);
 
     // check if is correct folder name
     if (Path.GetInvalidPathChars().Any(name.Contains))
-      return "New folder's name contains incorrect character(s)!";
+      return L.Get(_loc.ErrInvalidCharacters);
 
     return null;
   }
