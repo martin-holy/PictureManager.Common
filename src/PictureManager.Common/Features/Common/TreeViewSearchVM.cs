@@ -1,6 +1,8 @@
 ﻿using MH.Utils.BaseClasses;
+using MH.Utils.Localization;
 using MH.Utils.Tree;
 using PictureManager.Common.Features.CategoryGroup;
+using PictureManager.Common.Localization;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -9,6 +11,24 @@ using System.Linq;
 namespace PictureManager.Common.Features.Common;
 
 public sealed class TreeViewSearchVM : ObservableObject {
+  private static class _loc {
+    private const string _prefix = "TreeViewSearch.";
+    public const string Open = _prefix + "Open.cmd";
+    public const string Close = _prefix + "Close.cmd";
+
+    static _loc() {
+      LocalizationManager.Register(typeof(_loc).Assembly, [
+        (Open, "Search"),
+        (Close, "Close")
+      ]);
+    }
+
+    public static void Register() { }
+  }
+
+  static TreeViewSearchVM() { _loc.Register(); }
+  public static void RegisterLocalization() => _loc.Register();
+
   private readonly TreeViewCategoriesVM _tvc;
   private string _searchText = string.Empty;
   private bool _isOpen;
@@ -23,8 +43,8 @@ public sealed class TreeViewSearchVM : ObservableObject {
 
   public TreeViewSearchVM(TreeViewCategoriesVM tvc) {
     _tvc = tvc;
-    OpenCommand = new(Open, Res.IconMagnify, "Search");
-    CloseCommand = new(() => IsOpen = false, MH.UI.Res.IconXCross, "Close");
+    OpenCommand = new(Open, Res.IconMagnify, L.Get(_loc.Open));
+    CloseCommand = new(() => IsOpen = false, MH.UI.Res.IconXCross, L.Get(_loc.Close));
     NavigateToCommand = new(NavigateTo);
   }
 

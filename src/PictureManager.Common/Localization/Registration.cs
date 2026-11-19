@@ -9,6 +9,7 @@ public static class Registration {
     Features.Common.GroupByItems.RegisterLocalization();
     Features.Common.LogDialog.RegisterLocalization();
     Features.Common.Settings.RegisterLocalization();
+    Features.Common.TreeViewSearchVM.RegisterLocalization();
     Features.MediaItem.Image.CompressImagesDialog.RegisterLocalization();
     Features.MediaItem.Image.ComputeImageHashesDialog.RegisterLocalization();
     Features.MediaItem.Image.ImageResizeDialog.RegisterLocalization();
