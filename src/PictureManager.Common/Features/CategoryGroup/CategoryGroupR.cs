@@ -1,8 +1,10 @@
 ﻿using MH.UI.Tree;
 using MH.Utils.DB.Repositories;
+using MH.Utils.Localization;
 using MH.Utils.Tree;
 using PictureManager.Common.Features.Keyword;
 using PictureManager.Common.Features.Person;
+using PictureManager.Common.Localization;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -11,6 +13,24 @@ using System.Linq;
 namespace PictureManager.Common.Features.CategoryGroup;
 
 public class CategoryGroupR : TreeRepository<CategoryGroupM> {
+  private static class _loc {
+    private const string _prefix = "CategoryGroup.";
+    public const string EmptyName = _prefix + "err.EmptyName";
+    public const string GroupExists = _prefix + "err.GroupExists";
+
+    static _loc() {
+      LocalizationManager.Register(typeof(_loc).Assembly, [
+        (EmptyName, "The name is empty!"),
+        (GroupExists, $"{0} group already exists!")
+      ]);
+    }
+
+    public static void Register() { }
+  }
+
+  static CategoryGroupR() { _loc.Register(); }
+  public static void RegisterLocalization() => _loc.Register();
+
   private readonly CoreR _coreR;
 
   public CategoryGroupDS DataSource { get; }
@@ -38,11 +58,11 @@ public class CategoryGroupR : TreeRepository<CategoryGroupM> {
     };
 
   public override string? ValidateNewItemName(ITreeItem parent, string? name) {
-    if (string.IsNullOrEmpty(name)) return "The name is empty!";
+    if (string.IsNullOrEmpty(name)) return L.Get(_loc.EmptyName);
     return parent.Items
       .OfType<CategoryGroupM>()
       .Any(x => x.Name.Equals(name, StringComparison.OrdinalIgnoreCase))
-        ? $"{name} group already exists!"
+        ? L.Format(_loc.GroupExists, name)
         : null;
   }
 
