@@ -1,10 +1,28 @@
 ﻿using MH.UI.Tree;
+using MH.Utils.Localization;
+using PictureManager.Common.Localization;
 using System.Linq;
 
 namespace PictureManager.Common.Features.Rating;
 
 public sealed class RatingTreeCategory : TreeCategory {
-  public RatingTreeCategory() : base(new(), Res.IconStar, "Ratings", (int)Category.Ratings) {
+  private static class _loc {
+    private const string _prefix = "Rating.";
+    public const string Title = _prefix + "TreeCategory.Title";
+
+    static _loc() {
+      LocalizationManager.Register(typeof(_loc).Assembly, [
+        (Title, "Ratings")
+      ]);
+    }
+
+    public static void Register() { }
+  }
+
+  static RatingTreeCategory() { _loc.Register(); }
+  public static void RegisterLocalization() { }
+
+  public RatingTreeCategory() : base(new(), Res.IconStar, L.Get(_loc.Title), (int)Category.Ratings) {
     _load();
   }
 
