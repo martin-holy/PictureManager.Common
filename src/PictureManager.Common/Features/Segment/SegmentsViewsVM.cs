@@ -4,9 +4,11 @@ using MH.Utils;
 using MH.Utils.BaseClasses;
 using MH.Utils.Extensions;
 using MH.Utils.Interfaces;
+using MH.Utils.Localization;
 using PictureManager.Common.Features.Common;
 using PictureManager.Common.Features.MediaItem;
 using PictureManager.Common.Features.Person;
+using PictureManager.Common.Localization;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -15,6 +17,32 @@ using System.Threading.Tasks;
 namespace PictureManager.Common.Features.Segment;
 
 public sealed class SegmentsViewsVM : ObservableObject {
+  private static class _loc {
+    private const string _prefix = "Segment.View.";
+    public const string LoadFromTitle = _prefix + "LoadFrom.dlg.Title";
+    public const string LoadFromMessage = _prefix + "LoadFrom.dlg.Message";
+    public const string LoadFromMediaItems = _prefix + "LoadFrom.dlg.btn.MediaItems";
+    public const string LoadFromPeople = _prefix + "LoadFrom.dlg.btn.People";
+    public const string LoadFromSegments = _prefix + "LoadFrom.dlg.btn.Segments";
+    public const string InnerTabName = _prefix + "InnerTabName";
+
+    static _loc() {
+      LocalizationManager.Register(typeof(_loc).Assembly, [
+        (LoadFromTitle, "Segments"),
+        (LoadFromMessage, "Load segments from ..."),
+        (LoadFromMediaItems, "Media items"),
+        (LoadFromPeople, "People"),
+        (LoadFromSegments, "Segments"),
+        (InnerTabName, "Segments {0}")
+      ]);
+    }
+
+    public static void Register() { }
+  }
+
+  static SegmentsViewsVM() { _loc.Register(); }
+  public static void RegisterLocalization() { }
+
   private readonly SegmentS _segmentS;
   private readonly Dictionary<SegmentsViewVM, SegmentM[]> _views = [];
   private SegmentsViewVM? _current;
@@ -101,12 +129,12 @@ public sealed class SegmentsViewsVM : ObservableObject {
   }
 
   public static Task<int> GetSegmentsToLoadUserInput() {
-    var md = new MessageDialog("Segments", "Load segments from ...", Res.IconSegment, true);
+    var md = new MessageDialog(L.Get(_loc.LoadFromTitle), L.Get(_loc.LoadFromMessage), Res.IconSegment, true);
 
     md.Buttons = [
-      new(md.SetResult(1, MH.UI.Res.IconImage, "Media items"), true),
-      new(md.SetResult(2, Res.IconPeople, "People")),
-      new(md.SetResult(3, Res.IconSegment, "Segments"))
+      new(md.SetResult(1, MH.UI.Res.IconImage, L.Get(_loc.LoadFromMediaItems)), true),
+      new(md.SetResult(2, Res.IconPeople, L.Get(_loc.LoadFromPeople))),
+      new(md.SetResult(3, Res.IconSegment, L.Get(_loc.LoadFromSegments)))
     ];
 
     return Dialog.ShowAsync(md);
@@ -150,7 +178,7 @@ public sealed class SegmentsViewsVM : ObservableObject {
 
   public void Load(SegmentM[] items, string tabTitle) {
     if (string.IsNullOrEmpty(tabTitle))
-      tabTitle = $"Segments {_views.Count + 1}";
+      tabTitle = L.Format(_loc.InnerTabName, _views.Count + 1);
 
     var and = Keyboard.IsCtrlOn() && Current != null;
     var source = (and ? items.Union(Current!.Root.Source) : items).ToList();
