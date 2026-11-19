@@ -35,9 +35,9 @@ public class MediaItemCollectionView : CollectionView<MediaItemM> {
     _loc.Register();
 
     SortFields = [
-      new SortField<MediaItemM>(L.Get(_loc.SortFieldFileName), x => x.FileName, StringComparer.CurrentCultureIgnoreCase),
-      new SortField<MediaItemM>(L.Get(_loc.SortFieldLastWriteTime), x => new System.IO.FileInfo(x.FilePath).LastWriteTime),
-      new SortField<MediaItemM>(L.Get(_loc.SortFieldCreationTime), x => new System.IO.FileInfo(x.FilePath).CreationTime)
+      new SortField<MediaItemM>("File name", L.Get(_loc.SortFieldFileName), x => x.FileName, StringComparer.CurrentCultureIgnoreCase),
+      new SortField<MediaItemM>("Modified", L.Get(_loc.SortFieldLastWriteTime), x => new System.IO.FileInfo(x.FilePath).LastWriteTime),
+      new SortField<MediaItemM>("Created", L.Get(_loc.SortFieldCreationTime), x => new System.IO.FileInfo(x.FilePath).CreationTime)
     ];
   }
 
