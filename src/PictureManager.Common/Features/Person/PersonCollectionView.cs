@@ -26,12 +26,17 @@ public class PersonCollectionView : CollectionView<PersonM> {
     public static void Register() { }
   }
 
-  static PersonCollectionView() { _loc.Register(); }
+  static PersonCollectionView() {
+    _loc.Register();
+
+    _sortFields = [
+      new SortField<PersonM>("Name", L.Get(_loc.SortFieldName), x => x.Name, StringComparer.CurrentCultureIgnoreCase)
+    ];
+  }
+
   public static void RegisterLocalization() { }
 
-  private static readonly IReadOnlyList<SortField<PersonM>> _sortFields = [
-    new SortField<PersonM>("Name", L.Get(_loc.SortFieldName), x => x.Name, StringComparer.CurrentCultureIgnoreCase)
-  ];
+  private static readonly IReadOnlyList<SortField<PersonM>> _sortFields;
 
   public PersonCollectionView() : base(Res.IconPeopleMultiple, L.Get(_loc.Title), [ViewMode.ThumbSmall, ViewMode.List, ViewMode.Tiles]) {
     DefaultSortField = _sortFields[0];
