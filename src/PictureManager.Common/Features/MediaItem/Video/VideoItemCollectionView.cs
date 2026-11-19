@@ -30,7 +30,7 @@ public class VideoItemCollectionView : CollectionView<VideoItemM> {
     _loc.Register();
 
     _sortFields = [
-      new SortField<VideoItemM>(L.Get(_loc.SortFieldTime), x => x.TimeStart, StringComparer.CurrentCultureIgnoreCase)
+      new SortField<VideoItemM>("Time", L.Get(_loc.SortFieldTime), x => x.TimeStart, StringComparer.CurrentCultureIgnoreCase)
     ];
   }
 
