@@ -18,6 +18,7 @@ public static class Registration {
     Features.FolderKeyword.FolderKeywordTreeCategory.RegisterLocalization();
     Features.GeoLocation.GetGeoNamesFromWebDialog.RegisterLocalization();
     Features.GeoLocation.ReadGeoLocationFromFilesDialog.RegisterLocalization();
+    Features.GeoName.GeoNameR.RegisterLocalization();
     Features.MediaItem.Image.CompressImagesDialog.RegisterLocalization();
     Features.MediaItem.Image.ComputeImageHashesDialog.RegisterLocalization();
     Features.MediaItem.Image.ImageResizeDialog.RegisterLocalization();
