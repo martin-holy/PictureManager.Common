@@ -25,7 +25,7 @@ public sealed class FolderBrowserDialog : Dialog {
   }
 
   static FolderBrowserDialog() { _loc.Register(); }
-  public static void RegisterLocalization() => _loc.Register();
+  public static void RegisterLocalization() { }
 
   private FolderTreeViewItem? _selectedFolder;
 

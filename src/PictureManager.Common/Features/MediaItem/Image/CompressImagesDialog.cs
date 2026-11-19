@@ -25,7 +25,7 @@ public sealed class CompressImagesDialog : ParallelProgressDialog<ImageM> {
   }
 
   static CompressImagesDialog() { _loc.Register(); }
-  public static void RegisterLocalization() => _loc.Register();
+  public static void RegisterLocalization() { }
 
   private readonly ImageS _imageS;
   private int _jpegQualityLevel;

@@ -24,7 +24,7 @@ public sealed class FolderKeywordTreeCategory : TreeCategory<FolderM> {
   }
 
   static FolderKeywordTreeCategory() { _loc.Register(); }
-  public static void RegisterLocalization() => _loc.Register();
+  public static void RegisterLocalization() { }
 
   public static RelayCommand<FolderM> SetAsFolderKeywordCommand { get; set; } = null!;
 

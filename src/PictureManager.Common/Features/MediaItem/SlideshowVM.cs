@@ -30,7 +30,7 @@ public sealed class SlideshowVM : ObservableObject {
   }
 
   static SlideshowVM() { _loc.Register(); }
-  public static void RegisterLocalization() => _loc.Register();
+  public static void RegisterLocalization() { }
 
   private ZoomAndPan? _zoomAndPan;
   private bool _isTimerOn;

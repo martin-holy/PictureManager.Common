@@ -23,7 +23,7 @@ public sealed class MediaItemsImport : ObservableObject {
   }
 
   static MediaItemsImport() { _loc.Register(); }
-  public static void RegisterLocalization() => _loc.Register();
+  public static void RegisterLocalization() { }
 
   private readonly IProgress<int> _progress;
   private readonly WorkTask _task = new();

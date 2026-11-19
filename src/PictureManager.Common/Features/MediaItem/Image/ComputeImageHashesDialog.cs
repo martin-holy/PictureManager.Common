@@ -24,7 +24,7 @@ public sealed class ComputeImageHashesDialog : ProgressDialog<MediaItemM> {
   }
 
   static ComputeImageHashesDialog() { _loc.Register(); }
-  public static void RegisterLocalization() => _loc.Register();
+  public static void RegisterLocalization() { }
 
   private readonly Dictionary<object, long> _hashes;
   private readonly ImagingU.ImageHashFunc _hashMethod;

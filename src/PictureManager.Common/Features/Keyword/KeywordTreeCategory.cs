@@ -23,7 +23,7 @@ public sealed class KeywordTreeCategory : TreeCategory<KeywordM, CategoryGroupM>
   }
 
   static KeywordTreeCategory() { _loc.Register(); }
-  public static void RegisterLocalization() => _loc.Register();
+  public static void RegisterLocalization() { }
 
   public CategoryGroupM AutoAddedGroup { get; set; } = null!;
 

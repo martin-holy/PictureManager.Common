@@ -30,7 +30,7 @@ public sealed class KeywordDS(CoreR coreR, KeywordR repository)
   }
 
   static KeywordDS() { _loc.Register(); }
-  public static void RegisterLocalization() => _loc.Register();
+  public static void RegisterLocalization() { }
 
   private readonly CoreR _coreR = coreR;
   private const string _notFoundRecordNamePrefix = "Not found ";

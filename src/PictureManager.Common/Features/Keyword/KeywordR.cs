@@ -26,7 +26,7 @@ public sealed class KeywordR : TreeRepository<KeywordM> {
   }
 
   static KeywordR() { _loc.Register(); }
-  public static void RegisterLocalization() => _loc.Register();
+  public static void RegisterLocalization() { }
 
   public KeywordTreeCategory Tree { get; }
   public KeywordDS DataSource { get; }

@@ -35,7 +35,7 @@ public sealed class Settings : UserSettings {
   }
 
   static Settings() { _loc.Register(); }
-  public static void RegisterLocalization() => _loc.Register();
+  public static void RegisterLocalization() { }
 
   public CommonSettings Common { get; }
   public GeoNameSettings GeoName { get; }

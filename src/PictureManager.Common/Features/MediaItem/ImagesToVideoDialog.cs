@@ -40,7 +40,7 @@ public sealed class ImagesToVideoDialog : Dialog {
   }
 
   static ImagesToVideoDialog() { _loc.Register(); }
-  public static void RegisterLocalization() => _loc.Register();
+  public static void RegisterLocalization() { }
 
   private bool _isBusy;
   private readonly ImageM[] _items;

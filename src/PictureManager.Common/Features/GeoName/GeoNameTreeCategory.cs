@@ -21,7 +21,7 @@ public sealed class GeoNameTreeCategory(GeoNameR r)
   }
 
   static GeoNameTreeCategory() { _loc.Register(); }
-  public static void RegisterLocalization() => _loc.Register();
+  public static void RegisterLocalization() { }
 
   protected override void _onItemSelected(object o) =>
     _ = Core.VM.ToggleDialog.Toggle(o as GeoNameM);

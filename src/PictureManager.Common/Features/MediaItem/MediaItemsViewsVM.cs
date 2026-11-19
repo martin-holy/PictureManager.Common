@@ -59,7 +59,7 @@ public sealed class MediaItemsViewsVM : ObservableObject {
   }
 
   static MediaItemsViewsVM() { _loc.Register(); }
-  public static void RegisterLocalization() => _loc.Register();
+  public static void RegisterLocalization() { }
 
   private readonly List<MediaItemsViewVM> _all = [];
   private MediaItemsViewVM? _current;

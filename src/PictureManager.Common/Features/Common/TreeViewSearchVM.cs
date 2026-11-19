@@ -27,7 +27,7 @@ public sealed class TreeViewSearchVM : ObservableObject {
   }
 
   static TreeViewSearchVM() { _loc.Register(); }
-  public static void RegisterLocalization() => _loc.Register();
+  public static void RegisterLocalization() { }
 
   private readonly TreeViewCategoriesVM _tvc;
   private string _searchText = string.Empty;

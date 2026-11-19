@@ -26,7 +26,7 @@ public sealed class ReloadMetadataDialog : ParallelProgressDialog<RealMediaItemM
   }
 
   static ReloadMetadataDialog() { _loc.Register(); }
-  public static void RegisterLocalization() => _loc.Register();
+  public static void RegisterLocalization() { }
 
   private readonly MediaItemS _mediaItemS;
 

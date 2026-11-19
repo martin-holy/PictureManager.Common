@@ -36,7 +36,7 @@ public sealed class FolderTreeCategory : TreeCategory<FolderM> {
   }
 
   static FolderTreeCategory() { _loc.Register(); }
-  public static void RegisterLocalization() => _loc.Register();
+  public static void RegisterLocalization() { }
 
   public FolderTreeCategory(FolderR r, TreeView treeView) :
     base(treeView, Res.IconFolder, L.Get(_loc.Title), (int)Category.Folders, r) {

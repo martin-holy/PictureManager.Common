@@ -23,7 +23,7 @@ public sealed class FavoriteFolderTreeCategory : TreeCategory<FavoriteFolderM> {
   }
 
   static FavoriteFolderTreeCategory() { _loc.Register(); }
-  public static void RegisterLocalization() => _loc.Register();
+  public static void RegisterLocalization() { }
 
   public static RelayCommand<FolderM> AddToFavoritesCommand { get; set; } = null!;
 

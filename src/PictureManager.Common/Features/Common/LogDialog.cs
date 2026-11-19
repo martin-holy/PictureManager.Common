@@ -23,7 +23,7 @@ public sealed class LogDialog : Dialog {
   }
 
   static LogDialog() { _loc.Register(); }
-  public static void RegisterLocalization() => _loc.Register();
+  public static void RegisterLocalization() { }
 
   public LogDialog() : base(L.Get(_loc.Title), MH.UI.Res.IconSort) {
     Buttons = [

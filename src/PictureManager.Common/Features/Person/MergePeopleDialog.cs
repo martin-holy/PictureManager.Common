@@ -27,7 +27,7 @@ public sealed class MergePeopleDialog : Dialog {
   }
 
   static MergePeopleDialog() { _loc.Register(); }
-  public static void RegisterLocalization() => _loc.Register();
+  public static void RegisterLocalization() { }
 
   private static MergePeopleDialog? _inst;
   private readonly SegmentS _segmentS;

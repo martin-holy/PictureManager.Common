@@ -31,7 +31,7 @@ public sealed class ImageResizeDialog : ParallelProgressDialog<ImageM> {
   }
 
   static ImageResizeDialog() { _loc.Register(); }
-  public static void RegisterLocalization() => _loc.Register();
+  public static void RegisterLocalization() { }
 
   private bool _preserveThumbnail;
   private bool _preserveMetadata;

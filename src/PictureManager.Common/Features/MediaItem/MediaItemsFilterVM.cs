@@ -28,7 +28,7 @@ public sealed class MediaItemsFilterVM : ObservableObject, ICollectionViewFilter
   }
 
   static MediaItemsFilterVM() { _loc.Register(); }
-  public static void RegisterLocalization() => _loc.Register();
+  public static void RegisterLocalization() { }
 
   private bool _showImages = true;
   private bool _showVideos = true;

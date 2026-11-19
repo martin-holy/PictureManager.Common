@@ -29,7 +29,7 @@ public sealed class GeoNameVM {
   }
 
   static GeoNameVM() { _loc.Register(); }
-  public static void RegisterLocalization() => _loc.Register();
+  public static void RegisterLocalization() { }
 
   private readonly GeoNameR _r;
 

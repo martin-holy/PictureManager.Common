@@ -45,7 +45,7 @@ public sealed class MediaItemS(MediaItemR r, ImageR imageR, VideoR videoR) : Obs
   }
 
   static MediaItemS() { _loc.Register(); }
-  public static void RegisterLocalization() => _loc.Register();
+  public static void RegisterLocalization() { }
 
   public static readonly XNamespace NsPM = "https://github.com/martin-holy/PictureManager/";
 

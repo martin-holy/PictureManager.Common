@@ -25,7 +25,7 @@ public sealed class ReadGeoLocationFromFilesDialog : ProgressDialog<ImageM> {
   }
 
   static ReadGeoLocationFromFilesDialog() { _loc.Register(); }
-  public static void RegisterLocalization() => _loc.Register();
+  public static void RegisterLocalization() { }
 
   public ReadGeoLocationFromFilesDialog(ImageM[] items) :
     base(L.Get(_loc.Title), Res.IconLocationCheckin, items) {

@@ -44,7 +44,7 @@ public static class GroupByItems {
     _segmentSizeGroup = new(Res.IconRuler, L.Get(_loc.SegmentSizeGroup));
   }
 
-  public static void RegisterLocalization() => _loc.Register();
+  public static void RegisterLocalization() { }
 
   private static readonly ListItem _dateGroup;
   private static readonly ListItem _peopleGroupsGroup;

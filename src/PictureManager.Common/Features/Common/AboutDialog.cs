@@ -23,7 +23,7 @@ public sealed class AboutDialog : Dialog {
   }
 
   static AboutDialog() { _loc.Register(); }
-  public static void RegisterLocalization() => _loc.Register();
+  public static void RegisterLocalization() { }
 
   public string Version => $"Version: {Core.UiVersion} (Core: {Core.Version})";
   public string? Copyright => FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).LegalCopyright;

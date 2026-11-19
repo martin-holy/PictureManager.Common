@@ -38,7 +38,7 @@ public sealed class FileOperationCollisionDialog : Dialog {
   }
 
   static FileOperationCollisionDialog() { _loc.Register(); }
-  public static void RegisterLocalization() => _loc.Register();
+  public static void RegisterLocalization() { }
 
   private readonly FolderM _destFolder;
 

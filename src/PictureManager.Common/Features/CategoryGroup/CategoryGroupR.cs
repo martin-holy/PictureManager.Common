@@ -29,7 +29,7 @@ public class CategoryGroupR : TreeRepository<CategoryGroupM> {
   }
 
   static CategoryGroupR() { _loc.Register(); }
-  public static void RegisterLocalization() => _loc.Register();
+  public static void RegisterLocalization() { }
 
   private readonly CoreR _coreR;
 

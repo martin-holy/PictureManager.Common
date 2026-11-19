@@ -34,7 +34,7 @@ public sealed class GeoNameR : TreeRepository<GeoNameM> {
   }
 
   static GeoNameR() { _loc.Register(); }
-  public static void RegisterLocalization() => _loc.Register();
+  public static void RegisterLocalization() { }
 
   private bool _webLoadDisabled;
 

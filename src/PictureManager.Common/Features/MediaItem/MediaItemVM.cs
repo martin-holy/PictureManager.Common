@@ -89,7 +89,7 @@ public sealed class MediaItemVM : ObservableObject {
   }
 
   static MediaItemVM() { _loc.Register(); }
-  public static void RegisterLocalization() => _loc.Register();
+  public static void RegisterLocalization() { }
 
   private readonly CoreVM _coreVM;
   private readonly MediaItemS _s;

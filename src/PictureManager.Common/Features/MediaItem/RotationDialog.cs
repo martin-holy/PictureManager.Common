@@ -22,7 +22,7 @@ public sealed class RotationDialog : Dialog {
   }
 
   static RotationDialog() { _loc.Register(); }
-  public static void RegisterLocalization() => _loc.Register();
+  public static void RegisterLocalization() { }
 
   private static RotationDialog? _inst;
 

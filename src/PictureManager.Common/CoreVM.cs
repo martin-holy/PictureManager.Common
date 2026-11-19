@@ -126,7 +126,7 @@ public sealed class CoreVM : ObservableObject {
   }
 
   static CoreVM() { _loc.Register(); }
-  public static void RegisterLocalization() => _loc.Register();
+  public static void RegisterLocalization() { }
 
   private readonly CoreS _coreS;
   private readonly CoreR _coreR;

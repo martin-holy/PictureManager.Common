@@ -23,7 +23,7 @@ public sealed class GetGeoNamesFromWebDialog : ProgressDialog<ImageM> {
   }
 
   static GetGeoNamesFromWebDialog() { _loc.Register(); }
-  public static void RegisterLocalization() => _loc.Register();
+  public static void RegisterLocalization() { }
 
   private readonly CoreR _coreR;
 

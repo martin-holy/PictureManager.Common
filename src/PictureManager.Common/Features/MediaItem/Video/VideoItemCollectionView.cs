@@ -34,7 +34,7 @@ public class VideoItemCollectionView : CollectionView<VideoItemM> {
     ];
   }
 
-  public static void RegisterLocalization() => _loc.Register();
+  public static void RegisterLocalization() { }
 
   private static readonly IReadOnlyList<SortField<VideoItemM>> _sortFields;
 

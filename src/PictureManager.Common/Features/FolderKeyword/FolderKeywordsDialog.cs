@@ -38,7 +38,7 @@ public sealed class FolderKeywordsDialog : Dialog {
     OpenCommand = new(_ => ShowAsync(new FolderKeywordsDialog()), null, L.Get(_loc.Open));
   }
 
-  public static void RegisterLocalization() => _loc.Register();
+  public static void RegisterLocalization() { }
 
   private FolderM? _selectedFolder;
 

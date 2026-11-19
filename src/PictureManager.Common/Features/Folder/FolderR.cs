@@ -30,7 +30,7 @@ public sealed class FolderR : TreeRepository<FolderM> {
   }
 
   static FolderR() { _loc.Register(); }
-  public static void RegisterLocalization() => _loc.Register();
+  public static void RegisterLocalization() { }
 
   public static FolderM Dummy { get; } = new(0, string.Empty, null);
   public FolderTreeView Tree { get; }

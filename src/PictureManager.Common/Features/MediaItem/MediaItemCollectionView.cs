@@ -41,7 +41,7 @@ public class MediaItemCollectionView : CollectionView<MediaItemM> {
     ];
   }
 
-  public static void RegisterLocalization() => _loc.Register();
+  public static void RegisterLocalization() { }
 
   private double _thumbScale;
 
