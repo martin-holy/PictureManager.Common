@@ -6,6 +6,7 @@ public static class Registration {
     Features.CategoryGroup.CategoryGroupR.RegisterLocalization();
     Features.Common.AboutDialog.RegisterLocalization();
     Features.Common.FileOperationCollisionDialog.RegisterLocalization();
+    Features.Common.GroupByItems.RegisterLocalization();
     Features.MediaItem.Image.CompressImagesDialog.RegisterLocalization();
     Features.MediaItem.Image.ComputeImageHashesDialog.RegisterLocalization();
     Features.MediaItem.Image.ImageResizeDialog.RegisterLocalization();

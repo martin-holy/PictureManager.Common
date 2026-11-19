@@ -1,6 +1,7 @@
 ﻿using MH.UI.Controls;
 using MH.Utils.BaseClasses;
 using MH.Utils.Extensions;
+using MH.Utils.Localization;
 using MH.Utils.Tree;
 using PictureManager.Common.Features.CategoryGroup;
 using PictureManager.Common.Features.Folder;
@@ -10,6 +11,7 @@ using PictureManager.Common.Features.MediaItem;
 using PictureManager.Common.Features.Person;
 using PictureManager.Common.Features.Segment;
 using PictureManager.Common.Interfaces;
+using PictureManager.Common.Localization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,9 +19,36 @@ using System.Linq;
 namespace PictureManager.Common.Features.Common;
 
 public static class GroupByItems {
-  private static readonly ListItem _dateGroup = new(Res.IconCalendar, "Date");
-  private static readonly ListItem _peopleGroupsGroup = new(Res.IconPeopleMultiple, "Groups");
-  private static readonly ListItem _segmentSizeGroup = new(Res.IconRuler, "Size");
+  private static class _loc {
+    private const string _prefix = "GroupByItems.";
+    public const string DateGroup = _prefix + "DateGroup";
+    public const string PeopleGroupsGroup = _prefix + "PeopleGroupsGroup";
+    public const string SegmentSizeGroup = _prefix + "SegmentSizeGroup";
+
+    static _loc() {
+      LocalizationManager.Register(typeof(_loc).Assembly, [
+        (DateGroup, "Date"),
+        (PeopleGroupsGroup, "Groups"),
+        (SegmentSizeGroup, "Size")
+      ]);
+    }
+
+    public static void Register() { }
+  }
+
+  static GroupByItems() {
+    _loc.Register();
+
+    _dateGroup = new(Res.IconCalendar, L.Get(_loc.DateGroup));
+    _peopleGroupsGroup = new(Res.IconPeopleMultiple, L.Get(_loc.PeopleGroupsGroup));
+    _segmentSizeGroup = new(Res.IconRuler, L.Get(_loc.SegmentSizeGroup));
+  }
+
+  public static void RegisterLocalization() => _loc.Register();
+
+  private static readonly ListItem _dateGroup;
+  private static readonly ListItem _peopleGroupsGroup;
+  private static readonly ListItem _segmentSizeGroup;
   private static readonly Dictionary<(int GroupSize, int Bucket), SizeM> _segmentSizeGroups = [];
 
   private static readonly Dictionary<string, string> _mediaItemsDates = new();
