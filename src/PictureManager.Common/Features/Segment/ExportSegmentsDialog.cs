@@ -1,6 +1,8 @@
 ﻿using MH.UI.Dialogs;
 using MH.Utils;
 using MH.Utils.BaseClasses;
+using MH.Utils.Localization;
+using PictureManager.Common.Localization;
 using System;
 using System.IO;
 using System.Threading;
@@ -9,16 +11,36 @@ using System.Threading.Tasks;
 namespace PictureManager.Common.Features.Segment;
 
 public sealed class ExportSegmentsDialog : ParallelProgressDialog<SegmentM> {
+  private static class _loc {
+    private const string _prefix = "Segment.Export.";
+    public const string Title = _prefix + "dlg.Title";
+    public const string BtnExport = _prefix + "dlg.btn.Export";
+    public const string OpenFolderBrowser = _prefix + "OpenFolderBrowser.cmd";
+
+    static _loc() {
+      LocalizationManager.Register(typeof(_loc).Assembly, [
+        (Title, "Export Segments"),
+        (BtnExport, "Export"),
+        (OpenFolderBrowser, "Select folder")
+      ]);
+    }
+
+    public static void Register() { }
+  }
+
+  static ExportSegmentsDialog() { _loc.Register(); }
+  public static void RegisterLocalization() { }
+
   private string? _destDir;
 
   public string? DestDir { get => _destDir; set { _destDir = value; OnPropertyChanged(); } }
   public AsyncRelayCommand? OpenFolderBrowserCommand { get; }
 
-  public ExportSegmentsDialog(SegmentM[] items) : base("Export Segments", Res.IconSegment, items, null, "Export") {
-    OpenFolderBrowserCommand = new(_openFolderBrowser, Res.IconFolder, "Select folder");
+  public ExportSegmentsDialog(SegmentM[] items) : base(L.Get(_loc.Title), Res.IconSegment, items, null, L.Get(_loc.BtnExport)) {
+    OpenFolderBrowserCommand = new(_openFolderBrowser, Res.IconFolder, L.Get(_loc.OpenFolderBrowser));
   }
 
-  public ExportSegmentsDialog(SegmentM[] items, string destDir) : base("Export Segments", Res.IconSegment, items) {
+  public ExportSegmentsDialog(SegmentM[] items, string destDir) : base(L.Get(_loc.Title), Res.IconSegment, items) {
     _destDir = destDir;
     _autoStart = true;
   }

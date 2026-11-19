@@ -47,5 +47,6 @@ public static class Registration {
     Features.Person.PersonTreeCategory.RegisterLocalization();
     Features.Person.PersonVM.RegisterLocalization();
     Features.Rating.RatingTreeCategory.RegisterLocalization();
+    Features.Segment.ExportSegmentsDialog.RegisterLocalization();
   }
 }
