@@ -50,5 +50,6 @@ public static class Registration {
     Features.Segment.ExportSegmentsDialog.RegisterLocalization();
     Features.Segment.SegmentCollectionView.RegisterLocalization();
     Features.Segment.SegmentRectS.RegisterLocalization();
+    Features.Segment.SegmentsDrawerVM.RegisterLocalization();
   }
 }
