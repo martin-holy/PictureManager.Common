@@ -1,6 +1,8 @@
 ﻿using MH.Utils.DB.Repositories;
+using MH.Utils.Localization;
 using MH.Utils.Tree;
 using PictureManager.Common.Features.CategoryGroup;
+using PictureManager.Common.Localization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +10,24 @@ using System.Linq;
 namespace PictureManager.Common.Features.Keyword;
 
 public sealed class KeywordR : TreeRepository<KeywordM> {
+  private static class _loc {
+    private const string _prefix = "Keyword.";
+    public const string ErrEmptyName = _prefix + "err.EmptyName";
+    public const string ErrItemExists = _prefix + "err.ItemExists";
+
+    static _loc() {
+      LocalizationManager.Register(typeof(_loc).Assembly, [
+        (ErrEmptyName, "The name is empty!"),
+        (ErrItemExists, "{0} item already exists!")
+      ]);
+    }
+
+    public static void Register() { }
+  }
+
+  static KeywordR() { _loc.Register(); }
+  public static void RegisterLocalization() => _loc.Register();
+
   public KeywordTreeCategory Tree { get; }
   public KeywordDS DataSource { get; }
 
@@ -20,9 +40,9 @@ public sealed class KeywordR : TreeRepository<KeywordM> {
     TreeItemCreate(new(GetNextId(), name, parent));
 
   public override string? ValidateNewItemName(ITreeItem parent, string? name) {
-    if (string.IsNullOrEmpty(name)) return "The name is empty!";
+    if (string.IsNullOrEmpty(name)) return L.Get(_loc.ErrEmptyName);
     return parent.Items.OfType<KeywordM>().Any(x => x.Name.Equals(name, StringComparison.OrdinalIgnoreCase))
-      ? $"{name} item already exists!"
+      ? L.Format(_loc.ErrItemExists, name)
       : null;
   }
 
