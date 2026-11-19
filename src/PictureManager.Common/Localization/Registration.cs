@@ -44,5 +44,6 @@ public static class Registration {
     Features.Person.PeopleToolsTabVM.RegisterLocalization();
     Features.Person.PersonCollectionView.RegisterLocalization();
     Features.Person.PersonDetailVM.RegisterLocalization();
+    Features.Person.PersonTreeCategory.RegisterLocalization();
   }
 }

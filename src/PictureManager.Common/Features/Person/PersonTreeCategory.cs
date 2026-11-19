@@ -1,27 +1,46 @@
 ﻿using MH.UI.Tree;
+using MH.Utils.Localization;
 using MH.Utils.Tree;
 using PictureManager.Common.Features.CategoryGroup;
+using PictureManager.Common.Localization;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace PictureManager.Common.Features.Person;
 
 public sealed class PersonTreeCategory : TreeCategory<PersonM, CategoryGroupM> {
+  private static class _loc {
+    private const string _prefix = "Person.";
+    public const string Title = _prefix + "TreeCategory.Title";
+    public const string UnknownGroupName = _prefix + "UnknownGroupName";
+
+    static _loc() {
+      LocalizationManager.Register(typeof(_loc).Assembly, [
+        (Title, "People"),
+        (UnknownGroupName, "Unknown")
+      ]);
+    }
+
+    public static void Register() { }
+  }
+
+  static PersonTreeCategory() { _loc.Register(); }
+  public static void RegisterLocalization() { }
+
   private CategoryGroupM? _unknownGroup;
-  private const string _unknownGroupName = "Unknown";
 
   public CategoryGroupM UnknownGroup {
     get =>
       _unknownGroup ??=
         Items
           .OfType<CategoryGroupM>()
-          .SingleOrDefault(x => x.Name.Equals(_unknownGroupName))
-        ?? Core.R.CategoryGroup.ItemCreate(this, _unknownGroupName);
+          .SingleOrDefault(x => x.Name.Equals(L.Get(_loc.UnknownGroupName)))
+        ?? Core.R.CategoryGroup.ItemCreate(this, L.Get(_loc.UnknownGroupName));
     set => _unknownGroup = value;
   }
 
   public PersonTreeCategory(PersonR r, CategoryGroupR groupR)
-    : base(new(), Res.IconPeopleMultiple, "People", (int)Category.People, r, groupR) {
+    : base(new(), Res.IconPeopleMultiple, L.Get(_loc.Title), (int)Category.People, r, groupR) {
     CanMoveItem = true;
     ScrollToAfterCreate = true;
   }
