@@ -1,7 +1,9 @@
 ﻿using MH.UI.Controls;
 using MH.Utils.EventsArgs;
+using MH.Utils.Localization;
 using PictureManager.Common.Features.Common;
 using PictureManager.Common.Features.Segment;
+using PictureManager.Common.Localization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,11 +11,29 @@ using System.Linq;
 namespace PictureManager.Common.Features.Person;
 
 public class PersonCollectionView : CollectionView<PersonM> {
+  private static class _loc {
+    private const string _prefix = "Person.CollectionView.";
+    public const string Title = _prefix + "Title";
+    public const string SortFieldName = _prefix + "SortField.Name";
+
+    static _loc() {
+      LocalizationManager.Register(typeof(_loc).Assembly, [
+        (Title, "People"),
+        (SortFieldName, "Name")
+      ]);
+    }
+
+    public static void Register() { }
+  }
+
+  static PersonCollectionView() { _loc.Register(); }
+  public static void RegisterLocalization() { }
+
   private static readonly IReadOnlyList<SortField<PersonM>> _sortFields = [
-    new SortField<PersonM>("Name", x => x.Name, StringComparer.CurrentCultureIgnoreCase)
+    new SortField<PersonM>("Name", L.Get(_loc.SortFieldName), x => x.Name, StringComparer.CurrentCultureIgnoreCase)
   ];
 
-  public PersonCollectionView() : base(Res.IconPeopleMultiple, "People", [ViewMode.ThumbSmall, ViewMode.List, ViewMode.Tiles]) {
+  public PersonCollectionView() : base(Res.IconPeopleMultiple, L.Get(_loc.Title), [ViewMode.ThumbSmall, ViewMode.List, ViewMode.Tiles]) {
     DefaultSortField = _sortFields[0];
   }
 
