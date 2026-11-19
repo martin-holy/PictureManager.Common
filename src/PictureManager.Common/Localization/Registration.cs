@@ -40,5 +40,6 @@ public static class Registration {
     Features.MediaItem.RotationDialog.RegisterLocalization();
     Features.MediaItem.SlideshowVM.RegisterLocalization();
     Features.MediaItem.Video.VideoItemCollectionView.RegisterLocalization();
+    Features.Person.MergePeopleDialog.RegisterLocalization();
   }
 }

@@ -1,6 +1,8 @@
 ﻿using MH.UI.Controls;
+using MH.Utils.Localization;
 using PictureManager.Common.Features.Common;
 using PictureManager.Common.Features.Segment;
+using PictureManager.Common.Localization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +11,24 @@ using System.Threading.Tasks;
 namespace PictureManager.Common.Features.Person;
 
 public sealed class MergePeopleDialog : Dialog {
+  private static class _loc {
+    private const string _prefix = "Person.MergePeople.";
+    public const string Title = _prefix + "dlg.Title";
+    public const string SegmentsViewName = _prefix + "SegmentsView.Name";
+
+    static _loc() {
+      LocalizationManager.Register(typeof(_loc).Assembly, [
+        (Title, "Select a person for segments"),
+        (SegmentsViewName, "Segments to update")
+      ]);
+    }
+
+    public static void Register() { }
+  }
+
+  static MergePeopleDialog() { _loc.Register(); }
+  public static void RegisterLocalization() => _loc.Register();
+
   private static MergePeopleDialog? _inst;
   private readonly SegmentS _segmentS;
   private List<PersonM> _people = null!;
@@ -20,7 +40,7 @@ public sealed class MergePeopleDialog : Dialog {
   public PersonCollectionView PeopleView { get; }
   public SegmentCollectionView SegmentsView { get; }
 
-  public MergePeopleDialog(SegmentS segmentS) : base("Select a person for segments", Res.IconPeople) {
+  public MergePeopleDialog(SegmentS segmentS) : base(L.Get(_loc.Title), Res.IconPeople) {
     _segmentS = segmentS;
     PeopleView = new() { CanOpen = false, IsMultiSelect = false };
     SegmentsView = new() { CanSelect = false, CanOpen = false };
@@ -63,7 +83,7 @@ public sealed class MergePeopleDialog : Dialog {
     _segmentsToUpdate = _getSegmentsToUpdate(Person, _people);
     var groupByItems = GroupByItems.GetPeople(_segmentsToUpdate).ToArray();
 
-    SegmentsView.Name = "Segments to update";
+    SegmentsView.Name = L.Get(_loc.SegmentsViewName);
     SegmentsView.Reload([.. _segmentsToUpdate], GroupMode.GroupBy, groupByItems, true, true);
   }
 
