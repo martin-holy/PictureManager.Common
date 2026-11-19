@@ -13,6 +13,7 @@ public static class Registration {
     Features.FavoriteFolder.FavoriteFolderTreeCategory.RegisterLocalization();
     Features.Folder.FolderBrowserDialog.RegisterLocalization();
     Features.Folder.FolderR.RegisterLocalization();
+    Features.Folder.FolderTreeCategory.RegisterLocalization();
     Features.MediaItem.Image.CompressImagesDialog.RegisterLocalization();
     Features.MediaItem.Image.ComputeImageHashesDialog.RegisterLocalization();
     Features.MediaItem.Image.ImageResizeDialog.RegisterLocalization();

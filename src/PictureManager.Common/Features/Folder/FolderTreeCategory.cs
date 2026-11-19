@@ -2,7 +2,9 @@
 using MH.UI.Dialogs;
 using MH.UI.Tree;
 using MH.Utils;
+using MH.Utils.Localization;
 using MH.Utils.Tree;
+using PictureManager.Common.Localization;
 using PictureManager.Common.Utils;
 using System;
 using System.IO;
@@ -12,8 +14,32 @@ using System.Threading.Tasks;
 namespace PictureManager.Common.Features.Folder;
 
 public sealed class FolderTreeCategory : TreeCategory<FolderM> {
+  private static class _loc {
+    private const string _prefix = "Folder.";
+    public const string Title = _prefix + "TreeCategory.Title";
+    public const string DropCopyTitle = _prefix + "Drop.dlg.Copy.Title";
+    public const string DropCopyMessage = _prefix + "Drop.dlg.Copy.Message";
+    public const string DropMoveTitle = _prefix + "Drop.dlg.Move.Title";
+    public const string DropMoveMessage = _prefix + "Drop.dlg.Move.Message";
+
+    static _loc() {
+      LocalizationManager.Register(typeof(_loc).Assembly, [
+        (Title, "Folders"),
+        (DropCopyTitle, "Copy folder"),
+        (DropCopyMessage, "Do you really want to copy folder\n'{0}' to '{1}'?"),
+        (DropMoveTitle, "Move folder"),
+        (DropMoveMessage, "Do you really want to move folder\n'{0}' to '{1}'?")
+      ]);
+    }
+
+    public static void Register() { }
+  }
+
+  static FolderTreeCategory() { _loc.Register(); }
+  public static void RegisterLocalization() => _loc.Register();
+
   public FolderTreeCategory(FolderR r, TreeView treeView) :
-    base(treeView, Res.IconFolder, "Folders", (int)Category.Folders, r) {
+    base(treeView, Res.IconFolder, L.Get(_loc.Title), (int)Category.Folders, r) {
     CanMoveItem = true;
     CanCopyItem = true;
     UseTreeDelete = true;
@@ -59,10 +85,10 @@ public sealed class FolderTreeCategory : TreeCategory<FolderM> {
     switch (src) {
       case FolderM srcData: // Folder
         if (await Dialog.ShowAsync(new MessageDialog(
-              $"{(copy ? "Copy" : "Move")} folder",
-              $"Do you really want to {(copy ? "copy" : "move")} folder\n'{srcData.Name}' to '{dest.Name}'?",
-              MH.UI.Res.IconQuestion,
-              true)) != 1)
+            L.Get(copy ? _loc.DropCopyTitle : _loc.DropMoveTitle),
+            L.Format(copy ? _loc.DropCopyMessage : _loc.DropMoveMessage, srcData.Name, dest.Name),
+            MH.UI.Res.IconQuestion,
+            true)) != 1)
           return;
 
         await CopyMoveU.CopyMoveFolder(srcData, destFolder, mode);
