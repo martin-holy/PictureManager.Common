@@ -1,7 +1,8 @@
 ﻿using MH.UI.Controls;
 using MH.Utils.EventsArgs;
+using MH.Utils.Localization;
 using PictureManager.Common.Features.Common;
-using PictureManager.Common.Features.MediaItem;
+using PictureManager.Common.Localization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,11 +10,34 @@ using System.Linq;
 namespace PictureManager.Common.Features.Segment;
 
 public class SegmentCollectionView : CollectionView<SegmentM> {
-  private static readonly IReadOnlyList<SortField<SegmentM>> _sortFields = [
-    new SortField<SegmentM>("File name", x => x.MediaItem.FileName, StringComparer.CurrentCultureIgnoreCase)
-  ];
+  private static class _loc {
+    private const string _prefix = "Segment.CollectionView.";
+    public const string Title = _prefix + "Title";
+    public const string SortFieldFileName = _prefix + "SortField.FileName";
 
-  public SegmentCollectionView() : base(Res.IconSegment, "Segments", [ViewMode.ThumbSmall]) {
+    static _loc() {
+      LocalizationManager.Register(typeof(_loc).Assembly, [
+        (Title, "Segments"),
+        (SortFieldFileName, "File name")
+      ]);
+    }
+
+    public static void Register() { }
+  }
+
+  static SegmentCollectionView() {
+    _loc.Register();
+
+    _sortFields = [
+      new SortField<SegmentM>("File name", L.Get(_loc.SortFieldFileName), x => x.MediaItem.FileName, StringComparer.CurrentCultureIgnoreCase)
+    ];
+  }
+
+  public static void RegisterLocalization() { }
+
+  private static readonly IReadOnlyList<SortField<SegmentM>> _sortFields;
+
+  public SegmentCollectionView() : base(Res.IconSegment, L.Get(_loc.Title), [ViewMode.ThumbSmall]) {
     DefaultSortField = _sortFields[0];
   }
 
