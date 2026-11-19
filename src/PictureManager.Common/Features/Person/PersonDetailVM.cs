@@ -1,8 +1,10 @@
 ﻿using MH.UI.Controls;
 using MH.Utils;
 using MH.Utils.BaseClasses;
+using MH.Utils.Localization;
 using PictureManager.Common.Features.Common;
 using PictureManager.Common.Features.Segment;
+using PictureManager.Common.Localization;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -13,6 +15,24 @@ using static MH.Utils.DragDropHelper;
 namespace PictureManager.Common.Features.Person;
 
 public sealed class PersonDetailVM : ObservableObject {
+  private static class _loc {
+    private const string _prefix = "Person.Detail.";
+    public const string AllSegmentsName = _prefix + "AllSegments.Name";
+    public const string TopSegmentsName = _prefix + "TopSegments.Name";
+
+    static _loc() {
+      LocalizationManager.Register(typeof(_loc).Assembly, [
+        (AllSegmentsName, "All"),
+        (TopSegmentsName, "Top")
+      ]);
+    }
+
+    public static void Register() { }
+  }
+
+  static PersonDetailVM() { _loc.Register(); }
+  public static void RegisterLocalization() { }
+
   private readonly PersonS _personS;
   private readonly SegmentS _segmentS;
   private PersonM? _personM;
@@ -84,12 +104,12 @@ public sealed class PersonDetailVM : ObservableObject {
       GroupByItems.GetKeywordsInGroup(items)
     };
 
-    AllSegments.Name = "All";
+    AllSegments.Name = L.Get(_loc.AllSegmentsName);
     AllSegments.Reload([.. items], GroupMode.ThenByRecursive, groupByItems, true, true);
   }
 
   private void _reloadTopSegments() {
-    TopSegments.Name = "Top";
+    TopSegments.Name = L.Get(_loc.TopSegmentsName);
     TopSegments.Reload(
       PersonM!.TopSegments == null
         ? []

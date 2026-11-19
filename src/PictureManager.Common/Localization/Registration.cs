@@ -43,5 +43,6 @@ public static class Registration {
     Features.Person.MergePeopleDialog.RegisterLocalization();
     Features.Person.PeopleToolsTabVM.RegisterLocalization();
     Features.Person.PersonCollectionView.RegisterLocalization();
+    Features.Person.PersonDetailVM.RegisterLocalization();
   }
 }
