@@ -21,6 +21,7 @@ public static class Registration {
     Features.GeoName.GeoNameR.RegisterLocalization();
     Features.GeoName.GeoNameTreeCategory.RegisterLocalization();
     Features.GeoName.GeoNameVM.RegisterLocalization();
+    Features.Keyword.KeywordDS.RegisterLocalization();
     Features.MediaItem.Image.CompressImagesDialog.RegisterLocalization();
     Features.MediaItem.Image.ComputeImageHashesDialog.RegisterLocalization();
     Features.MediaItem.Image.ImageResizeDialog.RegisterLocalization();

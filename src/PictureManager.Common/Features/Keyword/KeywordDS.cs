@@ -1,7 +1,9 @@
 ﻿using MH.Utils.DB;
 using MH.Utils.DB.DataSources;
+using MH.Utils.Localization;
 using MH.Utils.Tree;
 using PictureManager.Common.Features.CategoryGroup;
+using PictureManager.Common.Localization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +15,22 @@ namespace PictureManager.Common.Features.Keyword;
 /// </summary>
 public sealed class KeywordDS(CoreR coreR, KeywordR repository)
   : CsvTreeDataSource<KeywordM, KeywordR, int>(coreR.DB, "Keywords", 3, repository) {
+
+  private static class _loc {
+    private const string _prefix = "Keyword.";
+    public const string AutoAddedGroupName = _prefix + "AutoAddedGroupName";
+
+    static _loc() {
+      LocalizationManager.Register(typeof(_loc).Assembly, [
+        (AutoAddedGroupName, "Auto Added")
+      ]);
+    }
+
+    public static void Register() { }
+  }
+
+  static KeywordDS() { _loc.Register(); }
+  public static void RegisterLocalization() => _loc.Register();
 
   private readonly CoreR _coreR = coreR;
   private const string _notFoundRecordNamePrefix = "Not found ";
@@ -62,10 +80,10 @@ public sealed class KeywordDS(CoreR coreR, KeywordR repository)
 
     // TODO this might belong to the KeywordR
     // group for keywords automatically added from MediaItems metadata
+    var gName = L.Get(_loc.AutoAddedGroupName);
     Repository.Tree.AutoAddedGroup = Repository.Tree.Items
-                            .OfType<CategoryGroupM>()
-                            .SingleOrDefault(x => x.Name.Equals("Auto Added"))
-                          ?? _coreR.CategoryGroup.ItemCreate(Repository.Tree, "Auto Added");
+      .OfType<CategoryGroupM>().SingleOrDefault(x => x.Name.Equals(gName))
+        ?? _coreR.CategoryGroup.ItemCreate(Repository.Tree, gName);
   }
 
   public List<KeywordM>? Link(string csv, ICsvRepositoryDataSource seeker) =>
