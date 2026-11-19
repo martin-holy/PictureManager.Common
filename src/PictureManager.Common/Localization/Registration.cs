@@ -20,6 +20,7 @@ public static class Registration {
     Features.GeoLocation.ReadGeoLocationFromFilesDialog.RegisterLocalization();
     Features.GeoName.GeoNameR.RegisterLocalization();
     Features.GeoName.GeoNameTreeCategory.RegisterLocalization();
+    Features.GeoName.GeoNameVM.RegisterLocalization();
     Features.MediaItem.Image.CompressImagesDialog.RegisterLocalization();
     Features.MediaItem.Image.ComputeImageHashesDialog.RegisterLocalization();
     Features.MediaItem.Image.ImageResizeDialog.RegisterLocalization();
