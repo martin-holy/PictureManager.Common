@@ -50,8 +50,8 @@ public sealed class CoreVM : ObservableObject {
     public const string ExportTranslations = _prefix + "ExportTranslations";
     public const string SegmentOpenViews = "Segment.OpenViews.cmd";
     public const string DbSave = _prefix + "Db.Save.cmd";
-    public const string DbChangesTitle = _prefix + "Db.Changes.dld.Title";
-    public const string DbChangesMessage = _prefix + "Db.Changes.dld.Message";
+    public const string DbChangesTitle = _prefix + "Db.Changes.dlg.Title";
+    public const string DbChangesMessage = _prefix + "Db.Changes.dlg.Message";
     public const string ImageCompress = "Image.Compress.cmd";
     public const string GeoNameGetFromWeb = "GeoName.GetFromWeb.cmd";
     public const string ImagesToVideo = "Image.ImagesToVideo.cmd";
