@@ -38,7 +38,7 @@ public sealed class CoreVM : ObservableObject {
   private static class _loc {
     private const string _prefix = "App.";
 
-    public const string About = _prefix + "About";
+    public const string About = _prefix + "About.cmd";
     public const string SegmentExport = "Segment.Export.cmd";
     public const string SegmentExportToFolderTitle = "Segment.Export.ToFolder.dlg.Title";
     public const string SegmentExportToFolderMessage = "Segment.Export.ToFolder.dlg.Message";

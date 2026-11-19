@@ -4,6 +4,7 @@ public static class Registration {
   public static void RegisterAll() {
     CoreVM.RegisterLocalization();
     Features.CategoryGroup.CategoryGroupR.RegisterLocalization();
+    Features.Common.AboutDialog.RegisterLocalization();
     Features.MediaItem.Image.CompressImagesDialog.RegisterLocalization();
     Features.MediaItem.Image.ComputeImageHashesDialog.RegisterLocalization();
     Features.MediaItem.Image.ImageResizeDialog.RegisterLocalization();
