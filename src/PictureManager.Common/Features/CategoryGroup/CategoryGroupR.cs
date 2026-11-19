@@ -21,7 +21,7 @@ public class CategoryGroupR : TreeRepository<CategoryGroupM> {
     static _loc() {
       LocalizationManager.Register(typeof(_loc).Assembly, [
         (EmptyName, "The name is empty!"),
-        (GroupExists, $"{0} group already exists!")
+        (GroupExists, "{0} group already exists!")
       ]);
     }
 
