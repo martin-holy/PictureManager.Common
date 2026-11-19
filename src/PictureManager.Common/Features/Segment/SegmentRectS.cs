@@ -3,8 +3,10 @@ using MH.UI.Dialogs;
 using MH.Utils.BaseClasses;
 using MH.Utils.Extensions;
 using MH.Utils.Imaging;
+using MH.Utils.Localization;
 using PictureManager.Common.Features.MediaItem;
 using PictureManager.Common.Features.MediaItem.Image;
+using PictureManager.Common.Localization;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -14,6 +16,24 @@ using System.Threading.Tasks;
 namespace PictureManager.Common.Features.Segment;
 
 public sealed class SegmentRectS(SegmentS segmentS) : ObservableObject {
+  private static class _loc {
+    private const string _prefix = "Segment.Rect.";
+    public const string DeleteTitle = _prefix + "Delete.dlg.Title";
+    public const string DeleteMessage = _prefix + "Delete.dlg.Message";
+
+    static _loc() {
+      LocalizationManager.Register(typeof(_loc).Assembly, [
+        (DeleteTitle, "Delete Segment"),
+        (DeleteMessage, "Do you really want to delete this segment?")
+      ]);
+    }
+
+    public static void Register() { }
+  }
+
+  static SegmentRectS() { _loc.Register(); }
+  public static void RegisterLocalization() { }
+
   private double _scale;
   private double _startX;
   private double _startY;
@@ -197,10 +217,10 @@ public sealed class SegmentRectS(SegmentS segmentS) : ObservableObject {
 
   public async Task Delete(SegmentRectM item) {
     if (await Dialog.ShowAsync(new MessageDialog(
-          "Delete Segment",
-          "Do you really want to delete this segment?",
-          MH.UI.Res.IconQuestion,
-          true)) != 1) return;
+      L.Get(_loc.DeleteTitle),
+      L.Get(_loc.DeleteMessage),
+      MH.UI.Res.IconQuestion,
+      true)) != 1) return;
 
     segmentS.Repo.ItemDelete(item.Segment);
   }

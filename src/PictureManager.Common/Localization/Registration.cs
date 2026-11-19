@@ -49,5 +49,6 @@ public static class Registration {
     Features.Rating.RatingTreeCategory.RegisterLocalization();
     Features.Segment.ExportSegmentsDialog.RegisterLocalization();
     Features.Segment.SegmentCollectionView.RegisterLocalization();
+    Features.Segment.SegmentRectS.RegisterLocalization();
   }
 }
