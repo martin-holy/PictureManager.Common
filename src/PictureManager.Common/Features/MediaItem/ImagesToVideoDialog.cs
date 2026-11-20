@@ -2,9 +2,11 @@
 using MH.UI.Dialogs;
 using MH.Utils;
 using MH.Utils.BaseClasses;
+using MH.Utils.Disposables;
 using MH.Utils.Extensions;
 using MH.Utils.Imaging;
 using MH.Utils.Localization;
+using PictureManager.Common.Features.Common;
 using PictureManager.Common.Features.Folder;
 using PictureManager.Common.Features.MediaItem.Image;
 using PictureManager.Common.Localization;
@@ -21,15 +23,21 @@ namespace PictureManager.Common.Features.MediaItem;
 
 public sealed class ImagesToVideoDialog : Dialog {
   private static class _loc {
-    private const string _prefix = "Image.ImagesToVideo.";
-    public const string Title = _prefix + "dlg.Title";
-    public const string BtnCreate = _prefix + "dlg.btn.Create";
+    private const string _prefix = "Image.ImagesToVideo.dlg.";
+    public const string Title = _prefix + "Title";
+    public const string TxtSpeed = _prefix + "txt.Speed";
+    public const string TxtQuality = _prefix + "txt.Quality";
+    public const string TxtHeight = _prefix + "txt.Height";
+    public const string BtnCreate = _prefix + "btn.Create";
     public const string ErrFfmpegTitle = _prefix + "err.FFMPEG.dlg.Title";
     public const string ErrFfmpegMessage = _prefix + "err.FFMPEG.dlg.Message";
 
     static _loc() {
       LocalizationManager.Register(typeof(_loc).Assembly, [
         (Title, "Images to Video"),
+        (TxtSpeed, "{0:0.00}s per Image"),
+        (TxtQuality, "Quality: {0}"),
+        (TxtHeight, "Height:"),
         (BtnCreate, "Create Video"),
         (ErrFfmpegTitle, "FFMPEG not found"),
         (ErrFfmpegMessage , "FFMPEG was not found. Install it and set the path in the settings.")
@@ -50,8 +58,14 @@ public sealed class ImagesToVideoDialog : Dialog {
   private readonly string _outputFileName;
   private readonly FolderM _outputFolder;
   private readonly Func<FolderM, string, Task> _onVideoCreated;
+  private readonly BindingScope _bindingScope = new();
+  private ImagesToVideoSettings _imgToVidSettings = Core.Settings.ImagesToVideo;
 
   public bool IsBusy { get => _isBusy; set { _isBusy = value; OnPropertyChanged(); } }
+
+  public string TxtSpeed => L.Format(_loc.TxtSpeed, _imgToVidSettings.Speed);
+  public string TxtQuality => L.Format(_loc.TxtQuality, _imgToVidSettings.Quality);
+  public string TxtHeight { get; } = L.Get(_loc.TxtHeight);
 
   public ImagesToVideoDialog(ImageM[] items, Func<FolderM, string, Task> onVideoCreated) :
     base(L.Get(_loc.Title), MH.UI.Res.IconMovieClapper) {
@@ -59,6 +73,11 @@ public sealed class ImagesToVideoDialog : Dialog {
       new(new AsyncRelayCommand(_createVideo, () => !IsBusy, MH.UI.Res.IconMovieClapper, L.Get(_loc.BtnCreate)), true),
       new(CloseCommand, false, true)
     ];
+
+    _imgToVidSettings.Bind(nameof(ImagesToVideoSettings.Speed), x => x.Speed,
+      _ => OnPropertyChanged(nameof(TxtSpeed))).DisposeWith(_bindingScope);
+    _imgToVidSettings.Bind(nameof(ImagesToVideoSettings.Quality), x => x.Quality,
+      _ => OnPropertyChanged(nameof(TxtQuality))).DisposeWith(_bindingScope);
 
     _items = items;
     var firstMi = _items.First();
@@ -77,6 +96,8 @@ public sealed class ImagesToVideoDialog : Dialog {
       _deleteFile(_inputListPath);
       _deleteFile(_outputFilePath);
     }
+
+    _bindingScope.Dispose();
 
     return Task.CompletedTask;
   }
@@ -110,7 +131,7 @@ public sealed class ImagesToVideoDialog : Dialog {
     var mi = _items.First();
 
     // Scale
-    var height = (double)Core.Settings.ImagesToVideo.Height;
+    var height = (double)_imgToVidSettings.Height;
     var width = mi.Orientation is Orientation.Rotate270 or Orientation.Rotate90
       ? Math.Round(mi.Height / (mi.Width / height), 0)
       : Math.Round(mi.Width / (mi.Height / height), 0);
@@ -125,8 +146,8 @@ public sealed class ImagesToVideoDialog : Dialog {
       _ => string.Empty
     };
 
-    var speedStr = Core.Settings.ImagesToVideo.Speed.ToString(CultureInfo.InvariantCulture);
-    var args = $"-y -r 1/{speedStr} -f concat -safe 0 -i \"{_inputListPath}\" -c:v libx264 -r 25 -preset medium -crf {Core.Settings.ImagesToVideo.Quality} -vf \"{rotation}scale={scale},format=yuv420p\" \"{_outputFilePath}\"";
+    var speedStr = _imgToVidSettings.Speed.ToString(CultureInfo.InvariantCulture);
+    var args = $"-y -r 1/{speedStr} -f concat -safe 0 -i \"{_inputListPath}\" -c:v libx264 -r 25 -preset medium -crf {_imgToVidSettings.Quality} -vf \"{rotation}scale={scale},format=yuv420p\" \"{_outputFilePath}\"";
     var tcs = new TaskCompletionSource<bool>();
 
     _process = new() {
