@@ -1,5 +1,6 @@
 ﻿using MH.UI.Tree;
 using MH.Utils.BaseClasses;
+using MH.Utils.Localization;
 using MH.Utils.Tree;
 using PictureManager.Common.Features.FavoriteFolder;
 using PictureManager.Common.Features.Folder;
@@ -12,11 +13,34 @@ using PictureManager.Common.Features.Rating;
 using PictureManager.Common.Features.Segment;
 using PictureManager.Common.Features.Viewer;
 using PictureManager.Common.Layout;
+using PictureManager.Common.Localization;
 using System.Collections.Generic;
 
 namespace PictureManager.Common.Utils;
 
 public static class MenuFactory {
+  private static class _loc {
+    private const string _prefix = "ContextMenu.";
+    public const string GeoLocation = _prefix + "GeoLocation";
+    public const string MediaItems = _prefix + "MediaItems";
+    public const string Segments = _prefix + "Segments";
+    public const string Viewer = _prefix + "Viewer";
+
+    static _loc() {
+      LocalizationManager.Register(typeof(_loc).Assembly, [
+        (GeoLocation, "GeoLocation"),
+        (MediaItems, "Media Items"),
+        (Segments, "Segments"),
+        (Viewer, "Viewer")
+      ]);
+    }
+
+    public static void Register() { }
+  }
+
+  static MenuFactory() { _loc.Register(); }
+  public static void RegisterLocalization() { }
+
   public static IEnumerable<ITreeItem> GetMenu(object item) =>
     item switch {
       DriveM => _createDriveMenu(item),
@@ -50,10 +74,10 @@ public static class MenuFactory {
     new MenuItem(TreeCategory.ItemDeleteCommand, item),
     new MenuItem(FavoriteFolderTreeCategory.AddToFavoritesCommand, item),
     new MenuItem(FolderKeywordTreeCategory.SetAsFolderKeywordCommand, item),
-    new MenuItem(Res.IconLocationCheckin, "GeoLocation", [
+    new MenuItem(Res.IconLocationCheckin, L.Get(_loc.GeoLocation), [
       new MenuItem(CoreVM.GetGeoNamesFromWebCommand, item),
       new MenuItem(CoreVM.ReadGeoLocationFromFilesCommand, item)]),
-    new MenuItem(Res.IconImageMultiple, "Media Items", [
+    new MenuItem(Res.IconImageMultiple, L.Get(_loc.MediaItems), [
       new MenuItem(MediaItemVM.CopySelectedToFolderCommand, item),
       new MenuItem(MediaItemVM.MoveSelectedToFolderCommand, item),
       new MenuItem(CoreVM.CompressImagesCommand, item),
@@ -62,9 +86,9 @@ public static class MenuFactory {
       new MenuItem(CoreVM.ResizeImagesInFolderCommand, item),
       new MenuItem(CoreVM.ResizeImagesToFolderCommand, item),
       new MenuItem(CoreVM.SaveMetadataToFilesCommand, item)]),
-    new MenuItem(Res.IconSegment, "Segments", [
+    new MenuItem(Res.IconSegment, L.Get(_loc.Segments), [
       new MenuItem(CoreVM.ExportSegmentsToCommand, item)]),
-    new MenuItem(Res.IconEye, "Viewer", [
+    new MenuItem(Res.IconEye, L.Get(_loc.Viewer), [
       new MenuItem(ViewerVM.AddIncludedFolderCommand, item),
       new MenuItem(ViewerVM.AddExcludedFolderCommand, item)])];
 
@@ -111,7 +135,7 @@ public static class MenuFactory {
     new MenuItem(MediaItemsViewsVM.FilterSetAndCommand, item),
     new MenuItem(MediaItemsViewsVM.FilterSetOrCommand, item),
     new MenuItem(MediaItemsViewsVM.FilterSetNotCommand, item),
-    new MenuItem(Res.IconEye, "Viewer", [
+    new MenuItem(Res.IconEye, L.Get(_loc.Viewer), [
       new MenuItem(ViewerVM.AddExcludedKeywordCommand, item)])];
 
   // GeoNames TreeCategory
