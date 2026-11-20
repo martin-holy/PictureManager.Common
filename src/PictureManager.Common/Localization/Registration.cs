@@ -1,4 +1,6 @@
-﻿namespace PictureManager.Common.Localization;
+﻿using System.Runtime.CompilerServices;
+
+namespace PictureManager.Common.Localization;
 
 public static class Registration {
   public static void RegisterAll() {
@@ -57,5 +59,6 @@ public static class Registration {
     Features.Viewer.ViewerVM.RegisterLocalization();
     Features.WhatIsNew.WhatIsNewVM.RegisterLocalization();
     Layout.MainMenuVM.RegisterLocalization();
+    Layout.MainTabsVM.RegisterLocalization();
   }
 }
