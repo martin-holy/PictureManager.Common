@@ -41,6 +41,7 @@ public static class Registration {
     Features.MediaItem.MediaItemsViewsVM.RegisterLocalization();
     Features.MediaItem.MediaItemToolBarVM.RegisterLocalization();
     Features.MediaItem.MediaItemVM.RegisterLocalization();
+    Features.MediaItem.MediaViewerToolBarVM.RegisterLocalization();
     Features.MediaItem.ReloadMetadataDialog.RegisterLocalization();
     Features.MediaItem.ReloadMetadataDialog.RegisterLocalization();
     Features.MediaItem.RotationDialog.RegisterLocalization();
