@@ -17,20 +17,28 @@ namespace PictureManager.Common.Features.Common;
 
 public sealed class FileOperationCollisionDialog : Dialog {
   private static class _loc {
-    private const string _prefix = "MediaItem.FileOperationCollision.";
-    public const string Title = _prefix + "dlg.Title";
-    public const string Rename = _prefix + "dlg.btn.Rename";
-    public const string Replace = _prefix + "dlg.btn.Replace";
-    public const string Skip = _prefix + "dlg.btn.Skip";
-    public const string ErrEmptyFileName = _prefix + "dlg.err.EmptyFileName";
+    private const string _prefix = "MediaItem.FileOperationCollision.dlg.";
+    public const string Title = _prefix + "Title";
+    public const string BtnRename = _prefix + "btn.Rename";
+    public const string BtnReplace = _prefix + "btn.Replace";
+    public const string BtnSkip = _prefix + "btn.Skip";
+    public const string ErrEmptyFileName = _prefix + "err.EmptyFileName";
+    public const string TxtDimensions = _prefix + "txt.Dimensions";
+    public const string TxtFileSize = _prefix + "txt.FileSize";
+    public const string TxtFileName = _prefix + "txt.FileName";
+    public const string TxtModified = _prefix + "txt.Modified";
 
     static _loc() {
       LocalizationManager.Register(typeof(_loc).Assembly, [
         (Title, "File already exists"),
-        (Rename, "Rename"),
-        (Replace, "Replace"),
-        (Skip, "Skip"),
-        (ErrEmptyFileName, "New file name is empty!")
+        (BtnRename, "Rename"),
+        (BtnReplace, "Replace"),
+        (BtnSkip, "Skip"),
+        (ErrEmptyFileName, "New file name is empty!"),
+        (TxtDimensions, "Dimensions:"),
+        (TxtFileSize, "File Size:"),
+        (TxtFileName, "File name:"),
+        (TxtModified, "Modified:")
       ]);
     }
 
@@ -51,6 +59,11 @@ public sealed class FileOperationCollisionDialog : Dialog {
   public FileCollisionInfo SrcFile { get; }
   public FileCollisionInfo DstFile { get => _dstFile; set { _dstFile = value; OnPropertyChanged(); } }
 
+  public string TxtDimensions { get; } = L.Get(_loc.TxtDimensions);
+  public string TxtFileSize { get; } = L.Get(_loc.TxtFileSize);
+  public string TxtFileName { get; } = L.Get(_loc.TxtFileName);
+  public string TxtModified { get; } = L.Get(_loc.TxtModified);
+
   public FileOperationCollisionDialog(FolderM srcFolder, FolderM dstFolder, RealMediaItemM? srcMi, RealMediaItemM? dstMi, string fileName) : base(L.Get(_loc.Title), Res.IconImageMultiple) {
     _destFolder = dstFolder;
     SrcFile = new(srcMi, IOExtensions.PathCombine(srcFolder.FullPath, fileName));
@@ -58,9 +71,9 @@ public sealed class FileOperationCollisionDialog : Dialog {
     _fileName = fileName;
 
     Buttons = [
-      new(new AsyncRelayCommand(_rename, null, L.Get(_loc.Rename))),
-      new(new RelayCommand(() => Result = (int)CollisionResult.Replace, null, L.Get(_loc.Replace))),
-      new(new RelayCommand(() => Result = (int)CollisionResult.Skip, null, L.Get(_loc.Skip)))
+      new(new AsyncRelayCommand(_rename, null, L.Get(_loc.BtnRename))),
+      new(new RelayCommand(() => Result = (int)CollisionResult.Replace, null, L.Get(_loc.BtnReplace))),
+      new(new RelayCommand(() => Result = (int)CollisionResult.Skip, null, L.Get(_loc.BtnSkip)))
     ]; 
   }
 
