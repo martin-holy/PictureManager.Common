@@ -1,5 +1,7 @@
 ﻿using MH.UI.Controls;
 using MH.Utils;
+using MH.Utils.Localization;
+using PictureManager.Common.Localization;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -7,6 +9,26 @@ using System.Threading.Tasks;
 namespace PictureManager.Common.Features.Common;
 
 public sealed class FileOperationDialog : Dialog {
+  private static class _loc {
+    private const string _prefix = "MediaItem.FileOperation.dlg.";
+    public const string TxtFrom = _prefix + "txt.From";
+    public const string TxtTo = _prefix + "txt.To";
+    public const string TxtFile = _prefix + "txt.File";
+
+    static _loc() {
+      LocalizationManager.Register(typeof(_loc).Assembly, [
+        (TxtFrom, "From:"),
+        (TxtTo, "To:"),
+        (TxtFile, "File:")
+      ]);
+    }
+
+    public static void Register() { }
+  }
+
+  static FileOperationDialog() { _loc.Register(); }
+  public static void RegisterLocalization() { }
+
   private int _progressValue;
   private bool _isIndeterminate;
   private string _dirFrom = string.Empty;
@@ -22,6 +44,10 @@ public sealed class FileOperationDialog : Dialog {
   public object? WorkResult { get; private set; }
   public Task? WorkTask { get; set; }
   public IProgress<object[]> Progress { get; set; }
+
+  public string TxtFrom { get; } = L.Get(_loc.TxtFrom);
+  public string TxtTo { get; } = L.Get(_loc.TxtTo);
+  public string TxtFile { get; } = L.Get(_loc.TxtFile);
 
   public FileOperationDialog(string title) : base(title, Res.IconImageMultiple) {
     _progressValue = 0;

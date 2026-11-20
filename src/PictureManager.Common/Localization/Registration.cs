@@ -10,6 +10,7 @@ public static class Registration {
     Features.CategoryGroup.CategoryGroupR.RegisterLocalization();
     Features.Common.AboutDialog.RegisterLocalization();
     Features.Common.FileOperationCollisionDialog.RegisterLocalization();
+    Features.Common.FileOperationDialog.RegisterLocalization();
     Features.Common.GroupByItems.RegisterLocalization();
     Features.Common.LogDialog.RegisterLocalization();
     Features.Common.Settings.RegisterLocalization();
