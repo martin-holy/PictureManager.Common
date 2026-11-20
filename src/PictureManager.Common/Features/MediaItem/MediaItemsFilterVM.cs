@@ -16,11 +16,27 @@ namespace PictureManager.Common.Features.MediaItem;
 public sealed class MediaItemsFilterVM : ObservableObject, ICollectionViewFilter<MediaItemM> {
   private static class _loc {
     private const string _prefix = "MediaItem.Filter.";
-    public const string Clear = _prefix + "Clear.cmd";
+    public const string CmdClear = _prefix + "cmd.Clear";
+    public const string BtnImage = _prefix + "btn.Image";
+    public const string BtnVideo = _prefix + "btn.Video";
+    public const string TxtAnd = _prefix + "txt.And";
+    public const string TxtOr = _prefix + "txt.Or";
+    public const string TxtNot = _prefix + "txt.Not";
+    public const string TxtHeight = _prefix + "txt.Height";
+    public const string TxtWidth = _prefix + "txt.Width";
+    public const string TxtSize = _prefix + "txt.Size";
 
     static _loc() {
       LocalizationManager.Register(typeof(_loc).Assembly, [
-        (Clear, "Clear")
+        (CmdClear, "Clear"),
+        (BtnImage, "Image"),
+        (BtnVideo, "Video"),
+        (TxtAnd, "And"),
+        (TxtOr, "Or"),
+        (TxtNot, "Not"),
+        (TxtHeight, "Height:"),
+        (TxtWidth, "Width:"),
+        (TxtSize, "Size MPx:")
       ]);
     }
 
@@ -43,6 +59,15 @@ public sealed class MediaItemsFilterVM : ObservableObject, ICollectionViewFilter
   public SelectionRange Width { get; } = new();
   public SelectionRange Size { get; } = new();
 
+  public string BtnImage { get; } = L.Get(_loc.BtnImage);
+  public string BtnVideo { get; } = L.Get(_loc.BtnVideo);
+  public string TxtAnd { get; } = L.Get(_loc.TxtAnd);
+  public string TxtOr { get; } = L.Get(_loc.TxtOr);
+  public string TxtNot { get; } = L.Get(_loc.TxtNot);
+  public string TxtHeight { get; } = L.Get(_loc.TxtHeight);
+  public string TxtWidth { get; } = L.Get(_loc.TxtWidth);
+  public string TxtSize { get; } = L.Get(_loc.TxtSize);
+
   public event EventHandler FilterChangedEvent = delegate { };
 
   public RelayCommand ClearCommand { get; }
@@ -51,7 +76,7 @@ public sealed class MediaItemsFilterVM : ObservableObject, ICollectionViewFilter
     Height.ChangedEvent += delegate { _raiseFilterChanged(); };
     Width.ChangedEvent += delegate { _raiseFilterChanged(); };
     Size.ChangedEvent += delegate { _raiseFilterChanged(); };
-    ClearCommand = new(_clear, null, L.Get(_loc.Clear));
+    ClearCommand = new(_clear, null, L.Get(_loc.CmdClear));
   }
 
   private void _raiseFilterChanged() => FilterChangedEvent(this, EventArgs.Empty);
