@@ -4,6 +4,7 @@ namespace PictureManager.Common.Localization;
 
 public static class Registration {
   public static void RegisterAll() {
+    Core.RegisterLocalization();
     CoreVM.RegisterLocalization();
     Features.CategoryGroup.CategoryGroupR.RegisterLocalization();
     Features.Common.AboutDialog.RegisterLocalization();

@@ -3,6 +3,7 @@ using MH.Utils.Extensions;
 using MH.Utils.Localization;
 using PictureManager.Common.Features.Common;
 using PictureManager.Common.Interfaces.Plugin;
+using PictureManager.Common.Localization;
 using PictureManager.Common.Utils;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,26 @@ using System.Threading.Tasks;
 namespace PictureManager.Common;
 
 public sealed class Core {
+  private static class _loc {
+    private const string _prefix = "App.";
+    public const string DbMigration = _prefix + "Db.Migration";
+    public const string LoadingUI = _prefix + "LoadingUI";
+    public const string LoadingPlugins = _prefix + "LoadingPlugins";
+
+    static _loc() {
+      LocalizationManager.Register(typeof(_loc).Assembly, [
+        (DbMigration, "Migrating Database"),
+        (LoadingUI, "Loading UI"),
+        (LoadingPlugins , "Loading Picture Manager plugins ...")
+      ]);
+    }
+
+    public static void Register() { }
+  }
+
+  static Core() { _loc.Register(); }
+  public static void RegisterLocalization() { }
+
   private static Core? _inst;
   private static readonly object _lock = new();
   public static Core Inst { get { lock (_lock) { return _inst ??= new(); } } }
@@ -45,7 +66,7 @@ public sealed class Core {
     return Task.Run(async () => {
       R.AddDataSources();
       Drives.UpdateSerialNumbers();
-      progress.Report("Migrating Database");
+      progress.Report(L.Get(_loc.DbMigration));
       R.DB.Migrate(8, DatabaseMigration.Resolver);
       R.DB.LoadAll(progress);
       R.DB.LinkReferences(progress);
@@ -54,7 +75,7 @@ public sealed class Core {
       R.DB.FillRepositories();
       R.DB.ClearDataSources();
       R.DB.SetIsReady();
-      progress.Report("Loading UI");
+      progress.Report(L.Get(_loc.LoadingUI));
     });
   }
 
@@ -83,7 +104,7 @@ public sealed class Core {
 
   private async Task LoadPlugins(IProgress<string> progress) {
     if (!Directory.Exists("plugins")) return;
-    progress.Report("Loading Picture Manager plugins ...");
+    progress.Report(L.Get(_loc.LoadingPlugins));
 
     try {
       foreach (var pluginDir in Directory.EnumerateDirectories("plugins", "*", SearchOption.TopDirectoryOnly)) {
