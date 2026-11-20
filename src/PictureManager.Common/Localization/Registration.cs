@@ -60,5 +60,6 @@ public static class Registration {
     Features.WhatIsNew.WhatIsNewVM.RegisterLocalization();
     Layout.MainMenuVM.RegisterLocalization();
     Layout.MainTabsVM.RegisterLocalization();
+    Layout.ToolsTabsVM.RegisterLocalization();
   }
 }
