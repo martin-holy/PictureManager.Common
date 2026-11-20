@@ -15,12 +15,14 @@ public sealed class ExportSegmentsDialog : ParallelProgressDialog<SegmentM> {
     private const string _prefix = "Segment.Export.";
     public const string Title = _prefix + "dlg.Title";
     public const string BtnExport = _prefix + "dlg.btn.Export";
+    public const string ExportToText = _prefix + "dlg.ExportToText";
     public const string OpenFolderBrowser = _prefix + "OpenFolderBrowser.cmd";
 
     static _loc() {
       LocalizationManager.Register(typeof(_loc).Assembly, [
         (Title, "Export Segments"),
         (BtnExport, "Export"),
+        (ExportToText, "Export to:"),
         (OpenFolderBrowser, "Select folder")
       ]);
     }
@@ -34,6 +36,7 @@ public sealed class ExportSegmentsDialog : ParallelProgressDialog<SegmentM> {
   private string? _destDir;
 
   public string? DestDir { get => _destDir; set { _destDir = value; OnPropertyChanged(); } }
+  public string ExportToText { get; } = L.Get(_loc.ExportToText);
   public AsyncRelayCommand? OpenFolderBrowserCommand { get; }
 
   public ExportSegmentsDialog(SegmentM[] items) : base(L.Get(_loc.Title), Res.IconSegment, items, null, L.Get(_loc.BtnExport)) {
