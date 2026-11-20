@@ -3,8 +3,10 @@ using MH.Utils;
 using MH.Utils.BaseClasses;
 using MH.Utils.EventsArgs;
 using MH.Utils.Extensions;
+using MH.Utils.Localization;
 using MH.Utils.Tree;
 using PictureManager.Common.Features.MediaItem.Image;
+using PictureManager.Common.Localization;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -16,6 +18,23 @@ using System.Threading.Tasks;
 namespace PictureManager.Common.Features.MediaItem;
 
 public class MediaItemsViewVM : MediaItemCollectionView {
+  internal new static class _loc {
+    private const string _prefix = "MediaItem.View.";
+    public const string TxtLoading = _prefix + "txt.Loading";
+    public const string TxtImporting = _prefix + "txt.Importing";
+
+    static _loc() {
+      LocalizationManager.Register(typeof(_loc).Assembly, [
+        (TxtLoading, "Loading ..."),
+        (TxtImporting, "Importing {0} new items ...")
+      ]);
+    }
+
+    public static void Register() { }
+  }
+
+  static MediaItemsViewVM() { _loc.Register(); }
+
   private bool _isLoading;
   private bool _showThumbInfo = true;
   
@@ -29,6 +48,9 @@ public class MediaItemsViewVM : MediaItemCollectionView {
   public bool IsLoading { get => _isLoading; set { _isLoading = value; OnPropertyChanged(); } }
   public bool ShowThumbInfo { get => _showThumbInfo; set { _showThumbInfo = value; OnPropertyChanged(); } }
 
+  public string TxtLoading { get; } = L.Get(_loc.TxtLoading);
+  public string TxtImporting => L.Format(_loc.TxtImporting, Import.Count);
+
   public RelayCommand SelectAllCommand { get; }
 
   public MediaItemsViewVM(double thumbScale) : base(thumbScale) {
@@ -39,6 +61,7 @@ public class MediaItemsViewVM : MediaItemCollectionView {
     Selected.AllDeselectedEvent += delegate { _selectionChanged(); };
     PropertyChanged += _onPropertyChanged;
     FilterAppliedEvent += _onFilterApplied;
+    Import.Bind(nameof(MediaItemsImport.Count), x => x.Count, _ => OnPropertyChanged(nameof(TxtImporting)), false);
   }
 
   private void _onPropertyChanged(object? sender, PropertyChangedEventArgs e) {

@@ -34,7 +34,7 @@ public static class Registration {
     Features.MediaItem.Image.ImageResizeDialog.RegisterLocalization();
     Features.MediaItem.Image.SaveMetadataDialog.RegisterLocalization();
     Features.MediaItem.ImagesToVideoDialog.RegisterLocalization();
-    Features.MediaItem.MediaItemCollectionView.RegisterLocalization();
+    Features.MediaItem.MediaItemCollectionView._loc.Register();
     Features.MediaItem.MediaItemS.RegisterLocalization();
     Features.MediaItem.MediaItemsFilterVM.RegisterLocalization();
     Features.MediaItem.MediaItemsImport.RegisterLocalization();
