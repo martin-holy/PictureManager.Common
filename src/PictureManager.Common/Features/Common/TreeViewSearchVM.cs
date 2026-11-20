@@ -11,7 +11,7 @@ using System.Linq;
 namespace PictureManager.Common.Features.Common;
 
 public sealed class TreeViewSearchVM : ObservableObject {
-  private static class _loc {
+  internal static class _loc {
     private const string _prefix = "TreeViewSearch.";
     public const string Open = _prefix + "Open.cmd";
     public const string Close = _prefix + "Close.cmd";
@@ -27,7 +27,6 @@ public sealed class TreeViewSearchVM : ObservableObject {
   }
 
   static TreeViewSearchVM() { _loc.Register(); }
-  public static void RegisterLocalization() { }
 
   private readonly TreeViewCategoriesVM _tvc;
   private string _searchText = string.Empty;

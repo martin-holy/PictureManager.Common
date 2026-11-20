@@ -11,7 +11,7 @@ using System.Linq;
 namespace PictureManager.Common.Features.Person;
 
 public class PersonCollectionView : CollectionView<PersonM> {
-  private static class _loc {
+  internal static class _loc {
     private const string _prefix = "Person.CollectionView.";
     public const string Title = _prefix + "Title";
     public const string SortFieldName = _prefix + "SortField.Name";
@@ -33,8 +33,6 @@ public class PersonCollectionView : CollectionView<PersonM> {
       new SortField<PersonM>("Name", L.Get(_loc.SortFieldName), x => x.Name, StringComparer.CurrentCultureIgnoreCase)
     ];
   }
-
-  public static void RegisterLocalization() { }
 
   private static readonly IReadOnlyList<SortField<PersonM>> _sortFields;
 

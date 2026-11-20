@@ -6,7 +6,7 @@ using System.Linq;
 namespace PictureManager.Common.Features.Rating;
 
 public sealed class RatingTreeCategory : TreeCategory {
-  private static class _loc {
+  internal static class _loc {
     private const string _prefix = "Rating.";
     public const string Title = _prefix + "TreeCategory.Title";
 
@@ -20,7 +20,6 @@ public sealed class RatingTreeCategory : TreeCategory {
   }
 
   static RatingTreeCategory() { _loc.Register(); }
-  public static void RegisterLocalization() { }
 
   public RatingTreeCategory() : base(new(), Res.IconStar, L.Get(_loc.Title), (int)Category.Ratings) {
     _load();

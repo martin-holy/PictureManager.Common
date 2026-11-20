@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace PictureManager.Common.Features.Segment;
 
 public sealed class ExportSegmentsDialog : ParallelProgressDialog<SegmentM> {
-  private static class _loc {
+  internal static class _loc {
     private const string _prefix = "Segment.Export.";
     public const string Title = _prefix + "dlg.Title";
     public const string BtnExport = _prefix + "dlg.btn.Export";
@@ -31,7 +31,6 @@ public sealed class ExportSegmentsDialog : ParallelProgressDialog<SegmentM> {
   }
 
   static ExportSegmentsDialog() { _loc.Register(); }
-  public static void RegisterLocalization() { }
 
   private string? _destDir;
 

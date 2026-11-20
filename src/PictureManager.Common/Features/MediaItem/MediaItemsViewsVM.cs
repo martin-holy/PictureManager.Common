@@ -19,7 +19,7 @@ using System.Threading.Tasks;
 namespace PictureManager.Common.Features.MediaItem;
 
 public sealed class MediaItemsViewsVM : ObservableObject {
-  private static class _loc {
+  internal static class _loc {
     private const string _prefix = "MediaItem.Views.";
     public const string AddView = _prefix + "AddView.cmd";
     public const string CompareAverageHash = _prefix + "CompareAverageHash.cmd";
@@ -59,7 +59,6 @@ public sealed class MediaItemsViewsVM : ObservableObject {
   }
 
   static MediaItemsViewsVM() { _loc.Register(); }
-  public static void RegisterLocalization() { }
 
   private readonly List<MediaItemsViewVM> _all = [];
   private MediaItemsViewVM? _current;

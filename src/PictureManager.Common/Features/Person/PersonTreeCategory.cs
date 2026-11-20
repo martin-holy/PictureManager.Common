@@ -9,7 +9,7 @@ using System.Linq;
 namespace PictureManager.Common.Features.Person;
 
 public sealed class PersonTreeCategory : TreeCategory<PersonM, CategoryGroupM> {
-  private static class _loc {
+  internal static class _loc {
     private const string _prefix = "Person.";
     public const string Title = _prefix + "TreeCategory.Title";
     public const string UnknownGroupName = _prefix + "UnknownGroupName";
@@ -25,7 +25,6 @@ public sealed class PersonTreeCategory : TreeCategory<PersonM, CategoryGroupM> {
   }
 
   static PersonTreeCategory() { _loc.Register(); }
-  public static void RegisterLocalization() { }
 
   private CategoryGroupM? _unknownGroup;
 

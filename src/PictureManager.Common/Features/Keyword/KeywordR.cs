@@ -10,7 +10,7 @@ using System.Linq;
 namespace PictureManager.Common.Features.Keyword;
 
 public sealed class KeywordR : TreeRepository<KeywordM> {
-  private static class _loc {
+  internal static class _loc {
     private const string _prefix = "Keyword.";
     public const string ErrEmptyName = _prefix + "err.EmptyName";
     public const string ErrItemExists = _prefix + "err.ItemExists";
@@ -26,7 +26,6 @@ public sealed class KeywordR : TreeRepository<KeywordM> {
   }
 
   static KeywordR() { _loc.Register(); }
-  public static void RegisterLocalization() { }
 
   public KeywordTreeCategory Tree { get; }
   public KeywordDS DataSource { get; }

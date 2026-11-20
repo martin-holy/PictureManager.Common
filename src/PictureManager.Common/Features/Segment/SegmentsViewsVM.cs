@@ -43,7 +43,6 @@ public sealed class SegmentsViewsVM : ObservableObject {
   }
 
   static SegmentsViewsVM() { _loc.Register(); }
-  public static void RegisterLocalization() { }
 
   private readonly SegmentS _segmentS;
   private readonly Dictionary<SegmentsViewVM, SegmentM[]> _views = [];

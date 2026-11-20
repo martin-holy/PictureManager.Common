@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace PictureManager.Common.Features.MediaItem.Image;
 
 public sealed class SaveMetadataDialog : ParallelProgressDialog<RealMediaItemM> {
-  private static class _loc {
+  internal static class _loc {
     private const string _prefix = "MediaItem.SaveMetadata.";
     public const string Title = _prefix + "dlg.Title";
     public const string OpenTitle = _prefix + "Open.dlg.Title";
@@ -26,7 +26,6 @@ public sealed class SaveMetadataDialog : ParallelProgressDialog<RealMediaItemM> 
   }
 
   static SaveMetadataDialog() { _loc.Register(); }
-  public static void RegisterLocalization() { }
 
   private readonly MediaItemS _mediaItemS;
 

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace PictureManager.Common.Features.MediaItem;
 
 public sealed class MediaItemsImport : ObservableObject {
-  private static class _loc {
+  internal static class _loc {
     private const string _prefix = "MediaItem.Import.";
     public const string Cancel = _prefix + "Cancel.cmd";
 
@@ -23,7 +23,6 @@ public sealed class MediaItemsImport : ObservableObject {
   }
 
   static MediaItemsImport() { _loc.Register(); }
-  public static void RegisterLocalization() { }
 
   private readonly IProgress<int> _progress;
   private readonly WorkTask _task = new();

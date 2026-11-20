@@ -12,7 +12,7 @@ using System.Linq;
 namespace PictureManager.Common.Features.MediaItem;
 
 public class MediaItemCollectionView : CollectionView<MediaItemM> {
-  private static class _loc {
+  internal static class _loc {
     private const string _prefix = "MediaItem.CollectionView.";
     public const string Title = _prefix + "Title";
     public const string SortFieldFileName = _prefix + "SortField.FileName";
@@ -40,8 +40,6 @@ public class MediaItemCollectionView : CollectionView<MediaItemM> {
       new SortField<MediaItemM>("Created", L.Get(_loc.SortFieldCreationTime), x => new System.IO.FileInfo(x.FilePath).CreationTime)
     ];
   }
-
-  public static void RegisterLocalization() { }
 
   private double _thumbScale;
 

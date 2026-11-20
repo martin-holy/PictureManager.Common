@@ -14,7 +14,7 @@ using System.Linq;
 namespace PictureManager.Common.Features.MediaItem;
 
 public sealed class MediaItemsFilterVM : ObservableObject, ICollectionViewFilter<MediaItemM> {
-  private static class _loc {
+  internal static class _loc {
     private const string _prefix = "MediaItem.Filter.";
     public const string CmdClear = _prefix + "cmd.Clear";
     public const string BtnImage = _prefix + "btn.Image";
@@ -44,7 +44,6 @@ public sealed class MediaItemsFilterVM : ObservableObject, ICollectionViewFilter
   }
 
   static MediaItemsFilterVM() { _loc.Register(); }
-  public static void RegisterLocalization() { }
 
   private bool _showImages = true;
   private bool _showVideos = true;

@@ -11,7 +11,7 @@ using System.Linq;
 namespace PictureManager.Common.Features.MediaItem.Video;
 
 public class VideoItemCollectionView : CollectionView<VideoItemM> {
-  private static class _loc {
+  internal static class _loc {
     private const string _prefix = "VideoItem.CollectionView.";
     public const string Title = _prefix + "Title";
     public const string SortFieldTime = _prefix + "SortField.Time";
@@ -33,8 +33,6 @@ public class VideoItemCollectionView : CollectionView<VideoItemM> {
       new SortField<VideoItemM>("Time", L.Get(_loc.SortFieldTime), x => x.TimeStart, StringComparer.CurrentCultureIgnoreCase)
     ];
   }
-
-  public static void RegisterLocalization() { }
 
   private static readonly IReadOnlyList<SortField<VideoItemM>> _sortFields;
 

@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 namespace PictureManager.Common.Features.Segment;
 
 public sealed class SegmentRectS(SegmentS segmentS) : ObservableObject {
-  private static class _loc {
+  internal static class _loc {
     private const string _prefix = "Segment.Rect.";
     public const string DeleteTitle = _prefix + "Delete.dlg.Title";
     public const string DeleteMessage = _prefix + "Delete.dlg.Message";
@@ -32,7 +32,6 @@ public sealed class SegmentRectS(SegmentS segmentS) : ObservableObject {
   }
 
   static SegmentRectS() { _loc.Register(); }
-  public static void RegisterLocalization() { }
 
   private double _scale;
   private double _startX;

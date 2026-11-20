@@ -13,7 +13,7 @@ using System.Text.Json.Serialization.Metadata;
 namespace PictureManager.Common.Features.Common;
 
 public sealed class Settings : UserSettings {
-  private static class _loc {
+  internal static class _loc {
     private const string _prefix = "App.Settings.";
     public const string CommonTitle = _prefix + "Common.Title";
     public const string GeoNameTitle = _prefix + "GeoName.Title";
@@ -35,7 +35,6 @@ public sealed class Settings : UserSettings {
   }
 
   static Settings() { _loc.Register(); }
-  public static void RegisterLocalization() { }
 
   public CommonSettings Common { get; }
   public GeoNameSettings GeoName { get; }

@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 namespace PictureManager.Common.Features.Common;
 
 public sealed class FileOperationCollisionDialog : Dialog {
-  private static class _loc {
+  internal static class _loc {
     private const string _prefix = "MediaItem.FileOperationCollision.dlg.";
     public const string Title = _prefix + "Title";
     public const string BtnRename = _prefix + "btn.Rename";
@@ -46,7 +46,6 @@ public sealed class FileOperationCollisionDialog : Dialog {
   }
 
   static FileOperationCollisionDialog() { _loc.Register(); }
-  public static void RegisterLocalization() { }
 
   private readonly FolderM _destFolder;
 

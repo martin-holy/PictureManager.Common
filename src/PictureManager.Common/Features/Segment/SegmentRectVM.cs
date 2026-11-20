@@ -7,7 +7,7 @@ using System.Collections.Generic;
 namespace PictureManager.Common.Features.Segment;
 
 public sealed class SegmentRectVM : ObservableObject {
-  private static class _loc {
+  internal static class _loc {
     private const string _prefix = "Segment.Rect.";
     public const string Delete = _prefix + "Delete.cmd";
 
@@ -21,7 +21,6 @@ public sealed class SegmentRectVM : ObservableObject {
   }
 
   static SegmentRectVM() { _loc.Register(); }
-  public static void RegisterLocalization() { }
 
   private bool _showOverMediaItem;
   private bool _isEditEnabled;

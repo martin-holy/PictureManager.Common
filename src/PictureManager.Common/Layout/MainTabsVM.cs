@@ -7,7 +7,7 @@ namespace PictureManager.Common.Layout;
 public sealed class MainTabsSlotVM;
 
 public sealed class MainTabsVM : TabControl {
-  private static class _loc {
+  internal static class _loc {
     private const string _prefix = "MainTabs.";
     public const string NoTabsText = _prefix + "NoTabsText";
 
@@ -21,7 +21,6 @@ public sealed class MainTabsVM : TabControl {
   }
 
   static MainTabsVM() { _loc.Register(); }
-  public static void RegisterLocalization() { }
 
   public MainTabsVM() : base(new(Dock.Left) { StartSlot = new MainTabsSlotVM(), RotationAngle = 270, JustifyTabSize = true }) {
     CanCloseTabs = true;

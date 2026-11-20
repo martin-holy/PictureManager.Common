@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace PictureManager.Common.Features.GeoLocation;
 
 public sealed class ReadGeoLocationFromFilesDialog : ProgressDialog<ImageM> {
-  private static class _loc {
+  internal static class _loc {
     private const string _prefix = "GeoLocation.";
     public const string Title = _prefix + "ReadGeoLocationFromFiles.dlg.Title";
 
@@ -25,7 +25,6 @@ public sealed class ReadGeoLocationFromFilesDialog : ProgressDialog<ImageM> {
   }
 
   static ReadGeoLocationFromFilesDialog() { _loc.Register(); }
-  public static void RegisterLocalization() { }
 
   public ReadGeoLocationFromFilesDialog(ImageM[] items) :
     base(L.Get(_loc.Title), Res.IconLocationCheckin, items) {

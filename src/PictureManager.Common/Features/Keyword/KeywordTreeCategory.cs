@@ -9,7 +9,7 @@ using System.Linq;
 namespace PictureManager.Common.Features.Keyword;
 
 public sealed class KeywordTreeCategory : TreeCategory<KeywordM, CategoryGroupM> {
-  private static class _loc {
+  internal static class _loc {
     private const string _prefix = "Keyword.";
     public const string Title = _prefix + "TreeCategory.Title";
 
@@ -23,7 +23,6 @@ public sealed class KeywordTreeCategory : TreeCategory<KeywordM, CategoryGroupM>
   }
 
   static KeywordTreeCategory() { _loc.Register(); }
-  public static void RegisterLocalization() { }
 
   public CategoryGroupM AutoAddedGroup { get; set; } = null!;
 

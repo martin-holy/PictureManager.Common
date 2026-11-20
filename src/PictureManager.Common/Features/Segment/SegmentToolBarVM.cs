@@ -5,7 +5,7 @@ using PictureManager.Common.Localization;
 namespace PictureManager.Common.Features.Segment;
 
 public sealed class SegmentToolBarVM : ObservableObject {
-  private static class _loc {
+  internal static class _loc {
     private const string _prefix = "Segment.ToolBar.";
     public const string TxtShowSegments = _prefix + "txt.ShowSegments";
 
@@ -19,7 +19,6 @@ public sealed class SegmentToolBarVM : ObservableObject {
   }
 
   static SegmentToolBarVM() { _loc.Register(); }
-  public static void RegisterLocalization() { }
 
   public SegmentVM SegmentVM { get; }
   public string TxtShowSegments { get; } = L.Get(_loc.TxtShowSegments);

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace PictureManager.Common.Features.Common;
 
 public sealed class FileOperationDialog : Dialog {
-  private static class _loc {
+  internal static class _loc {
     private const string _prefix = "MediaItem.FileOperation.dlg.";
     public const string TxtFrom = _prefix + "txt.From";
     public const string TxtTo = _prefix + "txt.To";
@@ -27,7 +27,6 @@ public sealed class FileOperationDialog : Dialog {
   }
 
   static FileOperationDialog() { _loc.Register(); }
-  public static void RegisterLocalization() { }
 
   private int _progressValue;
   private bool _isIndeterminate;

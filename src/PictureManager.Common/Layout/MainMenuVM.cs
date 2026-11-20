@@ -17,7 +17,7 @@ using System.Windows.Input;
 namespace PictureManager.Common.Layout;
 
 public class MainMenuVM : TreeView {
-  private static class _loc {
+  internal static class _loc {
     private const string _prefix = "MainMenu.";
     public const string GeoLocation = _prefix + "GeoLocation";
     public const string MediaItems = _prefix + "MediaItems";
@@ -39,7 +39,6 @@ public class MainMenuVM : TreeView {
   }
 
   static MainMenuVM() { _loc.Register(); }
-  public static void RegisterLocalization() { }
 
   public string Icon { get; } = Res.IconThreeBars;
   public Func<IEnumerable<ITreeItem>> BuildMenu => () => RootHolder;

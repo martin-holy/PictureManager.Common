@@ -9,7 +9,7 @@ using System.IO;
 namespace PictureManager.Common.Features.Folder;
 
 public sealed class FolderBrowserDialog : Dialog {
-  private static class _loc {
+  internal static class _loc {
     private const string _prefix = "FolderBrowser.";
     public const string Title = _prefix + "dlg.Title";
     public const string Ok = _prefix + "dlg.btn.Ok";
@@ -25,7 +25,6 @@ public sealed class FolderBrowserDialog : Dialog {
   }
 
   static FolderBrowserDialog() { _loc.Register(); }
-  public static void RegisterLocalization() { }
 
   private FolderTreeViewItem? _selectedFolder;
 

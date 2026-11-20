@@ -7,7 +7,7 @@ namespace PictureManager.Common.Features.GeoName;
 public sealed class GeoNameTreeCategory(GeoNameR r)
   : TreeCategory<GeoNameM>(new(), Res.IconLocationCheckin, L.Get(_loc.Title), (int)Category.GeoNames, r) {
 
-  private static class _loc {
+  internal static class _loc {
     private const string _prefix = "GeoName.";
     public const string Title = _prefix + "TreeCategory.Title";
 
@@ -21,7 +21,6 @@ public sealed class GeoNameTreeCategory(GeoNameR r)
   }
 
   static GeoNameTreeCategory() { _loc.Register(); }
-  public static void RegisterLocalization() { }
 
   protected override void _onItemSelected(object o) =>
     _ = Core.VM.ToggleDialog.Toggle(o as GeoNameM);

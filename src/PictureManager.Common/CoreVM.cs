@@ -35,7 +35,7 @@ using System.Threading.Tasks;
 namespace PictureManager.Common;
 
 public sealed class CoreVM : ObservableObject {
-  private static class _loc {
+  internal static class _loc {
     private const string _prefix = "App.";
 
     public const string About = _prefix + "About.cmd";
@@ -124,7 +124,6 @@ public sealed class CoreVM : ObservableObject {
   }
 
   static CoreVM() { _loc.Register(); }
-  public static void RegisterLocalization() { }
 
   private readonly CoreS _coreS;
   private readonly CoreR _coreR;

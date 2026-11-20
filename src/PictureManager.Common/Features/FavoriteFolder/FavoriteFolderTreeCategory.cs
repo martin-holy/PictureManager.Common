@@ -7,7 +7,7 @@ using PictureManager.Common.Localization;
 namespace PictureManager.Common.Features.FavoriteFolder;
 
 public sealed class FavoriteFolderTreeCategory : TreeCategory<FavoriteFolderM> {
-  private static class _loc {
+  internal static class _loc {
     private const string _prefix = "FavoriteFolder.";
     public const string Title = _prefix + "TreeCategory.Title";
     public const string Add = _prefix + "Add.cmd";
@@ -23,7 +23,6 @@ public sealed class FavoriteFolderTreeCategory : TreeCategory<FavoriteFolderM> {
   }
 
   static FavoriteFolderTreeCategory() { _loc.Register(); }
-  public static void RegisterLocalization() { }
 
   public static RelayCommand<FolderM> AddToFavoritesCommand { get; set; } = null!;
 

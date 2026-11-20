@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 namespace PictureManager.Common.Features.Folder;
 
 public sealed class FolderTreeCategory : TreeCategory<FolderM> {
-  private static class _loc {
+  internal static class _loc {
     private const string _prefix = "Folder.";
     public const string Title = _prefix + "TreeCategory.Title";
     public const string DropCopyTitle = _prefix + "Drop.dlg.Copy.Title";
@@ -36,7 +36,6 @@ public sealed class FolderTreeCategory : TreeCategory<FolderM> {
   }
 
   static FolderTreeCategory() { _loc.Register(); }
-  public static void RegisterLocalization() { }
 
   public FolderTreeCategory(FolderR r, TreeView treeView) :
     base(treeView, Res.IconFolder, L.Get(_loc.Title), (int)Category.Folders, r) {

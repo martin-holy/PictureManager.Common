@@ -13,7 +13,7 @@ using static MH.Utils.DragDropHelper;
 namespace PictureManager.Common.Features.Segment;
 
 public sealed class SegmentsDrawerVM : SegmentCollectionView {
-  private static class _loc {
+  internal static class _loc {
     private const string _prefix = "Segment.Drawer.";
     public const string Open = _prefix + "Open.cmd";
     public const string Add = _prefix + "Add.cmd";

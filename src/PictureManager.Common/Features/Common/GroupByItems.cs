@@ -19,7 +19,7 @@ using System.Linq;
 namespace PictureManager.Common.Features.Common;
 
 public static class GroupByItems {
-  private static class _loc {
+  internal static class _loc {
     private const string _prefix = "GroupByItems.";
     public const string DateGroup = _prefix + "DateGroup";
     public const string PeopleGroupsGroup = _prefix + "PeopleGroupsGroup";
@@ -43,8 +43,6 @@ public static class GroupByItems {
     _peopleGroupsGroup = new(Res.IconPeopleMultiple, L.Get(_loc.PeopleGroupsGroup));
     _segmentSizeGroup = new(Res.IconRuler, L.Get(_loc.SegmentSizeGroup));
   }
-
-  public static void RegisterLocalization() { }
 
   private static readonly ListItem _dateGroup;
   private static readonly ListItem _peopleGroupsGroup;

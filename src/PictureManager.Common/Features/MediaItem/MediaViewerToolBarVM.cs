@@ -6,7 +6,7 @@ using PictureManager.Common.Localization;
 namespace PictureManager.Common.Features.MediaItem;
 
 public sealed class MediaViewerToolBarVM(MediaViewerVM mediaViewer, MainWindowVM mainWindow) : ObservableObject {
-  private static class _loc {
+  internal static class _loc {
     private const string _prefix = "MediaViewer.ToolBar.";
     public const string TxtExpandToFill = _prefix + "txt.ExpandToFill";
 
@@ -20,7 +20,6 @@ public sealed class MediaViewerToolBarVM(MediaViewerVM mediaViewer, MainWindowVM
   }
 
   static MediaViewerToolBarVM() { _loc.Register(); }
-  public static void RegisterLocalization() { }
 
   public MediaViewerVM MediaViewer { get; } = mediaViewer;
   public MainWindowVM MainWindow { get; } = mainWindow;

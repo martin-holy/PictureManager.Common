@@ -15,7 +15,7 @@ using static MH.Utils.DragDropHelper;
 namespace PictureManager.Common.Features.Viewer;
 
 public sealed class ViewerVM : ObservableObject {
-  private static class _loc {
+  internal static class _loc {
     private const string _prefix = "Viewer.Detail.";
     public const string TxtIncludedFolders = _prefix + "txt.IncludedFolders";
     public const string CmdAddIncludedFolder = _prefix + "cmd.AddIncludedFolder";
@@ -49,7 +49,6 @@ public sealed class ViewerVM : ObservableObject {
   }
 
   static ViewerVM() { _loc.Register(); }
-  public static void RegisterLocalization() { }
 
   private readonly ViewerR _r;
   private ViewerM _selected = null!;

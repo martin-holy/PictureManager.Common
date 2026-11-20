@@ -18,7 +18,7 @@ using System.Threading.Tasks;
 namespace PictureManager.Common.Utils;
 
 public sealed class CopyMoveU(FileOperationMode mode, CoreR coreR) {
-  private static class _loc {
+  internal static class _loc {
     private const string _prefix = "MediaItem.CopyMove.";
     public const string Title = _prefix + "dlg.Title";
     public const string TitleCopy = _prefix + "dlg.Title.Copy";
@@ -40,7 +40,6 @@ public sealed class CopyMoveU(FileOperationMode mode, CoreR coreR) {
   }
 
   static CopyMoveU() { _loc.Register(); }
-  public static void RegisterLocalization() { }
 
   private readonly FileOperationDialog _dlg = new(_modeToString(mode));
   private readonly Dictionary<MediaItemM, string> _renamed = new();

@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 namespace PictureManager.Common.Features.MediaItem.Image;
 
 public sealed class ImageResizeDialog : ParallelProgressDialog<ImageM> {
-  private static class _loc {
+  internal static class _loc {
     private const string _prefix = "Image.Resize.dlg.";
     public const string Title = _prefix + "Title";
     public const string BtnResize = _prefix + "btn.Resize";
@@ -45,7 +45,6 @@ public sealed class ImageResizeDialog : ParallelProgressDialog<ImageM> {
   }
 
   static ImageResizeDialog() { _loc.Register(); }
-  public static void RegisterLocalization() { }
 
   private bool _preserveThumbnail;
   private bool _preserveMetadata;

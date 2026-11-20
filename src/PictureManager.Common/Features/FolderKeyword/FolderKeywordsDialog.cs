@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace PictureManager.Common.Features.FolderKeyword;
 
 public sealed class FolderKeywordsDialog : Dialog {
-  private static class _loc {
+  internal static class _loc {
     private const string _prefix = "FolderKeywords.";
     public const string Title = _prefix + "List.dlg.Title";
     public const string Open = _prefix + "List.Open.cmd";
@@ -37,8 +37,6 @@ public sealed class FolderKeywordsDialog : Dialog {
 
     OpenCommand = new(_ => ShowAsync(new FolderKeywordsDialog()), null, L.Get(_loc.Open));
   }
-
-  public static void RegisterLocalization() { }
 
   private FolderM? _selectedFolder;
 

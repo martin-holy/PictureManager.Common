@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 namespace PictureManager.Common;
 
 public sealed class Core {
-  private static class _loc {
+  internal static class _loc {
     private const string _prefix = "App.";
     public const string DbMigration = _prefix + "Db.Migration";
     public const string LoadingUI = _prefix + "LoadingUI";
@@ -33,7 +33,6 @@ public sealed class Core {
   }
 
   static Core() { _loc.Register(); }
-  public static void RegisterLocalization() { }
 
   private static Core? _inst;
   private static readonly object _lock = new();

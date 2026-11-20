@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace PictureManager.Common.Features.MediaItem;
 
 public sealed class RotationDialog : Dialog {
-  private static class _loc {
+  internal static class _loc {
     private const string _prefix = "MediaItem.Rotation.";
     public const string Title = _prefix + "dlg.Title";
 
@@ -22,7 +22,6 @@ public sealed class RotationDialog : Dialog {
   }
 
   static RotationDialog() { _loc.Register(); }
-  public static void RegisterLocalization() { }
 
   private static RotationDialog? _inst;
 

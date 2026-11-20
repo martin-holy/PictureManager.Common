@@ -15,7 +15,7 @@ using static MH.Utils.DragDropHelper;
 namespace PictureManager.Common.Features.Person;
 
 public sealed class PersonDetailVM : ObservableObject {
-  private static class _loc {
+  internal static class _loc {
     private const string _prefix = "Person.Detail.";
     public const string AllSegmentsName = _prefix + "AllSegments.Name";
     public const string TopSegmentsName = _prefix + "TopSegments.Name";
@@ -31,7 +31,6 @@ public sealed class PersonDetailVM : ObservableObject {
   }
 
   static PersonDetailVM() { _loc.Register(); }
-  public static void RegisterLocalization() { }
 
   private readonly PersonS _personS;
   private readonly SegmentS _segmentS;

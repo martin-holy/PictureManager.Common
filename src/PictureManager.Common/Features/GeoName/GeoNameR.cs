@@ -12,7 +12,7 @@ using System.Xml;
 namespace PictureManager.Common.Features.GeoName;
 
 public sealed class GeoNameR : TreeRepository<GeoNameM> {
-  private static class _loc {
+  internal static class _loc {
     private const string _prefix = "GeoName.";
     public const string WarnDisabledTitle = _prefix + "warn.LoadFromWebDisabled.Title";
     public const string WarnDisabledMessage = _prefix + "warn.LoadFromWebDisabled.Message";
@@ -34,7 +34,6 @@ public sealed class GeoNameR : TreeRepository<GeoNameM> {
   }
 
   static GeoNameR() { _loc.Register(); }
-  public static void RegisterLocalization() { }
 
   private bool _webLoadDisabled;
 

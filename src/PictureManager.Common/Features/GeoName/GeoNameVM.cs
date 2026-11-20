@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace PictureManager.Common.Features.GeoName;
 
 public sealed class GeoNameVM {
-  private static class _loc {
+  internal static class _loc {
     private const string _prefix = "GeoName.";
     public const string NewFromGps = _prefix + "NewFromGps.cmd";
     public const string NewFromGpsTitle = _prefix + "NewFromGps.dlg.Title";
@@ -29,7 +29,6 @@ public sealed class GeoNameVM {
   }
 
   static GeoNameVM() { _loc.Register(); }
-  public static void RegisterLocalization() { }
 
   private readonly GeoNameR _r;
 

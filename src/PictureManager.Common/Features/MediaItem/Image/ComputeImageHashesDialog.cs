@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace PictureManager.Common.Features.MediaItem.Image;
 
 public sealed class ComputeImageHashesDialog : ProgressDialog<MediaItemM> {
-  private static class _loc {
+  internal static class _loc {
     private const string _prefix = "Image.ComputeImageHashes.";
     public const string Title = _prefix + "dlg.Title";
 
@@ -24,7 +24,6 @@ public sealed class ComputeImageHashesDialog : ProgressDialog<MediaItemM> {
   }
 
   static ComputeImageHashesDialog() { _loc.Register(); }
-  public static void RegisterLocalization() { }
 
   private readonly Dictionary<object, long> _hashes;
   private readonly ImagingU.ImageHashFunc _hashMethod;

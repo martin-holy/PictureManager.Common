@@ -10,7 +10,7 @@ using System.Linq;
 namespace PictureManager.Common.Features.Segment;
 
 public class SegmentCollectionView : CollectionView<SegmentM> {
-  private static class _loc {
+  internal static class _loc {
     private const string _prefix = "Segment.CollectionView.";
     public const string Title = _prefix + "Title";
     public const string SortFieldFileName = _prefix + "SortField.FileName";
@@ -32,8 +32,6 @@ public class SegmentCollectionView : CollectionView<SegmentM> {
       new SortField<SegmentM>("File name", L.Get(_loc.SortFieldFileName), x => x.MediaItem.FileName, StringComparer.CurrentCultureIgnoreCase)
     ];
   }
-
-  public static void RegisterLocalization() { }
 
   private static readonly IReadOnlyList<SortField<SegmentM>> _sortFields;
 

@@ -22,7 +22,7 @@ using System.Threading.Tasks;
 namespace PictureManager.Common.Features.MediaItem;
 
 public sealed class ImagesToVideoDialog : Dialog {
-  private static class _loc {
+  internal static class _loc {
     private const string _prefix = "Image.ImagesToVideo.dlg.";
     public const string Title = _prefix + "Title";
     public const string TxtSpeed = _prefix + "txt.Speed";
@@ -48,7 +48,6 @@ public sealed class ImagesToVideoDialog : Dialog {
   }
 
   static ImagesToVideoDialog() { _loc.Register(); }
-  public static void RegisterLocalization() { }
 
   private bool _isBusy;
   private readonly ImageM[] _items;

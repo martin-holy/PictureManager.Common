@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace PictureManager.Common.Features.Person;
 
 public sealed class PersonVM {
-  private static class _loc {
+  internal static class _loc {
     private const string _prefix = "Person.";
     public const string LoadByGroup = _prefix + "LoadByGroup.cmd";
     public const string LoadByKeyword = _prefix + "LoadByKeyword.cmd";
@@ -27,7 +27,6 @@ public sealed class PersonVM {
   }
 
   static PersonVM() { _loc.Register(); }
-  public static void RegisterLocalization() { }
 
   private readonly CoreVM _coreVM;
   private readonly PersonR _r;

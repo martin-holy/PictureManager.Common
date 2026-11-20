@@ -9,7 +9,7 @@ using System.Reflection;
 namespace PictureManager.Common.Features.Common;
 
 public sealed class AboutDialog : Dialog {
-  private static class _loc {
+  internal static class _loc {
     private const string _prefix = "App.About.";
     public const string Title = _prefix + "dlg.Title";
 
@@ -23,7 +23,6 @@ public sealed class AboutDialog : Dialog {
   }
 
   static AboutDialog() { _loc.Register(); }
-  public static void RegisterLocalization() { }
 
   public string Version => $"Version: {Core.UiVersion} (Core: {Core.Version})";
   public string? Copyright => FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).LegalCopyright;

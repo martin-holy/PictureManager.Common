@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace PictureManager.Common.Features.GeoLocation;
 
 public sealed class GetGeoNamesFromWebDialog : ProgressDialog<ImageM> {
-  private static class _loc {
+  internal static class _loc {
     private const string _prefix = "GeoLocation.";
     public const string Title = _prefix + "GetGeoNamesFromWeb.dlg.Title";
 
@@ -23,7 +23,6 @@ public sealed class GetGeoNamesFromWebDialog : ProgressDialog<ImageM> {
   }
 
   static GetGeoNamesFromWebDialog() { _loc.Register(); }
-  public static void RegisterLocalization() { }
 
   private readonly CoreR _coreR;
 

@@ -12,7 +12,7 @@ using PictureManager.Common.Localization;
 namespace PictureManager.Common;
 
 public class CoreS(CoreR coreR) : ObservableObject {
-  private static class _loc {
+  internal static class _loc {
     private const string _prefix = "App.";
     public const string WarnNewDriveDetectedTitle = _prefix + "warn.NewDriveDetected.Title";
     public const string WarnNewDriveDetectedMessage = _prefix + "warn.NewDriveDetected.Message";
@@ -28,7 +28,6 @@ public class CoreS(CoreR coreR) : ObservableObject {
   }
 
   static CoreS() { _loc.Register(); }
-  public static void RegisterLocalization() { }
 
   public FolderS Folder { get; } = new();
   public MediaItemS MediaItem { get; } = new(coreR.MediaItem, coreR.Image, coreR.Video);

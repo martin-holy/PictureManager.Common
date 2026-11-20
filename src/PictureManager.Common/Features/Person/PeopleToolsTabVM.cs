@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 namespace PictureManager.Common.Features.Person;
 
 public sealed class PeopleToolsTabVM : PersonCollectionView {
-  private static class _loc {
+  internal static class _loc {
     private const string _prefix = "Person.PeopleToolsTab.";
     public const string GetFromTitle = _prefix + "GetFrom.dlg.Title";
     public const string GetFromMessage = _prefix + "GetFrom.dlg.Message";
@@ -34,7 +34,6 @@ public sealed class PeopleToolsTabVM : PersonCollectionView {
   }
 
   static PeopleToolsTabVM() { _loc.Register(); }
-  public static void RegisterLocalization() { }
 
   private static async Task<IEnumerable<PersonM>> _getPeople() {
     var md = new MessageDialog(

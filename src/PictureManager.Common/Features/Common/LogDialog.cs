@@ -7,7 +7,7 @@ using PictureManager.Common.Localization;
 namespace PictureManager.Common.Features.Common;
 
 public sealed class LogDialog : Dialog {
-  private static class _loc {
+  internal static class _loc {
     private const string _prefix = "App.Log.dlg.";
     public const string Title = _prefix + "Title";
     public const string Clear = _prefix + "btn.Clear";
@@ -25,7 +25,6 @@ public sealed class LogDialog : Dialog {
   }
 
   static LogDialog() { _loc.Register(); }
-  public static void RegisterLocalization() { }
 
   public string TxtWrapText { get; } = L.Get(_loc.TxtWrapText);
 

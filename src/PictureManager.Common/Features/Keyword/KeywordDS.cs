@@ -16,7 +16,7 @@ namespace PictureManager.Common.Features.Keyword;
 public sealed class KeywordDS(CoreR coreR, KeywordR repository)
   : CsvTreeDataSource<KeywordM, KeywordR, int>(coreR.DB, "Keywords", 3, repository) {
 
-  private static class _loc {
+  internal static class _loc {
     private const string _prefix = "Keyword.";
     public const string AutoAddedGroupName = _prefix + "AutoAddedGroupName";
 
@@ -30,7 +30,6 @@ public sealed class KeywordDS(CoreR coreR, KeywordR repository)
   }
 
   static KeywordDS() { _loc.Register(); }
-  public static void RegisterLocalization() { }
 
   private readonly CoreR _coreR = coreR;
   private const string _notFoundRecordNamePrefix = "Not found ";

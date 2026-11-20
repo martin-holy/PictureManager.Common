@@ -13,7 +13,7 @@ using System.Linq;
 namespace PictureManager.Common.Features.CategoryGroup;
 
 public class CategoryGroupR : TreeRepository<CategoryGroupM> {
-  private static class _loc {
+  internal static class _loc {
     private const string _prefix = "CategoryGroup.";
     public const string EmptyName = _prefix + "err.EmptyName";
     public const string GroupExists = _prefix + "err.GroupExists";
@@ -29,7 +29,6 @@ public class CategoryGroupR : TreeRepository<CategoryGroupM> {
   }
 
   static CategoryGroupR() { _loc.Register(); }
-  public static void RegisterLocalization() { }
 
   private readonly CoreR _coreR;
 

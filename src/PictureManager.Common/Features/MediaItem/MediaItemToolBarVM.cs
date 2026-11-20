@@ -6,7 +6,7 @@ using PictureManager.Common.Localization;
 namespace PictureManager.Common.Features.MediaItem;
 
 public sealed class MediaItemToolBarVM(MediaItemsViewsVM mediaItemViews, MainWindowVM mainWindow) : ObservableObject {
-  private static class _loc {
+  internal static class _loc {
     private const string _prefix = "MediaItem.ToolBar.";
     public const string TxtThumbScale = _prefix + "txt.ThumbScale";
     public const string TxtShowThumbInfo = _prefix + "txt.ShowThumbInfo";
@@ -24,7 +24,6 @@ public sealed class MediaItemToolBarVM(MediaItemsViewsVM mediaItemViews, MainWin
   }
 
   static MediaItemToolBarVM() { _loc.Register(); }
-  public static void RegisterLocalization() { }
 
   public MediaItemsViewsVM MediaItemViews { get; } = mediaItemViews;
   public MainWindowVM MainWindow { get; } = mainWindow;

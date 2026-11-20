@@ -19,7 +19,7 @@ using System.Collections.Generic;
 namespace PictureManager.Common.Utils;
 
 public static class MenuFactory {
-  private static class _loc {
+  internal static class _loc {
     private const string _prefix = "ContextMenu.";
     public const string GeoLocation = _prefix + "GeoLocation";
     public const string MediaItems = _prefix + "MediaItems";
@@ -39,7 +39,6 @@ public static class MenuFactory {
   }
 
   static MenuFactory() { _loc.Register(); }
-  public static void RegisterLocalization() { }
 
   public static IEnumerable<ITreeItem> GetMenu(object item) =>
     item switch {

@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 namespace PictureManager.Common.Layout;
 
 public sealed class ToolsTabsVM : TabControl {
-  private static class _loc {
+  internal static class _loc {
     private const string _prefix = "ToolsTabs.";
     public const string NoTabsText = _prefix + "NoTabsText";
     public const string PersonDetailOpen = "Person.Detail.Open.cmd";
@@ -35,7 +35,6 @@ public sealed class ToolsTabsVM : TabControl {
   }
 
   static ToolsTabsVM() { _loc.Register(); }
-  public static void RegisterLocalization() { }
 
   public PeopleToolsTabVM? PeopleTab { get; private set; }
   public PersonDetailVM? PersonDetailTab { get; private set; }

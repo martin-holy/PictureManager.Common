@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 namespace PictureManager.Common.Features.Segment;
 
 public sealed class SegmentVM : ObservableObject {
-  private static class _loc {
+  internal static class _loc {
     private const string _prefix = "Segment.";
     public const string AddEmptyView = _prefix + "AddEmptyView.cmd";
     public const string LoadByKeyword = _prefix + "LoadByKeyword.cmd";
@@ -55,7 +55,6 @@ public sealed class SegmentVM : ObservableObject {
   }
 
   static SegmentVM() { _loc.Register(); }
-  public static void RegisterLocalization() { }
 
   private readonly CoreVM _coreVM;
   private readonly SegmentS _s;

@@ -12,7 +12,7 @@ using System.Linq;
 namespace PictureManager.Common.Features.Folder;
 
 public sealed class FolderR : TreeRepository<FolderM> {
-  private static class _loc {
+  internal static class _loc {
     private const string _prefix = "Folder.";
     public const string ErrEmptyName = _prefix + "err.EmptyName";
     public const string ErrFolderExists = _prefix + "err.FolderExists";
@@ -30,7 +30,6 @@ public sealed class FolderR : TreeRepository<FolderM> {
   }
 
   static FolderR() { _loc.Register(); }
-  public static void RegisterLocalization() { }
 
   public static FolderM Dummy { get; } = new(0, string.Empty, null);
   public FolderTreeView Tree { get; }

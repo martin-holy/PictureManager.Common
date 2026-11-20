@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace PictureManager.Common.Features.MediaItem.Image;
 
 public sealed class CompressImagesDialog : ParallelProgressDialog<ImageM> {
-  private static class _loc {
+  internal static class _loc {
     private const string _prefix = "Image.Compress.dlg.";
     public const string Title = _prefix + "Title";
     public const string BtnCompress = _prefix + "btn.Compress";
@@ -31,7 +31,6 @@ public sealed class CompressImagesDialog : ParallelProgressDialog<ImageM> {
   }
 
   static CompressImagesDialog() { _loc.Register(); }
-  public static void RegisterLocalization() { }
 
   private readonly ImageS _imageS;
   private int _jpegQualityLevel;

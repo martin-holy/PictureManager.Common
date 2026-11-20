@@ -8,7 +8,7 @@ using System.Text;
 namespace PictureManager.Common.Features.WhatIsNew;
 
 public class WhatIsNewVM {
-  private static class _loc {
+  internal static class _loc {
     private const string _prefix = "WhatIsNew.";
     public const string Open = _prefix + "Open.cmd";
     public const string TabName = _prefix + "TabName";
@@ -28,8 +28,6 @@ public class WhatIsNewVM {
 
     OpenCommand = new(_open, null, L.Get(_loc.Open));
   }
-
-  public static void RegisterLocalization() { }
 
   private static WhatIsNewVM? _inst;
 

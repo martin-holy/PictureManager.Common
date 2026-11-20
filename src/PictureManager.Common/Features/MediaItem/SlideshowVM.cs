@@ -14,7 +14,7 @@ namespace PictureManager.Common.Features.MediaItem;
 public enum SlideshowState { On, Paused, Stopped }
 
 public sealed class SlideshowVM : ObservableObject {
-  private static class _loc {
+  internal static class _loc {
     private const string _prefix = "MediaItem.Slideshow.";
     public const string CmdStart = _prefix + "cmd.Start";
     public const string CmdStop = _prefix + "cmd.Stop";
@@ -34,7 +34,6 @@ public sealed class SlideshowVM : ObservableObject {
   }
 
   static SlideshowVM() { _loc.Register(); }
-  public static void RegisterLocalization() { }
 
   private ZoomAndPan? _zoomAndPan;
   private bool _isTimerOn;

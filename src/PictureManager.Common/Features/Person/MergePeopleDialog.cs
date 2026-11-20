@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace PictureManager.Common.Features.Person;
 
 public sealed class MergePeopleDialog : Dialog {
-  private static class _loc {
+  internal static class _loc {
     private const string _prefix = "Person.MergePeople.";
     public const string Title = _prefix + "dlg.Title";
     public const string SegmentsViewName = _prefix + "SegmentsView.Name";
@@ -27,7 +27,6 @@ public sealed class MergePeopleDialog : Dialog {
   }
 
   static MergePeopleDialog() { _loc.Register(); }
-  public static void RegisterLocalization() { }
 
   private static MergePeopleDialog? _inst;
   private readonly SegmentS _segmentS;
