@@ -13,11 +13,17 @@ public sealed class CompressImagesDialog : ParallelProgressDialog<ImageM> {
     private const string _prefix = "Image.Compress.";
     public const string Title = _prefix + "dlg.Title";
     public const string BtnCompress = _prefix + "dlg.btn.Compress";
+    public const string JpegQualityLevelText = _prefix + "JpegQualityLevelText";
+    public const string OriginalText = _prefix + "OriginalText";
+    public const string CompressedText = _prefix + "CompressedText";
 
     static _loc() {
       LocalizationManager.Register(typeof(_loc).Assembly, [
         (Title, "Compress images"),
-        (BtnCompress, "Compress")
+        (BtnCompress, "Compress"),
+        (JpegQualityLevelText, "JPG quality level: {0}"),
+        (OriginalText, "Original"),
+        (CompressedText, "Compressed")
       ]);
     }
 
@@ -32,9 +38,20 @@ public sealed class CompressImagesDialog : ParallelProgressDialog<ImageM> {
   private long _totalSourceSize;
   private long _totalCompressedSize;
 
-  public int JpegQualityLevel { get => _jpegQualityLevel; set { _jpegQualityLevel = value; OnPropertyChanged(); } }
+  public int JpegQualityLevel {
+    get => _jpegQualityLevel;
+    set {
+      _jpegQualityLevel = value;
+      OnPropertyChanged();
+      OnPropertyChanged(nameof(JpegQualityLevelText));
+    }
+  }
   public string TotalSourceSize => IOExtensions.FileSizeToString(_totalSourceSize);
   public string TotalCompressedSize => IOExtensions.FileSizeToString(_totalCompressedSize);
+
+  public string JpegQualityLevelText => L.Format(_loc.JpegQualityLevelText, _jpegQualityLevel);
+  public string OriginalText { get; } = L.Get(_loc.OriginalText);
+  public string CompressedText { get; } = L.Get(_loc.CompressedText);
 
   public CompressImagesDialog(ImageM[] items, ImageS imageS, int quality) : base(
     L.Get(_loc.Title), MH.UI.Res.IconImage, items, MH.UI.Res.IconImage, L.Get(_loc.BtnCompress), autoClose: false) {
