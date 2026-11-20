@@ -56,5 +56,6 @@ public static class Registration {
     Features.Viewer.ViewerTreeCategory.RegisterLocalization();
     Features.Viewer.ViewerVM.RegisterLocalization();
     Features.WhatIsNew.WhatIsNewVM.RegisterLocalization();
+    Layout.MainMenuVM.RegisterLocalization();
   }
 }
