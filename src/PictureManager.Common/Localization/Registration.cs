@@ -61,5 +61,6 @@ public static class Registration {
     Layout.MainMenuVM.RegisterLocalization();
     Layout.MainTabsVM.RegisterLocalization();
     Layout.ToolsTabsVM.RegisterLocalization();
+    Utils.CopyMoveU.RegisterLocalization();
   }
 }

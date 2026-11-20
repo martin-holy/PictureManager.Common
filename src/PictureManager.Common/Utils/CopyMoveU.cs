@@ -1,12 +1,14 @@
 ﻿using MH.UI.Controls;
 using MH.Utils;
 using MH.Utils.Extensions;
+using MH.Utils.Localization;
 using MH.Utils.Tree;
 using PictureManager.Common.Features.Common;
 using PictureManager.Common.Features.Folder;
 using PictureManager.Common.Features.MediaItem;
 using PictureManager.Common.Features.MediaItem.Video;
 using PictureManager.Common.Features.Segment;
+using PictureManager.Common.Localization;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -16,13 +18,48 @@ using System.Threading.Tasks;
 namespace PictureManager.Common.Utils;
 
 public sealed class CopyMoveU(FileOperationMode mode, CoreR coreR) {
-  private readonly FileOperationDialog _dlg = new($"File Operation ({mode})");
+  private static class _loc {
+    private const string _prefix = "MediaItem.CopyMove.";
+    public const string Title = _prefix + "dlg.Title";
+    public const string TitleCopy = _prefix + "dlg.Title.Copy";
+    public const string TitleMove = _prefix + "dlg.Title.Move";
+    public const string TitleDelete = _prefix + "dlg.Title.Delete";
+    public const string ErrMediaItemIsNull = _prefix + "err.MediaItemIsNull";
+
+    static _loc() {
+      LocalizationManager.Register(typeof(_loc).Assembly, [
+        (Title, "File Operation ({0})"),
+        (TitleCopy, "File Operation (Copy)"),
+        (TitleMove, "File Operation (Move)"),
+        (TitleDelete, "File Operation (Delete)"),
+        (ErrMediaItemIsNull, "MediaItem is null")
+      ]);
+    }
+
+    public static void Register() { }
+  }
+
+  static CopyMoveU() { _loc.Register(); }
+  public static void RegisterLocalization() { }
+
+  private readonly FileOperationDialog _dlg = new(_modeToString(mode));
   private readonly Dictionary<MediaItemM, string> _renamed = new();
   private readonly HashSet<MediaItemM> _replaced = [];
   private readonly List<(SegmentM, SegmentM)> _segments = [];
   private readonly List<(VideoItemM, VideoItemM)> _videoItems = [];
 
   public HashSet<MediaItemM> Skipped = [];
+
+  private static string _modeToString(FileOperationMode mode) {
+    var action = mode switch {
+      FileOperationMode.Copy => L.Get(_loc.TitleCopy),
+      FileOperationMode.Move => L.Get(_loc.TitleMove),
+      FileOperationMode.Delete => L.Get(_loc.TitleDelete),
+      _ => throw new ArgumentOutOfRangeException(nameof(mode))
+    };
+
+    return L.Format(_loc.Title, action);
+  }
 
   public async Task<T> Do<T>(Task<T> work) {
     _dlg.SetWorkTask(work);
@@ -122,7 +159,7 @@ public sealed class CopyMoveU(FileOperationMode mode, CoreR coreR) {
         CopyMoveFileOnDrive(srcFilePath, targetFilePath);
       }
       catch (Exception ex) {
-        Log.Error(ex, mi?.FilePath ?? "MediaItem is null");
+        Log.Error(ex, mi?.FilePath ?? L.Get(_loc.ErrMediaItemIsNull));
         if (mi != null) Skipped.Add(mi);
         continue;
       }
