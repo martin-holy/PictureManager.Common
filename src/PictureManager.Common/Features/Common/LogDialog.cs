@@ -8,14 +8,16 @@ namespace PictureManager.Common.Features.Common;
 
 public sealed class LogDialog : Dialog {
   private static class _loc {
-    private const string _prefix = "App.Log.";
-    public const string Title = _prefix + "dlg.Title";
-    public const string Clear = _prefix + "dlg.btn.Clear";
+    private const string _prefix = "App.Log.dlg.";
+    public const string Title = _prefix + "Title";
+    public const string Clear = _prefix + "btn.Clear";
+    public const string TxtWrapText = _prefix + "txt.WrapText";
 
     static _loc() {
       LocalizationManager.Register(typeof(_loc).Assembly, [
         (Title, "Log"),
-        (Clear, "Clear")
+        (Clear, "Clear"),
+        (TxtWrapText, "Wrap text")
       ]);
     }
 
@@ -24,6 +26,8 @@ public sealed class LogDialog : Dialog {
 
   static LogDialog() { _loc.Register(); }
   public static void RegisterLocalization() { }
+
+  public string TxtWrapText { get; } = L.Get(_loc.TxtWrapText);
 
   public LogDialog() : base(L.Get(_loc.Title), MH.UI.Res.IconSort) {
     Buttons = [
