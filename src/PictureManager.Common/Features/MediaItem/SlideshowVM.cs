@@ -16,13 +16,17 @@ public enum SlideshowState { On, Paused, Stopped }
 public sealed class SlideshowVM : ObservableObject {
   private static class _loc {
     private const string _prefix = "MediaItem.Slideshow.";
-    public const string Start = _prefix + "Start.cmd";
-    public const string Stop = _prefix + "Stop.cmd";
+    public const string CmdStart = _prefix + "cmd.Start";
+    public const string CmdStop = _prefix + "cmd.Stop";
+    public const string TxtInterval = _prefix + "ToolBar.txt.Interval";
+    public const string TxtPlayPanoramicImages = _prefix + "ToolBar.txt.PlayPanoramicImages";
 
     static _loc() {
       LocalizationManager.Register(typeof(_loc).Assembly, [
-        (Start, "Start slideshow"),
-        (Stop, "Stop slideshow")
+        (CmdStart, "Start slideshow"),
+        (CmdStop, "Stop slideshow"),
+        (TxtInterval, "Slideshow interval"),
+        (TxtPlayPanoramicImages, "Play panoramic images")
       ]);
     }
 
@@ -46,13 +50,16 @@ public sealed class SlideshowVM : ObservableObject {
   public int Interval { get => _interval; set { _interval = value; OnPropertyChanged(); } }
   public SlideshowState State { get => _state; set { _state = value; OnPropertyChanged(); } }
 
+  public string TxtInterval { get; } = L.Get(_loc.TxtInterval);
+  public string TxtPlayPanoramicImages { get; } = L.Get(_loc.TxtPlayPanoramicImages);
+
   public RelayCommand StartCommand { get; }
   public RelayCommand StopCommand { get; }
 
   public SlideshowVM(MediaViewerVM mediaViewer) {
     _mediaViewer = mediaViewer;
-    StartCommand = new(_slideshow, MH.UI.Res.IconPlay, L.Get(_loc.Start));
-    StopCommand = new(_slideshow, MH.UI.Res.IconStop, L.Get(_loc.Stop));
+    StartCommand = new(_slideshow, MH.UI.Res.IconPlay, L.Get(_loc.CmdStart));
+    StopCommand = new(_slideshow, MH.UI.Res.IconStop, L.Get(_loc.CmdStop));
   }
 
   /// <summary>
