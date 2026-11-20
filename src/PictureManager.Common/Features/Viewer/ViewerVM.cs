@@ -28,6 +28,7 @@ public sealed class ViewerVM : ObservableObject {
     public const string CmdRemoveExcludedKeyword = _prefix + "cmd.RemoveExcludedKeyword";
     public const string TxtCategoryGroups = _prefix + "txt.CategoryGroups";
     public const string TabName = _prefix + "TabName";
+    public const string TxtToolBarAll = _prefix + "Viewer.ToolBar.txt.All";
 
     static _loc() {
       LocalizationManager.Register(typeof(_loc).Assembly, [
@@ -41,7 +42,8 @@ public sealed class ViewerVM : ObservableObject {
         (CmdAddExcludedKeyword, "Add to excluded"),
         (CmdRemoveExcludedKeyword, "Remove"),
         (TxtCategoryGroups, "Category Groups"),
-        (TabName, "Viewer")
+        (TabName, "Viewer"),
+        (TxtToolBarAll, "All")
       ]);
     }
 
@@ -78,6 +80,7 @@ public sealed class ViewerVM : ObservableObject {
   public string TxtExcludedFolders { get; } = L.Get(_loc.TxtExcludedFolders);
   public string TxtExcludedKeywords { get; } = L.Get(_loc.TxtExcludedKeywords);
   public string TxtCategoryGroups { get; } = L.Get(_loc.TxtCategoryGroups);
+  public string TxtToolBarAll { get; } = L.Get(_loc.TxtToolBarAll);
 
   public ViewerVM(ViewerR r, ViewerS s) {
     _r = r;
