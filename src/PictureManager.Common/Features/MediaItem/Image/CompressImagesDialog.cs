@@ -10,20 +10,20 @@ namespace PictureManager.Common.Features.MediaItem.Image;
 
 public sealed class CompressImagesDialog : ParallelProgressDialog<ImageM> {
   private static class _loc {
-    private const string _prefix = "Image.Compress.";
-    public const string Title = _prefix + "dlg.Title";
-    public const string BtnCompress = _prefix + "dlg.btn.Compress";
-    public const string JpegQualityLevelText = _prefix + "JpegQualityLevelText";
-    public const string OriginalText = _prefix + "OriginalText";
-    public const string CompressedText = _prefix + "CompressedText";
+    private const string _prefix = "Image.Compress.dlg.";
+    public const string Title = _prefix + "Title";
+    public const string BtnCompress = _prefix + "btn.Compress";
+    public const string TxtJpegQualityLevelText = _prefix + "txt.JpegQualityLevel";
+    public const string TxtOriginal = _prefix + "txt.Original";
+    public const string TxtCompressed = _prefix + "txt.Compressed";
 
     static _loc() {
       LocalizationManager.Register(typeof(_loc).Assembly, [
         (Title, "Compress images"),
         (BtnCompress, "Compress"),
-        (JpegQualityLevelText, "JPG quality level: {0}"),
-        (OriginalText, "Original"),
-        (CompressedText, "Compressed")
+        (TxtJpegQualityLevelText, "JPG quality level: {0}"),
+        (TxtOriginal, "Original"),
+        (TxtCompressed, "Compressed")
       ]);
     }
 
@@ -43,15 +43,15 @@ public sealed class CompressImagesDialog : ParallelProgressDialog<ImageM> {
     set {
       _jpegQualityLevel = value;
       OnPropertyChanged();
-      OnPropertyChanged(nameof(JpegQualityLevelText));
+      OnPropertyChanged(nameof(TxtJpegQualityLevel));
     }
   }
   public string TotalSourceSize => IOExtensions.FileSizeToString(_totalSourceSize);
   public string TotalCompressedSize => IOExtensions.FileSizeToString(_totalCompressedSize);
 
-  public string JpegQualityLevelText => L.Format(_loc.JpegQualityLevelText, _jpegQualityLevel);
-  public string OriginalText { get; } = L.Get(_loc.OriginalText);
-  public string CompressedText { get; } = L.Get(_loc.CompressedText);
+  public string TxtJpegQualityLevel => L.Format(_loc.TxtJpegQualityLevelText, _jpegQualityLevel);
+  public string TxtOriginal { get; } = L.Get(_loc.TxtOriginal);
+  public string TxtCompressed { get; } = L.Get(_loc.TxtCompressed);
 
   public CompressImagesDialog(ImageM[] items, ImageS imageS, int quality) : base(
     L.Get(_loc.Title), MH.UI.Res.IconImage, items, MH.UI.Res.IconImage, L.Get(_loc.BtnCompress), autoClose: false) {
