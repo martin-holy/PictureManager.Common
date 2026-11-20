@@ -83,7 +83,7 @@ public sealed class SegmentVM : ObservableObject {
     _s = s;
     _r = r;
     Views = new(_s);
-    Rect = new();
+    Rect = new(s.Rect);
 
     AddEmptyViewCommand = new(_addEmptyView, Res.IconTabPlus, L.Get(_loc.AddEmptyView));
     LoadByKeywordCommand = new((x, _) => _loadBy(x!), x => x != null, Res.IconSegment, L.Get(_loc.LoadByKeyword));
