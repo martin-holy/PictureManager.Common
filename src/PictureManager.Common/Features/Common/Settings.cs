@@ -8,6 +8,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Text.Json.Serialization.Metadata;
 
 namespace PictureManager.Common.Features.Common;
@@ -52,7 +53,7 @@ public sealed class Settings : UserSettings {
     MediaViewer = mediaViewer;
   }
 
-  public void InitGroups() {
+  public void Localize() {
     Groups = [
       new(Res.IconSettings, L.Get(_loc.CommonTitle), Common),
       new(Res.IconLocationCheckin, L.Get(_loc.GeoNameTitle), GeoName),
@@ -62,36 +63,37 @@ public sealed class Settings : UserSettings {
     ];
 
     _watchForChanges();
+    Common._localize();
   }
 
   public static Settings Load(string filePath) {
-    if (!File.Exists(filePath)) return CreateNew(filePath);
+    if (!File.Exists(filePath)) return _createNew(filePath);
     try {
       using var doc = JsonDocument.Parse(File.ReadAllText(filePath));
       var root = doc.RootElement;
       var ctx = SettingsJsonContext.Default;
-      var common = DeserializeGroup(root, "Common", ctx.CommonSettings) ?? new();
-      var geoName = DeserializeGroup(root, "GeoName", ctx.GeoNameSettings) ?? new();
-      var imagesToVideo = DeserializeGroup(root, "ImagesToVideo", ctx.ImagesToVideoSettings) ?? new();
-      var mediaItem = DeserializeGroup(root, "MediaItem", ctx.MediaItemSettings) ?? new();
-      var segment = DeserializeGroup(root, "Segment", ctx.SegmentSettings) ?? new();
-      var mediaViewer = DeserializeGroup(root, "MediaViewer", ctx.MediaViewerSettings) ?? new();
+      var common = _deserializeGroup(root, "Common", ctx.CommonSettings) ?? new();
+      var geoName = _deserializeGroup(root, "GeoName", ctx.GeoNameSettings) ?? new();
+      var imagesToVideo = _deserializeGroup(root, "ImagesToVideo", ctx.ImagesToVideoSettings) ?? new();
+      var mediaItem = _deserializeGroup(root, "MediaItem", ctx.MediaItemSettings) ?? new();
+      var segment = _deserializeGroup(root, "Segment", ctx.SegmentSettings) ?? new();
+      var mediaViewer = _deserializeGroup(root, "MediaViewer", ctx.MediaViewerSettings) ?? new();
 
       return new Settings(filePath, common, geoName, imagesToVideo, mediaItem, segment, mediaViewer);
     }
     catch (Exception ex) {
       Log.Error(ex);
-      return CreateNew(filePath);
+      return _createNew(filePath);
     }
   }
 
-  private static T? DeserializeGroup<T>(JsonElement root, string name, JsonTypeInfo<T> typeInfo) {
+  private static T? _deserializeGroup<T>(JsonElement root, string name, JsonTypeInfo<T> typeInfo) {
     if (root.TryGetProperty(name, out var elm))
       return JsonSerializer.Deserialize(elm.GetRawText(), typeInfo);
     return default;
   }
 
-  private static Settings CreateNew(string filePath) =>
+  private static Settings _createNew(string filePath) =>
     new(filePath, new(), new(), new(), new(), new(), new());
 
   protected override string Serialize() =>
@@ -99,19 +101,60 @@ public sealed class Settings : UserSettings {
 }
 
 public sealed class CommonSettings : ObservableObject {
+  internal static class _loc {
+    private const string _prefix = "App.Settings.Common.";
+    public const string TxtCachePath = _prefix + "txt.CachePath";
+    public const string TxtFfmpegPath = _prefix + "txt.FfmpegPath";
+    public const string TxtJpegQuality = _prefix + "txt.JpegQuality";
+    public const string TxtLanguages = _prefix + "txt.Languages";
+
+    static _loc() {
+      LocalizationManager.Register(typeof(_loc).Assembly, [
+        (TxtCachePath, "Cache path:"),
+        (TxtFfmpegPath, "FFMPEG path:"),
+        (TxtJpegQuality, "Jpeg quality: {0}"),
+        (TxtLanguages, "Languages:")
+      ]);
+    }
+
+    public static void Register() { }
+  }
+
+  static CommonSettings() { _loc.Register();  }
+
   private string _cachePath = @":\Temp\PictureManagerCache";
   private string[] _directorySelectFolders = [];
   private string _ffmpegPath = string.Empty;
   private int _jpegQuality = 80;
   private string _languages = "en";
   
-  public string CachePath { get => _cachePath; set => OnCachePathChange(value); }
+  public string CachePath { get => _cachePath; set => _onCachePathChange(value); }
   public string[] DirectorySelectFolders { get => _directorySelectFolders; set { _directorySelectFolders = value; OnPropertyChanged(); } }
   public string FfmpegPath { get => _ffmpegPath; set { _ffmpegPath = value; OnPropertyChanged(); } }
   public int JpegQuality { get => _jpegQuality; set { _jpegQuality = value; OnPropertyChanged(); } }
   public string Languages { get => _languages; set { _languages = value; OnPropertyChanged(); } }
 
-  private void OnCachePathChange(string value) {
+  [JsonIgnore]
+  public string TxtCachePath { get; private set; } = _loc.TxtCachePath;
+  [JsonIgnore]
+  public string TxtFfmpegPath { get; private set; } = _loc.TxtFfmpegPath;
+  [JsonIgnore]
+  public string TxtJpegQuality { get; private set; } = _loc.TxtJpegQuality;
+  [JsonIgnore]
+  public string TxtLanguages { get; private set; } = _loc.TxtLanguages;
+
+  internal void _localize() {
+    TxtCachePath = L.Get(_loc.TxtCachePath);
+    TxtFfmpegPath = L.Get(_loc.TxtFfmpegPath);
+    TxtLanguages = L.Get(_loc.TxtLanguages);
+
+    this.Bind(nameof(JpegQuality), x => x.JpegQuality, q => {
+      TxtJpegQuality = L.Format(_loc.TxtJpegQuality, q);
+      OnPropertyChanged(nameof(TxtJpegQuality));
+    });
+  }
+
+  private void _onCachePathChange(string value) {
     if (value.Length < 4 || !value.StartsWith(":\\") || value.EndsWith("\\")) return;
     _cachePath = value;
     OnPropertyChanged(nameof(CachePath));

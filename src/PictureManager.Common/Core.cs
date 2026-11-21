@@ -56,10 +56,10 @@ public sealed class Core {
     Settings = Settings.Load(Path.Combine(appDir, "settings.json"));
 
     LocalizationManager.MissingTranslation +=
-      (ass, key) => Log.Warning("Missing translation", $"Assembly: {ass.GetName().Name}, Key: {key}");
+      (asm, key) => Log.Warning("Missing translation", $"Assembly: {asm.GetName().Name}, Key: {key}");
     LocalizationManager.Initialize(Settings.Common.Languages, new EmbeddedLanguageFileProvider(appDir));
 
-    Settings.InitGroups(); // this already needs localization
+    Settings.Localize(); // this already needs localization
 
     R = new(appDir);
     return Task.Run(async () => {
