@@ -64,6 +64,7 @@ public sealed class Settings : UserSettings {
 
     _watchForChanges();
     Common._localize();
+    GeoName._localize();
   }
 
   public static Settings Load(string filePath) {
@@ -170,11 +171,38 @@ public sealed class CommonSettings : ObservableObject {
 }
 
 public sealed class GeoNameSettings : ObservableObject {
+  internal static class _loc {
+    private const string _prefix = "App.Settings.GeoName.";
+    public const string TxtLoadFromWeb = _prefix + "txt.LoadFromWeb";
+    public const string TxtUserName = _prefix + "txt.UserName";
+
+    static _loc() {
+      LocalizationManager.Register(typeof(_loc).Assembly, [
+        (TxtLoadFromWeb, "Load from web:"),
+        (TxtUserName, "User name:")
+      ]);
+    }
+
+    public static void Register() { }
+  }
+
+  static GeoNameSettings() { _loc.Register(); }
+
   private bool _loadFromWeb;
   private string _userName = string.Empty;
 
   public bool LoadFromWeb { get => _loadFromWeb; set { _loadFromWeb = value; OnPropertyChanged(); } }
   public string UserName { get => _userName; set { _userName = value; OnPropertyChanged(); } }
+
+  [JsonIgnore]
+  public string TxtLoadFromWeb { get; private set; } = _loc.TxtLoadFromWeb;
+  [JsonIgnore]
+  public string TxtUserName { get; private set; } = _loc.TxtUserName;
+
+  internal void _localize() {
+    TxtLoadFromWeb = L.Get(_loc.TxtLoadFromWeb);
+    TxtUserName = L.Get(_loc.TxtUserName);
+  }
 }
 
 public sealed class ImagesToVideoSettings : ObservableObject {
