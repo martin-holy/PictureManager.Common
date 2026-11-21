@@ -67,6 +67,7 @@ public sealed class Settings : UserSettings {
     GeoName._localize();
     MediaItem._localize();
     Segment._localize();
+    MediaViewer._localize();
   }
 
   public static Settings Load(string filePath) {
@@ -335,7 +336,29 @@ public sealed class SegmentSettings : ObservableObject {
 }
 
 public sealed class MediaViewerSettings : ObservableObject {
+  internal static class _loc {
+    private const string _prefix = "App.Settings.MediaViewer.";
+    public const string TxtExpandToFill = _prefix + "txt.ExpandToFill";
+
+    static _loc() {
+      LocalizationManager.Register(typeof(_loc).Assembly, [
+        (TxtExpandToFill, "Expand content to fill:")
+      ]);
+    }
+
+    public static void Register() { }
+  }
+
+  static MediaViewerSettings() { _loc.Register(); }
+
   private bool _expandToFill;
 
   public bool ExpandToFill { get => _expandToFill; set { _expandToFill = value; OnPropertyChanged(); } }
+
+  [JsonIgnore]
+  public string TxtExpandToFill { get; private set; } = _loc.TxtExpandToFill;
+
+  internal void _localize() {
+    TxtExpandToFill = L.Get(_loc.TxtExpandToFill);
+  }
 }
