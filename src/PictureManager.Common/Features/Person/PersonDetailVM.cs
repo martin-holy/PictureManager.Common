@@ -17,13 +17,13 @@ namespace PictureManager.Common.Features.Person;
 public sealed class PersonDetailVM : ObservableObject {
   internal static class _loc {
     private const string _prefix = "Person.Detail.";
-    public const string AllSegmentsName = _prefix + "AllSegments.Name";
-    public const string TopSegmentsName = _prefix + "TopSegments.Name";
+    public const string AllSegmentsTitle = _prefix + "AllSegments.Title";
+    public const string TopSegmentsTitle = _prefix + "TopSegments.Title";
 
     static _loc() {
       LocalizationManager.Register(typeof(_loc).Assembly, [
-        (AllSegmentsName, "All"),
-        (TopSegmentsName, "Top")
+        (AllSegmentsTitle, "All"),
+        (TopSegmentsTitle, "Top")
       ]);
     }
 
@@ -103,12 +103,12 @@ public sealed class PersonDetailVM : ObservableObject {
       GroupByItems.GetKeywordsInGroup(items)
     };
 
-    AllSegments.Name = L.Get(_loc.AllSegmentsName);
+    AllSegments.Name = L.Get(_loc.AllSegmentsTitle);
     AllSegments.Reload([.. items], GroupMode.ThenByRecursive, groupByItems, true, true);
   }
 
   private void _reloadTopSegments() {
-    TopSegments.Name = L.Get(_loc.TopSegmentsName);
+    TopSegments.Name = L.Get(_loc.TopSegmentsTitle);
     TopSegments.Reload(
       PersonM!.TopSegments == null
         ? []

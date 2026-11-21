@@ -10,8 +10,8 @@ namespace PictureManager.Common.Features.Person;
 
 public sealed class PersonTreeCategory : TreeCategory<PersonM, CategoryGroupM> {
   internal static class _loc {
-    private const string _prefix = "Person.";
-    public const string Title = _prefix + "TreeCategory.Title";
+    private const string _prefix = "Persons.Tree.";
+    public const string Title = _prefix + "Title";
     public const string UnknownGroupName = _prefix + "UnknownGroupName";
 
     static _loc() {

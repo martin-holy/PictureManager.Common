@@ -12,7 +12,7 @@ namespace PictureManager.Common.Features.Person;
 
 public class PersonCollectionView : CollectionView<PersonM> {
   internal static class _loc {
-    private const string _prefix = "Person.CollectionView.";
+    private const string _prefix = "Persons.";
     public const string Title = _prefix + "Title";
     public const string SortFieldName = _prefix + "SortField.Name";
 

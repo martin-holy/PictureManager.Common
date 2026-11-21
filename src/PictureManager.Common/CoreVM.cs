@@ -61,7 +61,7 @@ public sealed class CoreVM : ObservableObject {
     public const string ImageResizeSelected = "Image.Resize.Selected.cmd";
     public const string MediaItemRotate = "MediaItem.Rotate.cmd";
     public const string SaveMetadataToFiles = "MediaItem.SaveMetadataToFiles.cmd";
-    public const string PeopleTabName = "People.TabName";
+    public const string PeopleTabName = "Persons.MainTabs.TabName";
     public const string ToggleOnSegment = "Toggle.btn.Segment";
     public const string ToggleOnPerson = "Toggle.btn.Person";
     public const string ToggleOnMediaItem = "Toggle.btn.MediaItem";

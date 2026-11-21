@@ -18,8 +18,8 @@ public sealed class ToolsTabsVM : TabControl {
     public const string NoTabsText = _prefix + "NoTabsText";
     public const string PersonDetailOpen = "Person.Detail.Open.cmd";
     public const string PersonDetailTabName = "Person.Detail.TabName";
-    public const string PeopleOpen = _prefix + "People.Open.cmd";
-    public const string PeopleTabName = _prefix + "People.TabName";
+    public const string PeopleOpen = "Persons.ToolsTabs.Open.cmd";
+    public const string PeopleTabName = "Persons.ToolsTabs.TabName";
 
     static _loc() {
       LocalizationManager.Register(typeof(_loc).Assembly, [

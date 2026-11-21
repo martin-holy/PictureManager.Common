@@ -12,7 +12,7 @@ namespace PictureManager.Common.Features.Person;
 
 public sealed class PersonVM {
   internal static class _loc {
-    private const string _prefix = "Person.";
+    private const string _prefix = "Persons.ToolsTabs.";
     public const string LoadByGroup = _prefix + "LoadByGroup.cmd";
     public const string LoadByKeyword = _prefix + "LoadByKeyword.cmd";
 

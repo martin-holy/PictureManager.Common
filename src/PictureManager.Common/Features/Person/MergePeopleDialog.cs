@@ -12,14 +12,14 @@ namespace PictureManager.Common.Features.Person;
 
 public sealed class MergePeopleDialog : Dialog {
   internal static class _loc {
-    private const string _prefix = "Person.MergePeople.";
-    public const string Title = _prefix + "dlg.Title";
-    public const string SegmentsViewName = _prefix + "SegmentsView.Name";
+    private const string _prefix = "Persons.Merge.dlg.";
+    public const string Title = _prefix + "Title";
+    public const string SegmentsTitle = _prefix + "Segments.Title";
 
     static _loc() {
       LocalizationManager.Register(typeof(_loc).Assembly, [
         (Title, "Select a person for segments"),
-        (SegmentsViewName, "Segments to update")
+        (SegmentsTitle, "Segments to update")
       ]);
     }
 
@@ -82,7 +82,7 @@ public sealed class MergePeopleDialog : Dialog {
     _segmentsToUpdate = _getSegmentsToUpdate(Person, _people);
     var groupByItems = GroupByItems.GetPeople(_segmentsToUpdate).ToArray();
 
-    SegmentsView.Name = L.Get(_loc.SegmentsViewName);
+    SegmentsView.Name = L.Get(_loc.SegmentsTitle);
     SegmentsView.Reload([.. _segmentsToUpdate], GroupMode.GroupBy, groupByItems, true, true);
   }
 

@@ -12,21 +12,21 @@ using System.Threading.Tasks;
 namespace PictureManager.Common.Features.Person;
 
 public sealed class PeopleToolsTabVM : PersonCollectionView {
-  internal static class _loc {
-    private const string _prefix = "Person.PeopleToolsTab.";
-    public const string GetFromTitle = _prefix + "GetFrom.dlg.Title";
-    public const string GetFromMessage = _prefix + "GetFrom.dlg.Message";
-    public const string GetFromBtnThumbnails = _prefix + "GetFrom.dlg.btn.Thumbnails";
-    public const string GetFromBtnMediaViewer = _prefix + "GetFrom.dlg.btn.MediaViewer";
-    public const string GetFromBtnAllPeople = _prefix + "GetFrom.dlg.btn.AllPeople";
+  internal new static class _loc {
+    private const string _prefix = "Persons.ToolsTabs.LoadFrom.dlg.";
+    public const string LoadFromTitle = _prefix + "Title";
+    public const string LoadFromMessage = _prefix + "Message";
+    public const string BtnLoadFromThumbnails = _prefix + "btn.Thumbnails";
+    public const string BtnLoadFromMediaViewer = _prefix + "btn.MediaViewer";
+    public const string BtnLoadFromAllPeople = _prefix + "btn.AllPeople";
 
     static _loc() {
       LocalizationManager.Register(typeof(_loc).Assembly, [
-        (GetFromTitle, "Reload People"),
-        (GetFromMessage, "From which source do you want to load the people?"),
-        (GetFromBtnThumbnails, "Thumbnails"),
-        (GetFromBtnMediaViewer, "Media Viewer"),
-        (GetFromBtnAllPeople, "All people")
+        (LoadFromTitle, "Reload People"),
+        (LoadFromMessage, "From which source do you want to load the people?"),
+        (BtnLoadFromThumbnails, "Thumbnails"),
+        (BtnLoadFromMediaViewer, "Media Viewer"),
+        (BtnLoadFromAllPeople, "All people")
       ]);
     }
 
@@ -37,15 +37,15 @@ public sealed class PeopleToolsTabVM : PersonCollectionView {
 
   private static async Task<IEnumerable<PersonM>> _getPeople() {
     var md = new MessageDialog(
-      L.Get(_loc.GetFromTitle),
-      L.Get(_loc.GetFromMessage),
+      L.Get(_loc.LoadFromTitle),
+      L.Get(_loc.LoadFromMessage),
       Res.IconPeople,
       true);
 
     md.Buttons = [
-      new(md.SetResult(1, null, L.Get(_loc.GetFromBtnThumbnails)), true),
-      new(md.SetResult(2, null, L.Get(_loc.GetFromBtnMediaViewer))),
-      new(md.SetResult(3, null, L.Get(_loc.GetFromBtnAllPeople)))
+      new(md.SetResult(1, null, L.Get(_loc.BtnLoadFromThumbnails)), true),
+      new(md.SetResult(2, null, L.Get(_loc.BtnLoadFromMediaViewer))),
+      new(md.SetResult(3, null, L.Get(_loc.BtnLoadFromAllPeople)))
     ];
 
     var result = await Dialog.ShowAsync(md);
