@@ -71,6 +71,7 @@ public static class MenuFactory {
     new MenuItem(TreeCategory.ItemCreateCommand, item),
     new MenuItem(TreeCategory.ItemRenameCommand, item),
     new MenuItem(TreeCategory.ItemDeleteCommand, item),
+    new MenuItemSeparator(),
     new MenuItem(FavoriteFolderTreeCategory.AddToFavoritesCommand, item),
     new MenuItem(FolderKeywordTreeCategory.SetAsFolderKeywordCommand, item),
     new MenuItem(Res.IconLocationCheckin, L.Get(_loc.GeoLocation), [
@@ -107,6 +108,7 @@ public static class MenuFactory {
     new MenuItem(TreeCategory.ItemRenameCommand, item),
     new MenuItem(TreeCategory.ItemDeleteCommand, item),
     new MenuItem(TreeCategory.ItemMoveToGroupCommand, item),
+    new MenuItemSeparator(),
     new MenuItem(MediaItemVM.LoadByPersonCommand, item),
     new MenuItem(SegmentVM.LoadByPersonCommand, item),
     new MenuItem(MediaItemsViewsVM.FilterSetAndCommand, item),
@@ -128,6 +130,7 @@ public static class MenuFactory {
     new MenuItem(TreeCategory.ItemRenameCommand, item),
     new MenuItem(TreeCategory.ItemDeleteCommand, item),
     new MenuItem(TreeCategory.ItemMoveToGroupCommand, item),
+    new MenuItemSeparator(),
     new MenuItem(MediaItemVM.LoadByKeywordCommand, item),
     new MenuItem(PersonVM.LoadByKeywordCommand, item),
     new MenuItem(SegmentVM.LoadByKeywordCommand, item),
@@ -171,6 +174,7 @@ public static class MenuFactory {
     new MenuItem(TreeCategory.GroupRenameCommand, item),
     new MenuItem(TreeCategory.GroupDeleteCommand, item),
     new MenuItem(TreeCategory.GroupMoveInItemsCommand, item),
+    new MenuItemSeparator(),
     new MenuItem(PersonVM.LoadByCategoryGroupCommand, item)];
 
   // PersonDetail
