@@ -23,7 +23,7 @@ public sealed class ImageResizeDialog : ParallelProgressDialog<ImageM> {
     public const string TxtPreserveMetadata = _prefix + "txt.PreserveMetadata";
     public const string TxtPreserveFolders = _prefix + "txt.PreserveFolders";
     public const string TxtResizeTo = _prefix + "txt.ResizeTo";
-    public const string TxtMPx = _prefix + "txt.MPx";
+    public const string TxtMpx = _prefix + "txt.Mpx";
     public const string TxtSkipIfExists = _prefix + "txt.SkipIfExists";
 
     static _loc() {
@@ -36,7 +36,7 @@ public sealed class ImageResizeDialog : ParallelProgressDialog<ImageM> {
         (TxtPreserveMetadata, "Metadata"),
         (TxtPreserveFolders, "Folders"),
         (TxtResizeTo, "Resize to:"),
-        (TxtMPx, "{0:F1} MPx"),
+        (TxtMpx, "{0:F1} Mpx"),
         (TxtSkipIfExists, "Skip if file exists")
       ]);
     }
@@ -61,7 +61,7 @@ public sealed class ImageResizeDialog : ParallelProgressDialog<ImageM> {
   public bool PreserveFolders { get => _preserveFolders; set { _preserveFolders = value; OnPropertyChanged(); } }
   public bool SkipIfExists { get => _skipIfExists; set { _skipIfExists = value; OnPropertyChanged(); } }
   public string? DestDir { get => _destDir; set { _destDir = value; OnPropertyChanged(); } }
-  public double Mpx { get => _mpx; set { _mpx = value; OnPropertyChanged(); OnPropertyChanged(nameof(TxtMPx)); } }
+  public double Mpx { get => _mpx; set { _mpx = value; OnPropertyChanged(); OnPropertyChanged(nameof(TxtMpx)); } }
   public double MaxMpx { get => _maxMpx; set { _maxMpx = value; OnPropertyChanged(); } }
 
   public string TxtPreserve { get; } = L.Get(_loc.TxtPreserve);
@@ -69,7 +69,7 @@ public sealed class ImageResizeDialog : ParallelProgressDialog<ImageM> {
   public string TxtPreserveMetadata { get; } = L.Get(_loc.TxtPreserveMetadata);
   public string TxtPreserveFolders { get; } = L.Get(_loc.TxtPreserveFolders);
   public string TxtResizeTo { get; } = L.Get(_loc.TxtResizeTo);
-  public string TxtMPx => L.Format(_loc.TxtMPx, Mpx);
+  public string TxtMpx => L.Format(_loc.TxtMpx, Mpx);
   public string TxtSkipIfExists { get; } = L.Get(_loc.TxtSkipIfExists);
 
   public AsyncRelayCommand OpenFolderBrowserCommand { get; }
