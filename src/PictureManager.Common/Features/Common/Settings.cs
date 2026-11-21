@@ -66,6 +66,7 @@ public sealed class Settings : UserSettings {
     Common._localize();
     GeoName._localize();
     MediaItem._localize();
+    Segment._localize();
   }
 
   public static Settings Load(string filePath) {
@@ -303,9 +304,34 @@ public sealed class MediaItemSettings : ObservableObject {
 }
 
 public sealed class SegmentSettings : ObservableObject {
+  internal static class _loc {
+    private const string _prefix = "App.Settings.Segment.";
+    public const string TxtGroupSize = _prefix + "txt.GroupSize";
+
+    static _loc() {
+      LocalizationManager.Register(typeof(_loc).Assembly, [
+        (TxtGroupSize, "Group size: {0}")
+      ]);
+    }
+
+    public static void Register() { }
+  }
+
+  static SegmentSettings() { _loc.Register(); }
+
   private int _groupSize = 250;
 
   public int GroupSize { get => _groupSize; set { _groupSize = value; OnPropertyChanged(); } }
+
+  [JsonIgnore]
+  public string TxtGroupSize { get; private set; } = _loc.TxtGroupSize;
+
+  internal void _localize() {
+    this.Bind(nameof(GroupSize), x => x.GroupSize, x => {
+      TxtGroupSize = L.Format(_loc.TxtGroupSize, x);
+      OnPropertyChanged(nameof(TxtGroupSize));
+    });
+  }
 }
 
 public sealed class MediaViewerSettings : ObservableObject {
