@@ -65,6 +65,7 @@ public sealed class Settings : UserSettings {
     _watchForChanges();
     Common._localize();
     GeoName._localize();
+    MediaItem._localize();
   }
 
   public static Settings Load(string filePath) {
@@ -216,6 +217,33 @@ public sealed class ImagesToVideoSettings : ObservableObject {
 }
 
 public sealed class MediaItemSettings : ObservableObject {
+  internal static class _loc {
+    private const string _prefix = "App.Settings.MediaItem.";
+    public const string TxtMediaItemThumbScale = _prefix + "txt.MediaItemThumbScale";
+    public const string TxtScrollExactlyToMediaItem = _prefix + "txt.ScrollExactlyToMediaItem";
+    public const string TxtSortField = _prefix + "txt.SortField";
+    public const string TxtSortOrder = _prefix + "txt.SortOrder";
+    public const string TxtThumbSize = _prefix + "txt.ThumbSize";
+    public const string TxtVideoItemThumbScale = _prefix + "txt.VideoItemThumbScale";
+    public const string TxtVideoMetadataFullRewriteThreshold = _prefix + "txt.VideoMetadataFullRewriteThreshold";
+
+    static _loc() {
+      LocalizationManager.Register(typeof(_loc).Assembly, [
+        (TxtMediaItemThumbScale, "Media item thumb scale: {0:G2}"),
+        (TxtScrollExactlyToMediaItem, "Scroll exactly to MediaItem in thumbnails:"),
+        (TxtSortField, "Sort field:"),
+        (TxtSortOrder, "Sort order:"),
+        (TxtThumbSize, "Thumbnail size: {0}"),
+        (TxtVideoItemThumbScale, "Video item thumbnail scale: {0:G3}"),
+        (TxtVideoMetadataFullRewriteThreshold, "Allow full rewrite of video files smaller than: {0} MB")
+      ]);
+    }
+
+    public static void Register() { }
+  }
+
+  static MediaItemSettings() { _loc.Register(); }
+
   private double _mediaItemThumbScale = 0.8;
   private bool _scrollExactlyToMediaItem;
   private string _sortField = "File name";
@@ -231,6 +259,47 @@ public sealed class MediaItemSettings : ObservableObject {
   public int ThumbSize { get => _thumbSize; set { _thumbSize = value; OnPropertyChanged(); } }
   public double VideoItemThumbScale { get => _videoItemThumbScale; set { _videoItemThumbScale = value; OnPropertyChanged(); } }
   public int VideoMetadataFullRewriteThreshold { get => _videoMetadataFullRewriteThreshold; set { _videoMetadataFullRewriteThreshold = value; OnPropertyChanged(); } }
+
+  [JsonIgnore]
+  public string TxtMediaItemThumbScale { get; private set; } = _loc.TxtMediaItemThumbScale;
+  [JsonIgnore]
+  public string TxtScrollExactlyToMediaItem { get; private set; } = _loc.TxtScrollExactlyToMediaItem;
+  [JsonIgnore]
+  public string TxtSortField { get; private set; } = _loc.TxtSortField;
+  [JsonIgnore]
+  public string TxtSortOrder { get; private set; } = _loc.TxtSortOrder;
+  [JsonIgnore]
+  public string TxtThumbSize { get; private set; } = _loc.TxtThumbSize;
+  [JsonIgnore]
+  public string TxtVideoItemThumbScale { get; private set; } = _loc.TxtVideoItemThumbScale;
+  [JsonIgnore]
+  public string TxtVideoMetadataFullRewriteThreshold { get; private set; } = _loc.TxtVideoMetadataFullRewriteThreshold;
+
+  internal void _localize() {
+    TxtScrollExactlyToMediaItem = L.Get(_loc.TxtScrollExactlyToMediaItem);
+    TxtSortField = L.Get(_loc.TxtSortField);
+    TxtSortOrder = L.Get(_loc.TxtSortOrder);
+
+    this.Bind(nameof(MediaItemThumbScale), x => x.MediaItemThumbScale, x => {
+      TxtMediaItemThumbScale = L.Format(_loc.TxtMediaItemThumbScale, x);
+      OnPropertyChanged(nameof(TxtMediaItemThumbScale));
+    });
+
+    this.Bind(nameof(ThumbSize), x => x.ThumbSize, x => {
+      TxtThumbSize = L.Format(_loc.TxtThumbSize, x);
+      OnPropertyChanged(nameof(TxtThumbSize));
+    });
+
+    this.Bind(nameof(VideoItemThumbScale), x => x.VideoItemThumbScale, x => {
+      TxtVideoItemThumbScale = L.Format(_loc.TxtVideoItemThumbScale, x);
+      OnPropertyChanged(nameof(TxtVideoItemThumbScale));
+    });
+
+    this.Bind(nameof(VideoMetadataFullRewriteThreshold), x => x.VideoMetadataFullRewriteThreshold, x => {
+      TxtVideoMetadataFullRewriteThreshold = L.Format(_loc.TxtVideoMetadataFullRewriteThreshold, x);
+      OnPropertyChanged(nameof(TxtVideoMetadataFullRewriteThreshold));
+    });
+  }
 }
 
 public sealed class SegmentSettings : ObservableObject {
