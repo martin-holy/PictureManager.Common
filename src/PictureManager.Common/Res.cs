@@ -90,23 +90,6 @@ public static class Res {
     { IconCd, BrushDrive }
   };
 
-  public static readonly Dictionary<object, object> TypeToTreeContextMenuDic = new() {
-    { typeof(DriveM), "TreeContextMenuDrive" },
-    { typeof(FolderM), "TreeContextMenuFolder" },
-    { typeof(FavoriteFolderM), "TreeContextMenuFavoriteFolder" },
-    { typeof(PersonTreeCategory), "TreeContextMenuPeople" },
-    { typeof(PersonM), "TreeContextMenuPerson" },
-    { typeof(FolderKeywordTreeCategory), "TreeContextMenuFolderKeywords" },
-    { typeof(KeywordTreeCategory), "TreeContextMenuKeywords" },
-    { typeof(KeywordM), "TreeContextMenuKeyword" },
-    { typeof(GeoNameTreeCategory), "TreeContextMenuGeoNames" },
-    { typeof(GeoNameM), "TreeContextMenuGeoName" },
-    { typeof(ViewerTreeCategory), "TreeContextMenuViewers" },
-    { typeof(ViewerM), "TreeContextMenuViewer" },
-    { typeof(KeywordCategoryGroupM), "TreeContextMenuKeywordGroup" },
-    { typeof(PersonCategoryGroupM), "TreeContextMenuPersonGroup" }
-  };
-
   public static string CategoryToIcon(Category category) =>
     category switch {
       Category.FavoriteFolders => IconFolderStar,
