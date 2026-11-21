@@ -8,7 +8,7 @@ namespace PictureManager.Common.Features.Rating;
 public sealed class RatingTreeCategory : TreeCategory {
   internal static class _loc {
     private const string _prefix = "Rating.";
-    public const string Title = _prefix + "TreeCategory.Title";
+    public const string Title = _prefix + "Tree.Title";
 
     static _loc() {
       LocalizationManager.Register(typeof(_loc).Assembly, [
