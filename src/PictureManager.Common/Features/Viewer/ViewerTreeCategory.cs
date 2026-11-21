@@ -8,8 +8,8 @@ public sealed class ViewerTreeCategory(ViewerR r)
   : TreeCategory<ViewerM>(new(), Res.IconEye, L.Get(_loc.Title), (int)Category.Viewers, r) {
 
   internal static class _loc {
-    private const string _prefix = "Viewer.";
-    public const string Title = _prefix + "TreeCategory.Title";
+    private const string _prefix = "Viewers.";
+    public const string Title = _prefix + "Tree.Title";
 
     static _loc() {
       LocalizationManager.Register(typeof(_loc).Assembly, [

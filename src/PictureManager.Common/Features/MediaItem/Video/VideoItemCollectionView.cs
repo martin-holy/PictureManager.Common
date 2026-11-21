@@ -12,7 +12,7 @@ namespace PictureManager.Common.Features.MediaItem.Video;
 
 public class VideoItemCollectionView : CollectionView<VideoItemM> {
   internal static class _loc {
-    private const string _prefix = "VideoItem.CollectionView.";
+    private const string _prefix = "VideoItems.";
     public const string Title = _prefix + "Title";
     public const string SortFieldTime = _prefix + "SortField.Time";
 

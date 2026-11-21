@@ -16,31 +16,31 @@ namespace PictureManager.Common.Features.Viewer;
 
 public sealed class ViewerVM : ObservableObject {
   internal static class _loc {
-    private const string _prefix = "Viewer.Detail.";
-    public const string TxtIncludedFolders = _prefix + "txt.IncludedFolders";
-    public const string CmdAddIncludedFolder = _prefix + "cmd.AddIncludedFolder";
-    public const string CmdRemoveIncludedFolder = _prefix + "cmd.RemoveIncludedFolder";
-    public const string TxtExcludedFolders = _prefix + "txt.ExcludedFolders";
-    public const string CmdAddExcludedFolder = _prefix + "cmd.AddExcludedFolder";
-    public const string CmdRemoveExcludedFolder = _prefix + "cmd.RemoveExcludedFolder";
-    public const string TxtExcludedKeywords = _prefix + "txt.ExcludedKeywords";
-    public const string CmdAddExcludedKeyword = _prefix + "cmd.AddExcludedKeyword";
-    public const string CmdRemoveExcludedKeyword = _prefix + "cmd.RemoveExcludedKeyword";
-    public const string TxtCategoryGroups = _prefix + "txt.CategoryGroups";
-    public const string TabName = _prefix + "TabName";
-    public const string TxtToolBarAll = _prefix + "Viewer.ToolBar.txt.All";
+    private const string _prefix = "Viewer.";
+    public const string TxtIncludedFolders = _prefix + "Detail.txt.IncludedFolders";
+    public const string AddIncludedFolder = _prefix + "AddIncludedFolder.cmd";
+    public const string RemoveIncludedFolder = _prefix + "Detail.RemoveIncludedFolder.cmd";
+    public const string TxtExcludedFolders = _prefix + "Detail.txt.ExcludedFolders";
+    public const string AddExcludedFolder = _prefix + "AddExcludedFolder.cmd";
+    public const string RemoveExcludedFolder = _prefix + "Detail.RemoveExcludedFolder.cmd";
+    public const string TxtExcludedKeywords = _prefix + "Detail.txt.ExcludedKeywords";
+    public const string AddExcludedKeyword = _prefix + "AddExcludedKeyword.cmd";
+    public const string RemoveExcludedKeyword = _prefix + "Detail.RemoveExcludedKeyword.cmd";
+    public const string TxtCategoryGroups = _prefix + "Detail.txt.CategoryGroups";
+    public const string TabName = _prefix + "Detail.TabName";
+    public const string TxtToolBarAll = _prefix + "ToolBar.txt.All";
 
     static _loc() {
       LocalizationManager.Register(typeof(_loc).Assembly, [
         (TxtIncludedFolders, "Included Folders"),
-        (CmdAddIncludedFolder, "Add to included"),
-        (CmdRemoveIncludedFolder, "Remove"),
+        (AddIncludedFolder, "Add to included"),
+        (RemoveIncludedFolder, "Remove"),
         (TxtExcludedFolders, "Excluded Folders"),
-        (CmdAddExcludedFolder, "Add to excluded"),
-        (CmdRemoveExcludedFolder, "Remove"),
+        (AddExcludedFolder, "Add to excluded"),
+        (RemoveExcludedFolder, "Remove"),
         (TxtExcludedKeywords, "Excluded Keywords"),
-        (CmdAddExcludedKeyword, "Add to excluded"),
-        (CmdRemoveExcludedKeyword, "Remove"),
+        (AddExcludedKeyword, "Add to excluded"),
+        (RemoveExcludedKeyword, "Remove"),
         (TxtCategoryGroups, "Category Groups"),
         (TabName, "Viewer"),
         (TxtToolBarAll, "All")
@@ -94,12 +94,12 @@ public sealed class ViewerVM : ObservableObject {
 
     UpdateExcludedCategoryGroupsCommand = new(_updateExcludedCategoryGroups);
     ChangeCurrentCommand = new(s.ChangeCurrent, Res.IconEye);
-    AddIncludedFolderCommand = new(x => _r.AddFolder(Selected, x!, true), x => x != null && Selected != null, Res.IconFolder, L.Get(_loc.CmdAddIncludedFolder));
-    RemoveIncludedFolderCommand = new(x => _r.RemoveFolder(Selected, x!, true), x => x != null && Selected != null, Res.IconFolder, L.Get(_loc.CmdRemoveIncludedFolder));
-    AddExcludedFolderCommand = new(x => _r.AddFolder(Selected, x!, false), x => x != null && Selected != null, Res.IconFolder, L.Get(_loc.CmdAddExcludedFolder));
-    RemoveExcludedFolderCommand = new(x => _r.RemoveFolder(Selected, x!, false), x => x != null && Selected != null, Res.IconFolder, L.Get(_loc.CmdRemoveExcludedFolder));
-    AddExcludedKeywordCommand = new(x => _r.AddKeyword(Selected, x!), x => x != null && Selected != null, Res.IconTagLabel, L.Get(_loc.CmdAddExcludedKeyword));
-    RemoveExcludedKeywordCommand = new(x => _r.RemoveKeyword(Selected, x!), x => x != null && Selected != null, Res.IconTagLabel, L.Get(_loc.CmdRemoveExcludedKeyword));
+    AddIncludedFolderCommand = new(x => _r.AddFolder(Selected, x!, true), x => x != null && Selected != null, Res.IconFolder, L.Get(_loc.AddIncludedFolder));
+    RemoveIncludedFolderCommand = new(x => _r.RemoveFolder(Selected, x!, true), x => x != null && Selected != null, Res.IconFolder, L.Get(_loc.RemoveIncludedFolder));
+    AddExcludedFolderCommand = new(x => _r.AddFolder(Selected, x!, false), x => x != null && Selected != null, Res.IconFolder, L.Get(_loc.AddExcludedFolder));
+    RemoveExcludedFolderCommand = new(x => _r.RemoveFolder(Selected, x!, false), x => x != null && Selected != null, Res.IconFolder, L.Get(_loc.RemoveExcludedFolder));
+    AddExcludedKeywordCommand = new(x => _r.AddKeyword(Selected, x!), x => x != null && Selected != null, Res.IconTagLabel, L.Get(_loc.AddExcludedKeyword));
+    RemoveExcludedKeywordCommand = new(x => _r.RemoveKeyword(Selected, x!), x => x != null && Selected != null, Res.IconTagLabel, L.Get(_loc.RemoveExcludedKeyword));
   }
 
   private void _updateExcludedCategoryGroups() {

@@ -12,7 +12,7 @@ namespace PictureManager.Common.Features.Common;
 
 public sealed class TreeViewSearchVM : ObservableObject {
   internal static class _loc {
-    private const string _prefix = "TreeViewSearch.";
+    private const string _prefix = "TreeSearch.";
     public const string Open = _prefix + "Open.cmd";
     public const string Close = _prefix + "Close.cmd";
 
