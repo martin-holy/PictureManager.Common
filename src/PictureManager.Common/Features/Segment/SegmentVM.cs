@@ -18,12 +18,12 @@ namespace PictureManager.Common.Features.Segment;
 
 public sealed class SegmentVM : ObservableObject {
   internal static class _loc {
-    private const string _prefix = "Segment.";
+    private const string _prefix = "Segments.";
     public const string AddEmptyView = _prefix + "AddEmptyView.cmd";
     public const string LoadByKeyword = _prefix + "LoadByKeyword.cmd";
     public const string LoadByPerson = _prefix + "LoadByPerson.cmd";
-    public const string AddToPersonsTopSegments = _prefix + "AddToPersonsTopSegments.cmd";
-    public const string RemoveFromPersonsTopSegments = _prefix + "RemoveFromPersonsTopSegments.cmd";
+    public const string AddToPersonTopSegments = _prefix + "AddToPersonTopSegments.cmd";
+    public const string RemoveFromPersonTopSegments = _prefix + "RemoveFromPersonTopSegments.cmd";
     public const string SetAsSamePerson = _prefix + "SetAsSamePerson.cmd";
     public const string SetAsUnknown = _prefix + "SetAsUnknown.cmd";
     public const string SetAsUnknownTitle = _prefix + "SetAsUnknown.dlg.Title";
@@ -37,8 +37,8 @@ public sealed class SegmentVM : ObservableObject {
         (AddEmptyView, "Add Segments View Tab"),
         (LoadByKeyword, "Load Segments"),
         (LoadByPerson, "Load Segments"),
-        (AddToPersonsTopSegments, "Add selected to Top segments"),
-        (RemoveFromPersonsTopSegments, "Remove selected from Top segments"),
+        (AddToPersonTopSegments, "Add selected to Top segments"),
+        (RemoveFromPersonTopSegments, "Remove selected from Top segments"),
         (SetAsSamePerson, "Set selected as same person"),
         (SetAsUnknown, "Set selected as Unknown"),
         (SetAsUnknownTitle, "Set as unknown"),
@@ -87,8 +87,8 @@ public sealed class SegmentVM : ObservableObject {
     AddEmptyViewCommand = new(_addEmptyView, Res.IconTabPlus, L.Get(_loc.AddEmptyView));
     LoadByKeywordCommand = new((x, _) => _loadBy(x!), x => x != null, Res.IconSegment, L.Get(_loc.LoadByKeyword));
     LoadByPersonCommand = new((x, _) => _loadBy(x!), x => x != null, Res.IconSegment, L.Get(_loc.LoadByPerson));
-    AddSelectedToPersonsTopSegmentsCommand = new(_addSelectedToPersonsTopSegments, _canAddSelectedToPersonsTopSegments, Res.IconSegmentAdd, L.Get(_loc.AddToPersonsTopSegments));
-    RemoveSelectedFromPersonsTopSegmentsCommand = new(_removeSelectedFromPersonsTopSegments, _canRemoveSelectedFromPersonsTopSegments, Res.IconSegmentRemove, L.Get(_loc.RemoveFromPersonsTopSegments));
+    AddSelectedToPersonsTopSegmentsCommand = new(_addSelectedToPersonsTopSegments, _canAddSelectedToPersonsTopSegments, Res.IconSegmentAdd, L.Get(_loc.AddToPersonTopSegments));
+    RemoveSelectedFromPersonsTopSegmentsCommand = new(_removeSelectedFromPersonsTopSegments, _canRemoveSelectedFromPersonsTopSegments, Res.IconSegmentRemove, L.Get(_loc.RemoveFromPersonTopSegments));
     SetSelectedAsSamePersonCommand = new(_setSelectedAsSamePerson, Res.IconEquals, L.Get(_loc.SetAsSamePerson));
     SetSelectedAsUnknownCommand = new(_setSelectedAsUnknown, _canSetSelectedAsUnknown, Res.IconUnknownSegment, L.Get(_loc.SetAsUnknown));
     DeleteSelectedCommand = new(_deleteSelected, _canDeleteSelected, Res.IconSegmentDelete, L.Get(_loc.Delete));

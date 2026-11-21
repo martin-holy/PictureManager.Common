@@ -39,15 +39,15 @@ public sealed class CoreVM : ObservableObject {
     private const string _prefix = "App.";
 
     public const string About = _prefix + "About.cmd";
-    public const string SegmentExport = "Segment.Export.cmd";
-    public const string SegmentExportToFolderTitle = "Segment.Export.ToFolder.dlg.Title";
-    public const string SegmentExportToFolderMessage = "Segment.Export.ToFolder.dlg.Message";
+    public const string SegmentsExport = "Segments.Export.cmd";
+    public const string SegmentsExportToFolderTitle = "Segments.Export.ToFolder.dlg.Title";
+    public const string SegmentsExportToFolderMessage = "Segments.Export.ToFolder.dlg.Message";
     public const string LogOpen = _prefix + "Log.Open.cmd";
     public const string LogTabName = _prefix + "Log.TabName";
     public const string SettingsOpen = _prefix + "Settings.Open.cmd";
     public const string SettingsTabName = _prefix + "Settings.TabName";
     public const string ExportTranslations = _prefix + "ExportTranslations";
-    public const string SegmentOpenViews = "Segment.OpenViews.cmd";
+    public const string SegmentsOpen = "Segments.Open.cmd";
     public const string DbSave = _prefix + "Db.Save.cmd";
     public const string DbChangesTitle = _prefix + "Db.Changes.dlg.Title";
     public const string DbChangesMessage = _prefix + "Db.Changes.dlg.Message";
@@ -78,15 +78,15 @@ public sealed class CoreVM : ObservableObject {
     static _loc() {
       LocalizationManager.Register(typeof(_loc).Assembly, [
         (About, "About"),
-        (SegmentExport, "Export Segments"),
-        (SegmentExportToFolderTitle, "Export Segments"),
-        (SegmentExportToFolderMessage, "Do you really want to export segments to \"{0}\"?"),
+        (SegmentsExport, "Export Segments"),
+        (SegmentsExportToFolderTitle, "Export Segments"),
+        (SegmentsExportToFolderMessage, "Do you really want to export segments to \"{0}\"?"),
         (LogOpen, "Open log"),
         (LogTabName, "Log"),
         (SettingsOpen, "Settings"),
         (SettingsTabName, "Settings"),
         (ExportTranslations, "Export translations"),
-        (SegmentOpenViews, "Segments View"),
+        (SegmentsOpen, "Segments View"),
         (DbSave, "Save changes"),
         (DbChangesTitle, "Database changes"),
         (DbChangesMessage, "There are some changes in Picture Manager database.\nDo you want to save them?"),
@@ -195,13 +195,13 @@ public sealed class CoreVM : ObservableObject {
     _initToggleDialog();
 
     AppClosingCommand = new(_onAppClosing);
-    ExportSegmentsCommand = new(_exportSegments, () => _coreS.Segment.Selected.Items.Any(x => x.MediaItem is ImageM), Res.IconSegment, L.Get(_loc.SegmentExport));
-    ExportSegmentsToCommand = new((x, _) => _exportSegmentsTo(x), () => _coreS.Segment.Selected.Items.Any(x => x.MediaItem is ImageM), Res.IconSegment, L.Get(_loc.SegmentExport));
+    ExportSegmentsCommand = new(_exportSegments, () => _coreS.Segment.Selected.Items.Any(x => x.MediaItem is ImageM), Res.IconSegment, L.Get(_loc.SegmentsExport));
+    ExportSegmentsToCommand = new((x, _) => _exportSegmentsTo(x), () => _coreS.Segment.Selected.Items.Any(x => x.MediaItem is ImageM), Res.IconSegment, L.Get(_loc.SegmentsExport));
     OpenAboutCommand = new(() => _ = Dialog.ShowAsync(new AboutDialog()), null, L.Get(_loc.About));
     OpenLogCommand = new(_openLog, MH.UI.Res.IconSort, L.Get(_loc.LogOpen));
     OpenSettingsCommand = new(_openSettings, Res.IconSettings, L.Get(_loc.SettingsOpen));
     ExportTranslationsCommand = new(() => _exportTranslations(), text: L.Get(_loc.ExportTranslations));
-    OpenSegmentsViewsCommand = new(_ => OpenSegmentsViews(null, string.Empty), Res.IconSegment, L.Get(_loc.SegmentOpenViews));
+    OpenSegmentsViewsCommand = new(_ => OpenSegmentsViews(null, string.Empty), Res.IconSegment, L.Get(_loc.SegmentsOpen));
     SaveDbCommand = new(() => _coreR.DB.SaveAll(), () => _coreR.DB.Changes > 0, Res.IconDatabase, L.Get(_loc.DbSave));
     CompressImagesCommand = new(x => _compressImages(GetActive<ImageM>(x)), AnyActive<ImageM>, null, L.Get(_loc.ImageCompress));
     GetGeoNamesFromWebCommand = new((x, _) => _getGeoNamesFromWeb(GetActive<ImageM>(x)), AnyActive<ImageM>, Res.IconLocationCheckin, L.Get(_loc.GeoNameGetFromWeb));
@@ -458,8 +458,8 @@ public sealed class CoreVM : ObservableObject {
   private async Task _exportSegmentsTo(FolderM? folder) {
     if (folder == null ||
       await Dialog.ShowAsync(new MessageDialog(
-        L.Get(_loc.SegmentExportToFolderTitle),
-        L.Format(_loc.SegmentExportToFolderMessage, folder.Name),
+        L.Get(_loc.SegmentsExportToFolderTitle),
+        L.Format(_loc.SegmentsExportToFolderMessage, folder.Name),
         MH.UI.Res.IconQuestion,
         true)) != 1)
       return;

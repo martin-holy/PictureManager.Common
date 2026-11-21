@@ -11,7 +11,7 @@ namespace PictureManager.Common.Features.Segment;
 
 public class SegmentCollectionView : CollectionView<SegmentM> {
   internal static class _loc {
-    private const string _prefix = "Segment.CollectionView.";
+    private const string _prefix = "Segments.";
     public const string Title = _prefix + "Title";
     public const string SortFieldFileName = _prefix + "SortField.FileName";
 

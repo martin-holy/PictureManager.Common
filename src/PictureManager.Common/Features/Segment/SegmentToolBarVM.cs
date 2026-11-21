@@ -6,7 +6,7 @@ namespace PictureManager.Common.Features.Segment;
 
 public sealed class SegmentToolBarVM : ObservableObject {
   internal static class _loc {
-    private const string _prefix = "Segment.ToolBar.";
+    private const string _prefix = "Segments.ToolBar.";
     public const string TxtShowSegments = _prefix + "txt.ShowSegments";
 
     static _loc() {
