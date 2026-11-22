@@ -20,6 +20,7 @@ public sealed class SegmentsDrawerVM : SegmentCollectionView {
     public const string Remove = _prefix + "Remove.cmd";
     public const string RemoveTitle = _prefix + "Remove.dlg.Title";
     public const string RemoveMessage = _prefix + "Remove.dlg.Message";
+    public const string TabName = _prefix + "Segments";
 
     static _loc() {
       LocalizationManager.Register(typeof(_loc).Assembly, [
@@ -27,7 +28,8 @@ public sealed class SegmentsDrawerVM : SegmentCollectionView {
         (Add, "Add to Segments drawer"),
         (Remove, "Remove from Segments drawer"),
         (RemoveTitle, "Segments Drawer"),
-        (RemoveMessage, "Do you want to remove segments from drawer?")
+        (RemoveMessage, "Do you want to remove segments from drawer?"),
+        (TabName, "Segments")
       ]);
     }
 
@@ -120,6 +122,6 @@ public sealed class SegmentsDrawerVM : SegmentCollectionView {
     var groupByItems = GroupByItems.GetFolders(source).ToArray();
 
     Reload(source, GroupMode.GroupByRecursive, groupByItems, true, false);
-    tt.Activate(Res.IconDrawer, "Segments", this);
+    tt.Activate(Res.IconDrawer, L.Get(_loc.TabName), this);
   }
 }
