@@ -2,6 +2,8 @@
 
 public static class Registration {
   public static void RegisterAll() {
+    MH.UI.Localization.Registration.RegisterAll();
+
     Core._loc.Register();
     CoreS._loc.Register();
     CoreVM._loc.Register();

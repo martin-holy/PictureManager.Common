@@ -54,6 +54,8 @@ public sealed class Settings : UserSettings {
   }
 
   public void Localize() {
+    _localize();
+
     Groups = [
       new(Res.IconSettings, L.Get(_loc.CommonTitle), Common),
       new(Res.IconLocationCheckin, L.Get(_loc.GeoNameTitle), GeoName),
