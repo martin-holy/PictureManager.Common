@@ -17,7 +17,7 @@ public sealed class KeywordDS(CoreR coreR, KeywordR repository)
   : CsvTreeDataSource<KeywordM, KeywordR, int>(coreR.DB, "Keywords", 3, repository) {
 
   internal static class _loc {
-    private const string _prefix = "Keyword.";
+    private const string _prefix = "Keywords.";
     public const string AutoAddedGroupName = _prefix + "AutoAddedGroupName";
 
     static _loc() {

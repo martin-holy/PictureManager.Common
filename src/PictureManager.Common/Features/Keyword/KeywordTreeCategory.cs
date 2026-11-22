@@ -10,8 +10,8 @@ namespace PictureManager.Common.Features.Keyword;
 
 public sealed class KeywordTreeCategory : TreeCategory<KeywordM, CategoryGroupM> {
   internal static class _loc {
-    private const string _prefix = "Keyword.";
-    public const string Title = _prefix + "TreeCategory.Title";
+    private const string _prefix = "Keywords.";
+    public const string Title = _prefix + "Tree.Title";
 
     static _loc() {
       LocalizationManager.Register(typeof(_loc).Assembly, [
