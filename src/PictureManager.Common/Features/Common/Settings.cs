@@ -106,7 +106,7 @@ public sealed class Settings : UserSettings {
 
 public sealed class CommonSettings : ObservableObject {
   internal static class _loc {
-    private const string _prefix = "App.Settings.Common.";
+    private const string _prefix = "Settings.Common.";
     public const string TxtCachePath = _prefix + "txt.CachePath";
     public const string TxtFfmpegPath = _prefix + "txt.FfmpegPath";
     public const string TxtJpegQuality = _prefix + "txt.JpegQuality";
@@ -175,7 +175,7 @@ public sealed class CommonSettings : ObservableObject {
 
 public sealed class GeoNameSettings : ObservableObject {
   internal static class _loc {
-    private const string _prefix = "App.Settings.GeoName.";
+    private const string _prefix = "Settings.GeoName.";
     public const string TxtLoadFromWeb = _prefix + "txt.LoadFromWeb";
     public const string TxtUserName = _prefix + "txt.UserName";
 
@@ -220,7 +220,7 @@ public sealed class ImagesToVideoSettings : ObservableObject {
 
 public sealed class MediaItemSettings : ObservableObject {
   internal static class _loc {
-    private const string _prefix = "App.Settings.MediaItem.";
+    private const string _prefix = "Settings.MediaItem.";
     public const string TxtMediaItemThumbScale = _prefix + "txt.MediaItemThumbScale";
     public const string TxtScrollExactlyToMediaItem = _prefix + "txt.ScrollExactlyToMediaItem";
     public const string TxtSortField = _prefix + "txt.SortField";
@@ -306,8 +306,7 @@ public sealed class MediaItemSettings : ObservableObject {
 
 public sealed class SegmentSettings : ObservableObject {
   internal static class _loc {
-    private const string _prefix = "App.Settings.Segment.";
-    public const string TxtGroupSize = _prefix + "txt.GroupSize";
+    public const string TxtGroupSize = "Settings.Segment.txt.GroupSize";
 
     static _loc() {
       LocalizationManager.Register(typeof(_loc).Assembly, [
@@ -337,8 +336,7 @@ public sealed class SegmentSettings : ObservableObject {
 
 public sealed class MediaViewerSettings : ObservableObject {
   internal static class _loc {
-    private const string _prefix = "App.Settings.MediaViewer.";
-    public const string TxtExpandToFill = _prefix + "txt.ExpandToFill";
+    public const string TxtExpandToFill = "Settings.MediaViewer.txt.ExpandToFill";
 
     static _loc() {
       LocalizationManager.Register(typeof(_loc).Assembly, [
