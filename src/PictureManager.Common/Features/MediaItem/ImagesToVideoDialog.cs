@@ -23,7 +23,7 @@ namespace PictureManager.Common.Features.MediaItem;
 
 public sealed class ImagesToVideoDialog : Dialog {
   internal static class _loc {
-    private const string _prefix = "Image.ImagesToVideo.dlg.";
+    private const string _prefix = "Images.ToVideo.dlg.";
     public const string Title = _prefix + "Title";
     public const string TxtSpeed = _prefix + "txt.Speed";
     public const string TxtQuality = _prefix + "txt.Quality";

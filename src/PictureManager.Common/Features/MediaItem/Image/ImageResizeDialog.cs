@@ -14,7 +14,7 @@ namespace PictureManager.Common.Features.MediaItem.Image;
 
 public sealed class ImageResizeDialog : ParallelProgressDialog<ImageM> {
   internal static class _loc {
-    private const string _prefix = "Image.Resize.dlg.";
+    private const string _prefix = "Images.Resize.dlg.";
     public const string Title = _prefix + "Title";
     public const string BtnResize = _prefix + "btn.Resize";
     public const string OpenFolderBrowser = _prefix + "OpenFolderBrowser.cmd";

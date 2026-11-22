@@ -10,7 +10,7 @@ namespace PictureManager.Common.Features.MediaItem.Image;
 
 public sealed class CompressImagesDialog : ParallelProgressDialog<ImageM> {
   internal static class _loc {
-    private const string _prefix = "Image.Compress.dlg.";
+    private const string _prefix = "Images.Compress.dlg.";
     public const string Title = _prefix + "Title";
     public const string BtnCompress = _prefix + "btn.Compress";
     public const string TxtJpegQualityLevelText = _prefix + "txt.JpegQualityLevel";

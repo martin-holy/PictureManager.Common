@@ -11,7 +11,7 @@ namespace PictureManager.Common.Features.MediaItem.Image;
 
 public sealed class ComputeImageHashesDialog : ProgressDialog<MediaItemM> {
   internal static class _loc {
-    private const string _prefix = "Image.ComputeImageHashes.";
+    private const string _prefix = "Images.ComputeImageHashes.";
     public const string Title = _prefix + "dlg.Title";
 
     static _loc() {
