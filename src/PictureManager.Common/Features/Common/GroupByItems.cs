@@ -20,15 +20,15 @@ namespace PictureManager.Common.Features.Common;
 
 public static class GroupByItems {
   internal static class _loc {
-    private const string _prefix = "GroupByItems.";
-    public const string DateGroup = _prefix + "DateGroup";
-    public const string PeopleGroupsGroup = _prefix + "PeopleGroupsGroup";
-    public const string SegmentSizeGroup = _prefix + "SegmentSizeGroup";
+    private const string _prefix = "GroupByItems.Group.";
+    public const string DateGroup = _prefix + "Date";
+    public const string PeopleGroupsGroup = _prefix + "PeopleGroups";
+    public const string SegmentSizeGroup = _prefix + "SegmentSize";
 
     static _loc() {
       LocalizationManager.Register(typeof(_loc).Assembly, [
         (DateGroup, "Date"),
-        (PeopleGroupsGroup, "Groups"),
+        (PeopleGroupsGroup, "People groups"),
         (SegmentSizeGroup, "Size")
       ]);
     }
