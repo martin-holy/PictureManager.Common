@@ -15,7 +15,7 @@ namespace PictureManager.Common.Features.Common;
 
 public sealed class Settings : UserSettings {
   internal static class _loc {
-    private const string _prefix = "App.Settings.";
+    private const string _prefix = "Settings.";
     public const string CommonTitle = _prefix + "Common.Title";
     public const string GeoNameTitle = _prefix + "GeoName.Title";
     public const string MediaItemTitle = _prefix + "MediaItem.Title";
