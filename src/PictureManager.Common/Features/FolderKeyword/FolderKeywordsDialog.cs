@@ -16,8 +16,8 @@ public sealed class FolderKeywordsDialog : Dialog {
     public const string Title = _prefix + "List.dlg.Title";
     public const string Open = _prefix + "List.Open.cmd";
     public const string Remove = _prefix + "List.dlg.btn.Remove";
-    public const string RemoveTitle = _prefix + "List.Remove.Title";
-    public const string RemoveMessage = _prefix + "List.Remove.Message";
+    public const string RemoveTitle = _prefix + "List.Remove.dlg.Title";
+    public const string RemoveMessage = _prefix + "List.Remove.dlg.Message";
 
     static _loc() {
       LocalizationManager.Register(typeof(_loc).Assembly, [

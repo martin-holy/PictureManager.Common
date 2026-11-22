@@ -9,8 +9,8 @@ namespace PictureManager.Common.Features.FolderKeyword;
 
 public sealed class FolderKeywordTreeCategory : TreeCategory<FolderM> {
   internal static class _loc {
-    private const string _prefix = "FolderKeyword.";
-    public const string Title = _prefix + "TreeCategory.Title";
+    private const string _prefix = "FolderKeywords.";
+    public const string Title = _prefix + "Tree.Title";
     public const string Add = _prefix + "Add.cmd";
 
     static _loc() {
