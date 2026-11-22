@@ -9,16 +9,16 @@ namespace PictureManager.Common.Features.MediaItem.Image;
 public sealed class SaveMetadataDialog : ParallelProgressDialog<RealMediaItemM> {
   internal static class _loc {
     private const string _prefix = "MediaItems.SaveMetadata.";
+    public const string ProgressTitle = _prefix + "Progress.dlg.Title";
     public const string Title = _prefix + "dlg.Title";
-    public const string OpenTitle = _prefix + "Open.dlg.Title";
-    public const string OpenMessage = _prefix + "Open.dlg.Message";
+    public const string Message = _prefix + "dlg.Message";
 
     static _loc() {
       LocalizationManager.Register(typeof(_loc).Assembly, [
-        (Title, "Saving metadata to files..."),
-        (OpenTitle, "Save metadata to files"),
-        (OpenMessage + ".one", "Do you really want to save metadata to {0} file?"),
-        (OpenMessage + ".other", "Do you really want to save metadata to {0} files?")
+        (ProgressTitle, "Saving metadata to files..."),
+        (Title, "Save metadata to files"),
+        (Message + ".one", "Do you really want to save metadata to {0} file?"),
+        (Message + ".other", "Do you really want to save metadata to {0} files?")
       ]);
     }
 
@@ -30,7 +30,7 @@ public sealed class SaveMetadataDialog : ParallelProgressDialog<RealMediaItemM> 
   private readonly MediaItemS _mediaItemS;
 
   public SaveMetadataDialog(RealMediaItemM[] items, MediaItemS mediaItemS) :
-    base(L.Get(_loc.Title), Res.IconImageMultiple, items) {
+    base(L.Get(_loc.ProgressTitle), Res.IconImageMultiple, items) {
     _mediaItemS = mediaItemS;
     _autoStart = true;
   }
@@ -44,8 +44,8 @@ public sealed class SaveMetadataDialog : ParallelProgressDialog<RealMediaItemM> 
 
   public static async Task Open(RealMediaItemM[] items, MediaItemS mediaItemS, MediaItemVM mediaItemVM) {
     if (await ShowAsync(new MessageDialog(
-      L.Get(_loc.OpenTitle),
-      L.FormatPlural(_loc.OpenMessage, items.Length),
+      L.Get(_loc.Title),
+      L.FormatPlural(_loc.Message, items.Length),
       MH.UI.Res.IconQuestion,
       true)) != 1) return;
 

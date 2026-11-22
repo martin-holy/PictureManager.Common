@@ -34,7 +34,7 @@ public sealed class MediaItemsViewsVM : ObservableObject {
     public const string TabNameModified = _prefix + "TabName.Modified";
     public const string TabNamePeople = _prefix + "TabName.People";
     public const string TabNameSegments = _prefix + "TabName.Segments";
-    public const string ViewModified = _prefix + "ViewModified.cmd";
+    public const string LoadModified = _prefix + "LoadModified.cmd";
 
     static _loc() {
       LocalizationManager.Register(typeof(_loc).Assembly, [
@@ -51,7 +51,7 @@ public sealed class MediaItemsViewsVM : ObservableObject {
         (TabNameModified, "Modified"),
         (TabNamePeople, "By People"),
         (TabNameSegments, "By Segments"),
-        (ViewModified, "Show Modified"),
+        (LoadModified, "Load Modified"),
       ]);
     }
 
@@ -90,7 +90,7 @@ public sealed class MediaItemsViewsVM : ObservableObject {
     RebuildThumbnailsCommand = new(
       x => _rebuildThumbnails(x, Keyboard.IsShiftOn()),
       x => x != null || Current?.Root.Source.Count > 0, null, L.Get(_loc.RebuildThumbnails));
-    ViewModifiedCommand = new(_viewModified, Res.IconImageMultiple, L.Get(_loc.ViewModified));
+    ViewModifiedCommand = new(_viewModified, Res.IconImageMultiple, L.Get(_loc.LoadModified));
     CompareAverageHashCommand = new(_ => _current!.CompareImages(c => c.CompareAverageHash()), () => _current != null, Res.IconCompare, L.Get(_loc.CompareAverageHash));
     ComparePHashCommand = new(_ => _current!.CompareImages(c => c.ComparePHash()), () => _current != null, Res.IconCompare, L.Get(_loc.ComparePHash));
   }

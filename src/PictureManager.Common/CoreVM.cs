@@ -44,23 +44,23 @@ public sealed class CoreVM : ObservableObject {
     public const string SegmentsExportToFolderMessage = "Segments.Export.ToFolder.dlg.Message";
     public const string LogOpen = _prefix + "Log.Open.cmd";
     public const string LogTabName = _prefix + "Log.TabName";
-    public const string SettingsOpen = _prefix + "Settings.Open.cmd";
-    public const string SettingsTabName = _prefix + "Settings.TabName";
+    public const string SettingsOpen = "Settings.Open.cmd";
+    public const string SettingsTabName = "Settings.TabName";
     public const string ExportTranslations = _prefix + "ExportTranslations";
     public const string SegmentsOpen = "Segments.Open.cmd";
     public const string DbSave = _prefix + "Db.Save.cmd";
     public const string DbChangesTitle = _prefix + "Db.Changes.dlg.Title";
     public const string DbChangesMessage = _prefix + "Db.Changes.dlg.Message";
-    public const string ImageCompress = "Image.Compress.cmd";
+    public const string ImagesCompress = "Images.Compress.cmd";
     public const string GeoNameGetFromWeb = "GeoName.GetFromWeb.cmd";
-    public const string ImagesToVideo = "Image.ImagesToVideo.cmd";
+    public const string ImagesToVideo = "Images.ToVideo.cmd";
     public const string ReadGeoLocationFromFiles = "GeoLocation.ReadFromFiles.cmd";
-    public const string ReloadMetadata = "MediaItems.ReloadMetadata.cmd";
-    public const string ImageResizeInFolder = "Image.Resize.InFolder.cmd";
-    public const string ImageResizeToFolder = "Image.Resize.ToFolder.cmd";
-    public const string ImageResizeSelected = "Image.Resize.Selected.cmd";
+    public const string ReloadMetadata = "MediaItems.ReloadMetadata.Open.cmd";
+    public const string ImagesResizeInFolder = "Images.Resize.InFolder.cmd";
+    public const string ImagesResizeToFolder = "Images.Resize.ToFolder.cmd";
+    public const string ImagesResizeSelected = "Images.Resize.Selected.cmd";
     public const string MediaItemsRotate = "MediaItems.Rotate.cmd";
-    public const string SaveMetadataToFiles = "MediaItems.SaveMetadataToFiles.cmd";
+    public const string SaveMetadataToFiles = "MediaItems.SaveMetadata.Open.cmd";
     public const string PeopleTabName = "Persons.MainTabs.TabName";
     public const string ToggleOnSegment = "Toggle.btn.Segment";
     public const string ToggleOnPerson = "Toggle.btn.Person";
@@ -90,14 +90,14 @@ public sealed class CoreVM : ObservableObject {
         (DbSave, "Save changes"),
         (DbChangesTitle, "Database changes"),
         (DbChangesMessage, "There are some changes in Picture Manager database.\nDo you want to save them?"),
-        (ImageCompress, "Compress Images"),
+        (ImagesCompress, "Compress Images"),
         (GeoNameGetFromWeb, "Get GeoNames from web"),
         (ImagesToVideo, "Images to Video"),
         (ReadGeoLocationFromFiles, "Read GeoLocation from files"),
         (ReloadMetadata, "Reload metadata"),
-        (ImageResizeInFolder, "Resize Images in folder"),
-        (ImageResizeToFolder, "Resize Images to folder"),
-        (ImageResizeSelected, "Resize selected Images"),
+        (ImagesResizeInFolder, "Resize Images in folder"),
+        (ImagesResizeToFolder, "Resize Images to folder"),
+        (ImagesResizeSelected, "Resize selected Images"),
         (MediaItemsRotate, "Rotate"),
         (SaveMetadataToFiles, "Save metadata to files"),
         (PeopleTabName, "People"),
@@ -203,15 +203,15 @@ public sealed class CoreVM : ObservableObject {
     ExportTranslationsCommand = new(() => _exportTranslations(), text: L.Get(_loc.ExportTranslations));
     OpenSegmentsViewsCommand = new(_ => OpenSegmentsViews(null, string.Empty), Res.IconSegment, L.Get(_loc.SegmentsOpen));
     SaveDbCommand = new(() => _coreR.DB.SaveAll(), () => _coreR.DB.Changes > 0, Res.IconDatabase, L.Get(_loc.DbSave));
-    CompressImagesCommand = new(x => _compressImages(GetActive<ImageM>(x)), AnyActive<ImageM>, null, L.Get(_loc.ImageCompress));
+    CompressImagesCommand = new(x => _compressImages(GetActive<ImageM>(x)), AnyActive<ImageM>, null, L.Get(_loc.ImagesCompress));
     GetGeoNamesFromWebCommand = new((x, _) => _getGeoNamesFromWeb(GetActive<ImageM>(x)), AnyActive<ImageM>, Res.IconLocationCheckin, L.Get(_loc.GeoNameGetFromWeb));
     ImagesToVideoCommand = new(x => _imagesToVideo(GetActive<ImageM>(x)), AnyActive<ImageM>, null, L.Get(_loc.ImagesToVideo));
     ReadGeoLocationFromFilesCommand = new((f, _) => _readGeoLocationFromFiles(GetActive<ImageM>(f)), AnyActive<ImageM>, Res.IconLocationCheckin, L.Get(_loc.ReadGeoLocationFromFiles));
     ReloadMetadataCommand = new((x, _) => MediaItem.ReloadMetadata(GetActive<RealMediaItemM>(x)), AnyActive<RealMediaItemM>, null, L.Get(_loc.ReloadMetadata));
     
-    ResizeImagesInFolderCommand = new(x => _resizeImages(GetActive<ImageM>(x)), null, L.Get(_loc.ImageResizeInFolder));
-    ResizeImagesToFolderCommand = new(x => _resizeImages(GetActive<ImageM>(null), x!.FullPath), x => AnyActive<ImageM>(null), null, L.Get(_loc.ImageResizeToFolder));
-    ResizeSelectedImagesCommand = new(() => _resizeImages(GetActive<ImageM>(null)), () => AnyActive<ImageM>(null), null, L.Get(_loc.ImageResizeSelected));
+    ResizeImagesInFolderCommand = new(x => _resizeImages(GetActive<ImageM>(x)), null, L.Get(_loc.ImagesResizeInFolder));
+    ResizeImagesToFolderCommand = new(x => _resizeImages(GetActive<ImageM>(null), x!.FullPath), x => AnyActive<ImageM>(null), null, L.Get(_loc.ImagesResizeToFolder));
+    ResizeSelectedImagesCommand = new(() => _resizeImages(GetActive<ImageM>(null)), () => AnyActive<ImageM>(null), null, L.Get(_loc.ImagesResizeSelected));
 
     RotateMediaItemsCommand = new((x, _) => _rotateMediaItems(GetActive<RealMediaItemM>(x)), AnyActive<RealMediaItemM>, Res.IconRotate, L.Get(_loc.MediaItemsRotate));
     SaveMetadataToFilesCommand = new((x, _) => _saveMetadataToFiles(GetActive<RealMediaItemM>(x)), AnyActive<RealMediaItemM>, MH.UI.Res.IconSave, L.Get(_loc.SaveMetadataToFiles));
