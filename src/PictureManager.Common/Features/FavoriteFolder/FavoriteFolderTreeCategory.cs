@@ -8,9 +8,8 @@ namespace PictureManager.Common.Features.FavoriteFolder;
 
 public sealed class FavoriteFolderTreeCategory : TreeCategory<FavoriteFolderM> {
   internal static class _loc {
-    private const string _prefix = "FavoriteFolder.";
-    public const string Title = _prefix + "TreeCategory.Title";
-    public const string Add = _prefix + "Add.cmd";
+    public const string Title = "FavoriteFolders.Tree.Title";
+    public const string Add = "FavoriteFolder.Add.cmd";
 
     static _loc() {
       LocalizationManager.Register(typeof(_loc).Assembly, [
