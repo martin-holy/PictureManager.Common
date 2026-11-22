@@ -8,8 +8,8 @@ public sealed class GeoNameTreeCategory(GeoNameR r)
   : TreeCategory<GeoNameM>(new(), Res.IconLocationCheckin, L.Get(_loc.Title), (int)Category.GeoNames, r) {
 
   internal static class _loc {
-    private const string _prefix = "GeoName.";
-    public const string Title = _prefix + "TreeCategory.Title";
+    private const string _prefix = "GeoNames.";
+    public const string Title = _prefix + "Tree.Title";
 
     static _loc() {
       LocalizationManager.Register(typeof(_loc).Assembly, [
