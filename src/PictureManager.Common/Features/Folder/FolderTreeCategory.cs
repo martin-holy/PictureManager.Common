@@ -16,7 +16,7 @@ namespace PictureManager.Common.Features.Folder;
 public sealed class FolderTreeCategory : TreeCategory<FolderM> {
   internal static class _loc {
     private const string _prefix = "Folder.";
-    public const string Title = _prefix + "TreeCategory.Title";
+    public const string Title = "Folders.Tree.Title";
     public const string DropCopyTitle = _prefix + "Drop.dlg.Copy.Title";
     public const string DropCopyMessage = _prefix + "Drop.dlg.Copy.Message";
     public const string DropMoveTitle = _prefix + "Drop.dlg.Move.Title";
