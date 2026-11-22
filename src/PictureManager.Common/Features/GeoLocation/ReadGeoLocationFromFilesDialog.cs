@@ -13,7 +13,7 @@ namespace PictureManager.Common.Features.GeoLocation;
 public sealed class ReadGeoLocationFromFilesDialog : ProgressDialog<ImageM> {
   internal static class _loc {
     private const string _prefix = "GeoLocation.";
-    public const string Title = _prefix + "ReadGeoLocationFromFiles.dlg.Title";
+    public const string Title = _prefix + "ReadFromFiles.dlg.Title";
 
     static _loc() {
       LocalizationManager.Register(typeof(_loc).Assembly, [
