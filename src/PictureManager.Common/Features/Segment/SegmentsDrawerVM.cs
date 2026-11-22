@@ -20,7 +20,7 @@ public sealed class SegmentsDrawerVM : SegmentCollectionView {
     public const string Remove = _prefix + "Remove.cmd";
     public const string RemoveTitle = _prefix + "Remove.dlg.Title";
     public const string RemoveMessage = _prefix + "Remove.dlg.Message";
-    public const string TabName = _prefix + "Segments";
+    public const string TabName = _prefix + "TabName";
 
     static _loc() {
       LocalizationManager.Register(typeof(_loc).Assembly, [
