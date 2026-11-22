@@ -8,7 +8,7 @@ namespace PictureManager.Common.Features.MediaItem;
 
 public sealed class ReloadMetadataDialog : ParallelProgressDialog<RealMediaItemM> {
   internal static class _loc {
-    private const string _prefix = "MediaItem.ReloadMetadata.";
+    private const string _prefix = "MediaItems.ReloadMetadata.";
     public const string Title = _prefix + "dlg.Title";
     public const string OpenTitle = _prefix + "Open.dlg.Title";
     public const string OpenMessage = _prefix + "Open.dlg.Message";

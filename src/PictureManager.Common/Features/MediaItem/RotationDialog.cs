@@ -9,12 +9,12 @@ namespace PictureManager.Common.Features.MediaItem;
 
 public sealed class RotationDialog : Dialog {
   internal static class _loc {
-    private const string _prefix = "MediaItem.Rotation.";
+    private const string _prefix = "MediaItems.Rotate.";
     public const string Title = _prefix + "dlg.Title";
 
     static _loc() {
       LocalizationManager.Register(typeof(_loc).Assembly, [
-        (Title, "Rotation")
+        (Title, "Rotate")
       ]);
     }
 

@@ -13,7 +13,7 @@ namespace PictureManager.Common.Features.MediaItem;
 
 public class MediaItemCollectionView : CollectionView<MediaItemM> {
   internal static class _loc {
-    private const string _prefix = "MediaItem.CollectionView.";
+    private const string _prefix = "MediaItems.";
     public const string Title = _prefix + "Title";
     public const string SortFieldFileName = _prefix + "SortField.FileName";
     public const string SortFieldLastWriteTime = _prefix + "SortField.LastWriteTime";

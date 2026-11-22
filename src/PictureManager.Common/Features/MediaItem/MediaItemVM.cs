@@ -20,12 +20,12 @@ namespace PictureManager.Common.Features.MediaItem;
 
 public sealed class MediaItemVM : ObservableObject {
   internal static class _loc {
-    private const string _prefix = "MediaItem.";
+    private const string _prefix = "MediaItems.";
 
-    public const string Comment = _prefix + "Comment.cmd";
-    public const string CommentDlgErrTooLong = _prefix + "Comment.dlg.err.TooLong";
-    public const string CommentDlgMessage = _prefix + "Comment.dlg.Message";
-    public const string CommentDlgTitle = _prefix + "Comment.dlg.Title";
+    public const string Comment = "MediaItem.Comment.cmd";
+    public const string CommentErrTooLong = "MediaItem.Comment.dlg.err.TooLong";
+    public const string CommentMessage = "MediaItem.Comment.dlg.Message";
+    public const string CommentTitle = "MediaItem.Comment.dlg.Title";
     public const string LoadByGeoName = _prefix + "LoadByGeoName.cmd";
     public const string LoadByKeyword = _prefix + "LoadByKeyword.cmd";
     public const string LoadByPerson = _prefix + "LoadByPerson.cmd";
@@ -34,28 +34,28 @@ public sealed class MediaItemVM : ObservableObject {
     public const string LoadByPeopleOrSegmentsDlgBtnSegments = _prefix + "LoadByPeopleOrSegments.dlg.btn.Segments";
     public const string LoadByPeopleOrSegmentsDlgMessage = _prefix + "LoadByPeopleOrSegments.dlg.Message";
     public const string LoadByPeopleOrSegmentsDlgTitle = _prefix + "LoadByPeopleOrSegments.dlg.Title";
-    public const string Rename = _prefix + "Rename.cmd";
-    public const string RenameDlgErrFileExists = _prefix + "Rename.dlg.err.FileExists";
-    public const string RenameDlgErrInvalidCharacters = _prefix + "Rename.dlg.err.InvalidCharacters";
-    public const string RenameDlgMessage = _prefix + "Rename.dlg.Message";
-    public const string RenameDlgTitle = _prefix + "Rename.dlg.Title";
+    public const string Rename = "MediaItem.Rename.cmd";
+    public const string RenameErrFileExists = "MediaItem.Rename.dlg.err.FileExists";
+    public const string RenameErrInvalidCharacters = "MediaItem.Rename.dlg.err.InvalidCharacters";
+    public const string RenameMessage = "MediaItem.Rename.dlg.Message";
+    public const string RenameTitle = "MediaItem.Rename.dlg.Title";
     public const string ViewSelected = _prefix + "ViewSelected.cmd";
-    public const string CopySelectedToFolder = _prefix + "CopySelectedToFolder.cmd";
-    public const string CopySelectedToFolderDlgMessage = _prefix + "CopySelectedToFolder.dlg.Message";
-    public const string CopySelectedToFolderDlgTitle = _prefix + "CopySelectedToFolder.dlg.Title";
-    public const string MoveSelectedToFolder = _prefix + "MoveSelectedToFolder.cmd";
-    public const string MoveSelectedToFolderDlgMessage = _prefix + "MoveSelectedToFolder.dlg.Message";
-    public const string MoveSelectedToFolderDlgTitle = _prefix + "MoveSelectedToFolder.dlg.Title";
+    public const string CopyToFolder = _prefix + "CopyToFolder.cmd";
+    public const string CopyToFolderMessage = _prefix + "CopyToFolder.dlg.Message";
+    public const string CopyToFolderTitle = _prefix + "CopyToFolder.dlg.Title";
+    public const string MoveToFolder = _prefix + "MoveToFolder.cmd";
+    public const string MoveToFolderMessage = _prefix + "MoveToFolder.dlg.Message";
+    public const string MoveToFolderTitle = _prefix + "MoveToFolder.dlg.Title";
     public const string Delete = _prefix + "Delete.cmd";
-    public const string DeleteDlgMessage = _prefix + "Delete.dlg.Message";
-    public const string DeleteDlgTitle = _prefix + "Delete.dlg.Title";
+    public const string DeleteMessage = _prefix + "Delete.dlg.Message";
+    public const string DeleteTitle = _prefix + "Delete.dlg.Title";
 
     static _loc() {
       LocalizationManager.Register(typeof(_loc).Assembly, [
         (Comment, "Comment"),
-        (CommentDlgErrTooLong, "Comment is too long!"),
-        (CommentDlgMessage, "Add a comment"),
-        (CommentDlgTitle, "Comment"),
+        (CommentErrTooLong, "Comment is too long!"),
+        (CommentMessage, "Add a comment"),
+        (CommentTitle, "Comment"),
         (LoadByGeoName, "Load Media items"),
         (LoadByKeyword, "Load Media items"),
         (LoadByPerson, "Load Media items"),
@@ -65,23 +65,23 @@ public sealed class MediaItemVM : ObservableObject {
         (LoadByPeopleOrSegmentsDlgMessage, "Do you want to load Media items from selected People or Segments?"),
         (LoadByPeopleOrSegmentsDlgTitle, "Load Media items"),
         (Rename, "Rename"),
-        (RenameDlgErrFileExists, "New file name already exists!"),
-        (RenameDlgErrInvalidCharacters, "New file name contains invalid character!"),
-        (RenameDlgMessage, "Add a new name"),
-        (RenameDlgTitle, "Rename"),
+        (RenameErrFileExists, "New file name already exists!"),
+        (RenameErrInvalidCharacters, "New file name contains invalid character!"),
+        (RenameMessage, "Add a new name"),
+        (RenameTitle, "Rename"),
         (ViewSelected, "View selected"),
-        (CopySelectedToFolder, "Copy"),
-        (CopySelectedToFolderDlgMessage + ".one", "Do you really want to copy {0} media item to\n'{1}'?"),
-        (CopySelectedToFolderDlgMessage + ".other", "Do you really want to copy {0} media items to\n'{1}'?"),
-        (CopySelectedToFolderDlgTitle, "Copy media items"),
-        (MoveSelectedToFolder, "Move"),
-        (MoveSelectedToFolderDlgMessage + ".one", "Do you really want to move {0} media item to\n'{1}'?"),
-        (MoveSelectedToFolderDlgMessage + ".other", "Do you really want to move {0} media items to\n'{1}'?"),
-        (MoveSelectedToFolderDlgTitle, "Move media items"),
+        (CopyToFolder, "Copy"),
+        (CopyToFolderMessage + ".one", "Do you really want to copy {0} media item to\n'{1}'?"),
+        (CopyToFolderMessage + ".other", "Do you really want to copy {0} media items to\n'{1}'?"),
+        (CopyToFolderTitle, "Copy media items"),
+        (MoveToFolder, "Move"),
+        (MoveToFolderMessage + ".one", "Do you really want to move {0} media item to\n'{1}'?"),
+        (MoveToFolderMessage + ".other", "Do you really want to move {0} media items to\n'{1}'?"),
+        (MoveToFolderTitle, "Move media items"),
         (Delete, "Delete"),
-        (DeleteDlgMessage + ".one", "Do you really want to delete {0} item?"),
-        (DeleteDlgMessage + ".other", "Do you really want to delete {0} items?"),
-        (DeleteDlgTitle, "Delete Confirmation")
+        (DeleteMessage + ".one", "Do you really want to delete {0} item?"),
+        (DeleteMessage + ".other", "Do you really want to delete {0} items?"),
+        (DeleteTitle, "Delete Confirmation")
       ]);
     }
 
@@ -132,8 +132,8 @@ public sealed class MediaItemVM : ObservableObject {
     LoadByPeopleOrSegmentsCommand = new(_loadByPeopleOrSegments, Res.IconImageMultiple, L.Get(_loc.LoadByPeopleOrSegments));
     RenameCommand = new(_ => Rename((RealMediaItemM)Current!), () => Current is RealMediaItemM, null, L.Get(_loc.Rename));
     ViewSelectedCommand = new(_viewSelected, _canViewSelected, Res.IconImageMultiple, L.Get(_loc.ViewSelected));
-    CopySelectedToFolderCommand = new(_copySelectedToFolder, _canCopyMoveSelectedToFolder, Res.IconCopy, L.Get(_loc.CopySelectedToFolder));
-    MoveSelectedToFolderCommand = new(_moveSelectedToFolder, _canCopyMoveSelectedToFolder, Res.IconMove, L.Get(_loc.MoveSelectedToFolder));
+    CopySelectedToFolderCommand = new(_copySelectedToFolder, _canCopyMoveSelectedToFolder, Res.IconCopy, L.Get(_loc.CopyToFolder));
+    MoveSelectedToFolderCommand = new(_moveSelectedToFolder, _canCopyMoveSelectedToFolder, Res.IconMove, L.Get(_loc.MoveToFolder));
 
     Views.CurrentViewSelectionChangedEvent += (_, _) => _updateCommands();
   }
@@ -147,12 +147,12 @@ public sealed class MediaItemVM : ObservableObject {
 
   private async Task _comment(MediaItemM mi) {
     var commentDialog = new InputDialog(
-      L.Get(_loc.CommentDlgTitle),
-      L.Get(_loc.CommentDlgMessage),
+      L.Get(_loc.CommentTitle),
+      L.Get(_loc.CommentMessage),
       Res.IconNotification,
       mi.Comment,
       x => x != null && x.Length > 256
-        ? L.Get(_loc.CommentDlgErrTooLong)
+        ? L.Get(_loc.CommentErrTooLong)
         : null);
 
     if (await Dialog.ShowAsync(commentDialog) == 1)
@@ -208,8 +208,8 @@ public sealed class MediaItemVM : ObservableObject {
   public async Task<bool> CopyMoveSelectedToFolder(FolderM? folder, bool copy) {
     if (folder == null || Views.Current?.Selected.Items.OfType<RealMediaItemM>().ToArray() is not { Length: > 0 } items) return false;
     
-    var title = copy ? _loc.CopySelectedToFolderDlgTitle : _loc.MoveSelectedToFolderDlgTitle;
-    var message = copy ? _loc.CopySelectedToFolderDlgMessage : _loc.MoveSelectedToFolderDlgMessage;
+    var title = copy ? _loc.CopyToFolderTitle : _loc.MoveToFolderTitle;
+    var message = copy ? _loc.CopyToFolderMessage : _loc.MoveToFolderMessage;
     if (await Dialog.ShowAsync(new MessageDialog(
       L.Get(title),
       L.FormatPlural(message, items.Length, folder.Name),
@@ -223,8 +223,8 @@ public sealed class MediaItemVM : ObservableObject {
 
   public async Task<bool> Delete(MediaItemM[] items) {
     if (items.Length == 0 || await Dialog.ShowAsync(new MessageDialog(
-      L.Get(_loc.DeleteDlgTitle),
-      L.FormatPlural(_loc.DeleteDlgMessage, items.Length),
+      L.Get(_loc.DeleteTitle),
+      L.FormatPlural(_loc.DeleteMessage, items.Length),
       MH.UI.Res.IconQuestion,
       true)) != 1) return false;
 
@@ -238,18 +238,18 @@ public sealed class MediaItemVM : ObservableObject {
   public async Task Rename(RealMediaItemM current) {
     var ext = Path.GetExtension(current.FileName);
     var dlg = new InputDialog(
-      L.Get(_loc.RenameDlgTitle),
-      L.Get(_loc.RenameDlgMessage),
+      L.Get(_loc.RenameTitle),
+      L.Get(_loc.RenameMessage),
       Res.IconNotification,
       Path.GetFileNameWithoutExtension(current.FileName),
       answer => {
         var newFileName = answer + ext;
 
         if (Path.GetInvalidFileNameChars().Any(x => newFileName.IndexOf(x) != -1))
-          return L.Get(_loc.RenameDlgErrInvalidCharacters);
+          return L.Get(_loc.RenameErrInvalidCharacters);
 
         if (File.Exists(IOExtensions.PathCombine(current.Folder.FullPath, newFileName)))
-          return L.Get(_loc.RenameDlgErrFileExists);
+          return L.Get(_loc.RenameErrFileExists);
 
         return string.Empty;
       });

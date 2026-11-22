@@ -19,8 +19,7 @@ namespace PictureManager.Common.Utils;
 
 public sealed class CopyMoveU(FileOperationMode mode, CoreR coreR) {
   internal static class _loc {
-    private const string _prefix = "MediaItem.CopyMove.";
-    public const string Title = _prefix + "dlg.Title";
+    private const string _prefix = "MediaItems.CopyMove.";
     public const string TitleCopy = _prefix + "dlg.Title.Copy";
     public const string TitleMove = _prefix + "dlg.Title.Move";
     public const string TitleDelete = _prefix + "dlg.Title.Delete";
@@ -28,7 +27,6 @@ public sealed class CopyMoveU(FileOperationMode mode, CoreR coreR) {
 
     static _loc() {
       LocalizationManager.Register(typeof(_loc).Assembly, [
-        (Title, "File Operation ({0})"),
         (TitleCopy, "File Operation (Copy)"),
         (TitleMove, "File Operation (Move)"),
         (TitleDelete, "File Operation (Delete)"),
@@ -49,16 +47,13 @@ public sealed class CopyMoveU(FileOperationMode mode, CoreR coreR) {
 
   public HashSet<MediaItemM> Skipped = [];
 
-  private static string _modeToString(FileOperationMode mode) {
-    var action = mode switch {
+  private static string _modeToString(FileOperationMode mode) =>
+    mode switch {
       FileOperationMode.Copy => L.Get(_loc.TitleCopy),
       FileOperationMode.Move => L.Get(_loc.TitleMove),
       FileOperationMode.Delete => L.Get(_loc.TitleDelete),
       _ => throw new ArgumentOutOfRangeException(nameof(mode))
     };
-
-    return L.Format(_loc.Title, action);
-  }
 
   public async Task<T> Do<T>(Task<T> work) {
     _dlg.SetWorkTask(work);

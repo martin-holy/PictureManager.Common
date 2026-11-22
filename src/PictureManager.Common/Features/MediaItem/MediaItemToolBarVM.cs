@@ -7,7 +7,7 @@ namespace PictureManager.Common.Features.MediaItem;
 
 public sealed class MediaItemToolBarVM(MediaItemsViewsVM mediaItemViews, MainWindowVM mainWindow) : ObservableObject {
   internal static class _loc {
-    private const string _prefix = "MediaItem.ToolBar.";
+    private const string _prefix = "MediaItems.ToolBar.";
     public const string TxtThumbScale = _prefix + "txt.ThumbScale";
     public const string TxtShowThumbInfo = _prefix + "txt.ShowThumbInfo";
     public const string TxtCompareLimit = _prefix + "txt.CompareLimit";

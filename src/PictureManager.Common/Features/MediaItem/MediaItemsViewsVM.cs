@@ -20,14 +20,14 @@ namespace PictureManager.Common.Features.MediaItem;
 
 public sealed class MediaItemsViewsVM : ObservableObject {
   internal static class _loc {
-    private const string _prefix = "MediaItem.Views.";
+    private const string _prefix = "MediaItems.";
     public const string AddView = _prefix + "AddView.cmd";
     public const string CompareAverageHash = _prefix + "CompareAverageHash.cmd";
     public const string ComparePHash = _prefix + "ComparePHash.cmd";
     public const string CopyPaths = _prefix + "CopyPaths.cmd";
-    public const string FilterSetAnd = _prefix + "FilterSetAnd.cmd";
-    public const string FilterSetOr = _prefix + "FilterSetOr.cmd";
-    public const string FilterSetNot = _prefix + "FilterSetNot.cmd";
+    public const string FilterSetAnd = _prefix + "Filter.SetAnd.cmd";
+    public const string FilterSetOr = _prefix + "Filter.SetOr.cmd";
+    public const string FilterSetNot = _prefix + "Filter.SetNot.cmd";
     public const string LoadByTag = _prefix + "LoadByTag.cmd";
     public const string RebuildThumbnails = _prefix + "RebuildThumbnails.cmd";
     public const string TabNameEmpty = _prefix + "TabName.Empty";

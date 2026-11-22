@@ -19,7 +19,7 @@ namespace PictureManager.Common.Features.MediaItem;
 
 public class MediaItemsViewVM : MediaItemCollectionView {
   internal new static class _loc {
-    private const string _prefix = "MediaItem.View.";
+    private const string _prefix = "MediaItems.";
     public const string TxtLoading = _prefix + "txt.Loading";
     public const string TxtImporting = _prefix + "txt.Importing";
 

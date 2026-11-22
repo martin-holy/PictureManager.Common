@@ -55,12 +55,12 @@ public sealed class CoreVM : ObservableObject {
     public const string GeoNameGetFromWeb = "GeoName.GetFromWeb.cmd";
     public const string ImagesToVideo = "Image.ImagesToVideo.cmd";
     public const string ReadGeoLocationFromFiles = "GeoLocation.ReadFromFiles.cmd";
-    public const string ReloadMetadata = "MediaItem.ReloadMetadata.cmd";
+    public const string ReloadMetadata = "MediaItems.ReloadMetadata.cmd";
     public const string ImageResizeInFolder = "Image.Resize.InFolder.cmd";
     public const string ImageResizeToFolder = "Image.Resize.ToFolder.cmd";
     public const string ImageResizeSelected = "Image.Resize.Selected.cmd";
-    public const string MediaItemRotate = "MediaItem.Rotate.cmd";
-    public const string SaveMetadataToFiles = "MediaItem.SaveMetadataToFiles.cmd";
+    public const string MediaItemsRotate = "MediaItems.Rotate.cmd";
+    public const string SaveMetadataToFiles = "MediaItems.SaveMetadataToFiles.cmd";
     public const string PeopleTabName = "Persons.MainTabs.TabName";
     public const string ToggleOnSegment = "Toggle.btn.Segment";
     public const string ToggleOnPerson = "Toggle.btn.Person";
@@ -98,7 +98,7 @@ public sealed class CoreVM : ObservableObject {
         (ImageResizeInFolder, "Resize Images in folder"),
         (ImageResizeToFolder, "Resize Images to folder"),
         (ImageResizeSelected, "Resize selected Images"),
-        (MediaItemRotate, "Rotate"),
+        (MediaItemsRotate, "Rotate"),
         (SaveMetadataToFiles, "Save metadata to files"),
         (PeopleTabName, "People"),
         (ToggleOnSegment + ".one", "Segment"),
@@ -213,7 +213,7 @@ public sealed class CoreVM : ObservableObject {
     ResizeImagesToFolderCommand = new(x => _resizeImages(GetActive<ImageM>(null), x!.FullPath), x => AnyActive<ImageM>(null), null, L.Get(_loc.ImageResizeToFolder));
     ResizeSelectedImagesCommand = new(() => _resizeImages(GetActive<ImageM>(null)), () => AnyActive<ImageM>(null), null, L.Get(_loc.ImageResizeSelected));
 
-    RotateMediaItemsCommand = new((x, _) => _rotateMediaItems(GetActive<RealMediaItemM>(x)), AnyActive<RealMediaItemM>, Res.IconRotate, L.Get(_loc.MediaItemRotate));
+    RotateMediaItemsCommand = new((x, _) => _rotateMediaItems(GetActive<RealMediaItemM>(x)), AnyActive<RealMediaItemM>, Res.IconRotate, L.Get(_loc.MediaItemsRotate));
     SaveMetadataToFilesCommand = new((x, _) => _saveMetadataToFiles(GetActive<RealMediaItemM>(x)), AnyActive<RealMediaItemM>, MH.UI.Res.IconSave, L.Get(_loc.SaveMetadataToFiles));
 
     MainWindow.MainMenu.Build(this);

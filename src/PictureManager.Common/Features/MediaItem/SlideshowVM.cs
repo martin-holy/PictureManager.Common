@@ -15,16 +15,16 @@ public enum SlideshowState { On, Paused, Stopped }
 
 public sealed class SlideshowVM : ObservableObject {
   internal static class _loc {
-    private const string _prefix = "MediaItem.Slideshow.";
-    public const string CmdStart = _prefix + "cmd.Start";
-    public const string CmdStop = _prefix + "cmd.Stop";
+    private const string _prefix = "MediaItems.Slideshow.";
+    public const string Start = _prefix + "Start.cmd";
+    public const string Stop = _prefix + "Stop.cmd";
     public const string TxtInterval = _prefix + "ToolBar.txt.Interval";
     public const string TxtPlayPanoramicImages = _prefix + "ToolBar.txt.PlayPanoramicImages";
 
     static _loc() {
       LocalizationManager.Register(typeof(_loc).Assembly, [
-        (CmdStart, "Start slideshow"),
-        (CmdStop, "Stop slideshow"),
+        (Start, "Start slideshow"),
+        (Stop, "Stop slideshow"),
         (TxtInterval, "Slideshow interval"),
         (TxtPlayPanoramicImages, "Play panoramic images")
       ]);
@@ -57,8 +57,8 @@ public sealed class SlideshowVM : ObservableObject {
 
   public SlideshowVM(MediaViewerVM mediaViewer) {
     _mediaViewer = mediaViewer;
-    StartCommand = new(_slideshow, MH.UI.Res.IconPlay, L.Get(_loc.CmdStart));
-    StopCommand = new(_slideshow, MH.UI.Res.IconStop, L.Get(_loc.CmdStop));
+    StartCommand = new(_slideshow, MH.UI.Res.IconPlay, L.Get(_loc.Start));
+    StopCommand = new(_slideshow, MH.UI.Res.IconStop, L.Get(_loc.Stop));
   }
 
   /// <summary>

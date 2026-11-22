@@ -15,8 +15,8 @@ namespace PictureManager.Common.Features.MediaItem;
 
 public sealed class MediaItemsFilterVM : ObservableObject, ICollectionViewFilter<MediaItemM> {
   internal static class _loc {
-    private const string _prefix = "MediaItem.Filter.";
-    public const string CmdClear = _prefix + "cmd.Clear";
+    private const string _prefix = "MediaItems.Filter.";
+    public const string Clear = _prefix + "Clear.cmd";
     public const string BtnImage = _prefix + "btn.Image";
     public const string BtnVideo = _prefix + "btn.Video";
     public const string TxtAnd = _prefix + "txt.And";
@@ -28,7 +28,7 @@ public sealed class MediaItemsFilterVM : ObservableObject, ICollectionViewFilter
 
     static _loc() {
       LocalizationManager.Register(typeof(_loc).Assembly, [
-        (CmdClear, "Clear"),
+        (Clear, "Clear"),
         (BtnImage, "Image"),
         (BtnVideo, "Video"),
         (TxtAnd, "And"),
@@ -75,7 +75,7 @@ public sealed class MediaItemsFilterVM : ObservableObject, ICollectionViewFilter
     Height.ChangedEvent += delegate { _raiseFilterChanged(); };
     Width.ChangedEvent += delegate { _raiseFilterChanged(); };
     Size.ChangedEvent += delegate { _raiseFilterChanged(); };
-    ClearCommand = new(_clear, null, L.Get(_loc.CmdClear));
+    ClearCommand = new(_clear, null, L.Get(_loc.Clear));
   }
 
   private void _raiseFilterChanged() => FilterChangedEvent(this, EventArgs.Empty);

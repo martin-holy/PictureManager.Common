@@ -17,7 +17,7 @@ namespace PictureManager.Common.Features.Common;
 
 public sealed class FileOperationCollisionDialog : Dialog {
   internal static class _loc {
-    private const string _prefix = "MediaItem.FileOperationCollision.dlg.";
+    private const string _prefix = "MediaItems.FileOperationCollision.dlg.";
     public const string Title = _prefix + "Title";
     public const string BtnRename = _prefix + "btn.Rename";
     public const string BtnReplace = _prefix + "btn.Replace";
@@ -117,7 +117,7 @@ public sealed class FileOperationCollisionDialog : Dialog {
     }
 
     if (Path.GetInvalidFileNameChars().Any(FileName.Contains)) {
-      Error = L.Get(MediaItemVM._loc.RenameDlgErrInvalidCharacters);
+      Error = L.Get(MediaItemVM._loc.RenameErrInvalidCharacters);
       return;
     }
 

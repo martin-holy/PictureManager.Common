@@ -10,7 +10,7 @@ namespace PictureManager.Common.Features.Common;
 
 public sealed class FileOperationDialog : Dialog {
   internal static class _loc {
-    private const string _prefix = "MediaItem.FileOperation.dlg.";
+    private const string _prefix = "MediaItems.FileOperation.dlg.";
     public const string TxtFrom = _prefix + "txt.From";
     public const string TxtTo = _prefix + "txt.To";
     public const string TxtFile = _prefix + "txt.File";

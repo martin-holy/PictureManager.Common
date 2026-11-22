@@ -10,7 +10,7 @@ namespace PictureManager.Common.Features.MediaItem;
 
 public sealed class MediaItemsImport : ObservableObject {
   internal static class _loc {
-    private const string _prefix = "MediaItem.Import.";
+    private const string _prefix = "MediaItems.Import.";
     public const string Cancel = _prefix + "Cancel.cmd";
 
     static _loc() {

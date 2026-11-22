@@ -8,7 +8,7 @@ namespace PictureManager.Common.Features.MediaItem.Image;
 
 public sealed class SaveMetadataDialog : ParallelProgressDialog<RealMediaItemM> {
   internal static class _loc {
-    private const string _prefix = "MediaItem.SaveMetadata.";
+    private const string _prefix = "MediaItems.SaveMetadata.";
     public const string Title = _prefix + "dlg.Title";
     public const string OpenTitle = _prefix + "Open.dlg.Title";
     public const string OpenMessage = _prefix + "Open.dlg.Message";
